@@ -1,10 +1,11 @@
 import mongoose,{Document, Model} from "mongoose";
 import {ISchool} from "./ISchool"
+import {ISopt} from "./ISopt"
 
 export interface IUser extends Document{
-    _id ?: mongoose.Types.ObjectId
+    _id : mongoose.Types.ObjectId
     name : String
-    school : mongoose.Types.ObjectId
+    school : mongoose.Types.ObjectId | ISchool
     sopt : mongoose.Types.ObjectId
 }
 
