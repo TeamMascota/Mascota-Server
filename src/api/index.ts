@@ -47,41 +47,4 @@ router.post("/", async (req, res) => {
     }
 })
 
-//과제1
-router.get('/:id', async (req, res) => {
-    const soptId = req.params.id
-    try {
-        const sopt = await Sopt.findById(soptId).populate('user', 'name school')
-
-        const user = await User.findById(sopt.user)
-        const getUserNameDto = new GetUserNameDto(user._id, user.name)
-
-        res.status(200).send(getUserNameDto)
-    } catch (error) {
-        console.error(error.message);
-        res.status(500).send("Server Error")
-    }
-})
-
-router.get('/multi/:id', async(req,res)=>{
-    const soptId = req.params.id
-
-    try{
-        const findUserSopt = await Sopt.findById(soptId).populate({
-            path:'user',
-            populate : {path:'school'}
-        })
-        const transferUser = findUserSopt.user as IUser  //이렇게 따로 형변환하는거 말고 날오때 형이 변환되는방법은 없을까?
-        const transferSchool = transferUser.school as ISchool
-        
-        //DB에서 찾은 user가 IUser인터페이스에서 objectId로 선언되어있어서 user안에 있는 값을 못읽어오는듯
-        const result = new GetUserInfoDto(transferUser, transferSchool)
-
-        res.status(200).send(result)
-    }catch(error){
-        console.error(error.message);
-        res.status(500).send("Server Error")
-    }
-})
-
 module.exports = router
