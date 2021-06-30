@@ -1,10 +1,18 @@
-import mongoose from "mongoose"
+import mongoose,{Schema} from "mongoose"
 import {ISchoolDocument, ISchoolModel} from "../interfaces/ISchool"
+import {IUser} from "../interfaces/IUser"
 
-const SchoolSchema = new mongoose.Schema({
+const SchoolSchema : Schema<ISchoolDocument> = new mongoose.Schema({
     name : {type : String},
     user : {type : mongoose.SchemaTypes.ObjectId, ref : "User"}
 })
 
-// export default mongoose.model<ISchoolDocument, ISchoolModel>("School", SchoolSchema,"schools")
-export default mongoose.model("School", SchoolSchema)
+SchoolSchema.methods.setName = async function(name : String){
+    this.name = name
+}
+
+SchoolSchema.methods.setUser = async function(user : IUser){
+    this.user = user._id
+}
+
+export default mongoose.model<ISchoolDocument, ISchoolModel>("School", SchoolSchema,"schools")
