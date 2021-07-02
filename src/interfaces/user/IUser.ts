@@ -5,7 +5,7 @@ export interface IUser extends Document{
     _id : mongoose.Types.ObjectId;
     email : String;
     password : String;
-    pets : Array<IPet>;//Array(Pet)
+    pets : Array<IPet>;
     book : mongoose.Types.ObjectId;
 }
 
