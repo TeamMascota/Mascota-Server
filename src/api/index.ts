@@ -47,4 +47,24 @@ router.post("/", async (req, res) => {
     }
 })
 
+router.get("/",async(req,res)=>{
+    const userId = "60db00564abd6608dcc8d6af";
+    let aqaa =asdasdasd;
+    aqaa = 1231245
+    try{
+        const user = await User.findById(userId).populate({
+            path:"sopt"
+        })
+        console.log('user : '+user)
+        console.log('findUser_Sopt : '+user.sopt)
+        console.log('soptType : '+typeof(user.sopt))
+        console.log('sopt_field : '+user.sopt.part)
+        
+        res.status(200).send(user.sopt)
+    }catch(error){
+        console.error(error.message);
+        res.status(500).send("Server Error")
+    }
+})
+
 module.exports = router
