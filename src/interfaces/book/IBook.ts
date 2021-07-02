@@ -1,6 +1,5 @@
 import mongoose, { Document, Model } from "mongoose"
-import { IFirstPartTableContents } from "../tableContents/IFirstPartTableContents"
-import { ISecondPartTableContents } from "../tableContents/ISecondPartTableContents"
+import { ITableContents } from "../tableContents/ITableContents"
 
 export interface IBook extends Document {
     _id: mongoose.Types.ObjectId;
@@ -8,11 +7,11 @@ export interface IBook extends Document {
     author: String;
     imgs: Array<String>;
     part: Number;
-    tableContents: Array<IFirstPartTableContents> | Array<ISecondPartTableContents>;
+    tableContents: mongoose.Types.ObjectId;
 }
 
 export interface IBookDocument extends IBook {
-
+    setTableContents : (tableContents : ITableContents) => Promise<void>
 }
 
 export interface IBookModel extends Model<IBookDocument> {
