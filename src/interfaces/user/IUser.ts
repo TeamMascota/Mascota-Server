@@ -6,8 +6,8 @@ export interface IUser extends Document{
     _id : mongoose.Types.ObjectId;
     email : String;
     password : String;
-    pets : Array<IPet>;
-    book : [mongoose.Types.ObjectId];
+    pets : [IPet];
+    book : [IBook];
 }
 
 export interface IUserDocument extends IUser{

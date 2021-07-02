@@ -9,12 +9,12 @@ export interface IPet extends Document {
     gender: Number;
     imgs: Array<String>;
     user: mongoose.Types.ObjectId | IUser;
-    book: mongoose.Types.ObjectId | IBook;
+    book: [mongoose.Types.ObjectId | IBook];
     startDate: Date
 }
 
 export interface IPetDocument extends IPet {
-
+    setUser : (user : IUser) => Promise<void>
 }
 
 export interface IPetModel extends Model<IPetDocument> {

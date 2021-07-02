@@ -1,28 +1,33 @@
 import mongoose, { Schema } from "mongoose"
-import { IUserDocument, IUserModel } from "../../interfaces/user/IUser"
-import { IPet } from "../../interfaces/pet/IPet"
+import { IPetDocument, IPetModel } from "../../interfaces/pet/IPet"
 import { IBook } from "../../interfaces/book/IBook"
+import { IUser } from "../../interfaces/user/IUser"
 
-const UserSchema: Schema<IUserDocument> = new mongoose.Schema({
-    name : {type : String},
-    kind : {type : Number},
-    gender : {type : Number},
-    imgs : {type : Array<String>},
-    user : {type : mongoose.SchemaTypes.ObjectId, ref : "User"},
-    book : [
+const PetSchema: Schema<IPetDocument> = new mongoose.Schema({
+    name: { type: String },
+    kind: { type: Number },
+    gender: { type: Number },
+    imgs: [
         {
-            type : mongoose.SchemaTypes.ObjectId, 
-            ref : "Book:"
+            type: String
+        }
+    ],
+    user: { type: mongoose.SchemaTypes.ObjectId, ref: "User" },
+    book: [
+        {
+            type: mongoose.SchemaTypes.ObjectId,
+            ref: "Book:"
         }
     ]
 })
 
-UserSchema.methods.setPet = async function (pet : IPet) {
-    this.pets.push(pet)
+
+PetSchema.methods.setUser = async function (user: IUser) {
+    this.user = user
 }
 
-UserSchema.methods.setBook = async function (book : IBook) {
-    this.book.push(book._id)
+PetSchema.methods.setBook = async function (book: IBook) {
+    this.book.push(book)
 }
 
-export default mongoose.model<IUserDocument, IUserModel>("User", UserSchema, "users")
+export default mongoose.model<IPetDocument, IPetModel>("Pet", PetSchema, "pets")

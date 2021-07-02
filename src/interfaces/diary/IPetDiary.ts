@@ -5,11 +5,11 @@ import { IFirstPartTableContents } from "../tableContents/IFirstPartTableContent
 
 export interface IPetDiary extends Document{
     _id : mongoose.Types.ObjectId;
-    pets : Array<IPet | mongoose.Types.ObjectId>;
+    pets : [IPet | mongoose.Types.ObjectId];
     tableContents : mongoose.Types.ObjectId | IFirstPartTableContents;
     title : String;
     contents : String;
-    imgs : Array<String>;
+    imgs : [String];
     petEmotions : Array<IPetEmotions | mongoose.Types.ObjectId>;
     date : Date; 
 }
