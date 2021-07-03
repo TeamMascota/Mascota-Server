@@ -12,7 +12,7 @@ SchoolSchema.methods.setName = async function(name : String){
 }
 
 SchoolSchema.methods.setUser = async function(user : IUser){
-    this.user = user._id
+    this.user = user
 }
 
 export default mongoose.model<ISchoolDocument, ISchoolModel>("School", SchoolSchema,"schools")

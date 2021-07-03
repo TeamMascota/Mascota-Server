@@ -5,7 +5,7 @@ export interface ISopt extends Document{
     _id : mongoose.Types.ObjectId
     part : String,
     grade : String,
-    user : mongoose.Types.ObjectId | IUser
+    user : IUser
 }
 
 export interface ISoptDocument extends ISopt{

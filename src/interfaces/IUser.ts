@@ -5,8 +5,8 @@ import {ISopt} from "./ISopt"
 export interface IUser extends Document{
     _id : mongoose.Types.ObjectId
     name : String
-    school : mongoose.Types.ObjectId | ISchool
-    sopt : mongoose.Types.ObjectId
+    school : ISchool
+    sopt : ISopt
 }
 
 export interface IUserDocument extends IUser{

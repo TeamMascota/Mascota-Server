@@ -10,11 +10,11 @@ const UserSchema: Schema<IUserDocument> = new mongoose.Schema({
 })
 
 UserSchema.methods.setSchool = async function (school: ISchool) {
-    this.school = school._id
+    this.school = school
 }
 
 UserSchema.methods.setSopt = async function (sopt: ISopt) {
-    this.sopt = sopt._id
+    this.sopt = sopt
 }
 
 export default mongoose.model<IUserDocument, IUserModel>("User", UserSchema, "users")

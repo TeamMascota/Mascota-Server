@@ -9,7 +9,7 @@ const SoptSchema : Schema<ISoptDocument> = new mongoose.Schema({
 })
 
 SoptSchema.methods.setUser = async function(user : IUser){
-    this.user = user._id
+    this.user = user
 }
 
 // SoptSchema.methods.getTransferType = async function(){
