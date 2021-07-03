@@ -7,7 +7,8 @@ export interface IUser extends Document {
     email: String;
     password: String;
     pets: [IPet];
-    book: [IBook];
+    book: IBook;
+    feelingCount : Number;
 }
 
 export interface IUserDocument extends IUser {

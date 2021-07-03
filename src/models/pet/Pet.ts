@@ -12,13 +12,18 @@ const PetSchema: Schema<IPetDocument> = new mongoose.Schema({
             type: String
         }
     ],
-    user: { type: mongoose.SchemaTypes.ObjectId, ref: "User" },
-    book: [
-        {
-            type: mongoose.SchemaTypes.ObjectId,
-            ref: "Book:"
-        }
-    ]
+    user: {
+        type: mongoose.SchemaTypes.ObjectId, ref: "User"
+    },
+    book: {
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: "Book:"
+    },
+    rainbow: { type: Boolean },
+    startDate: {
+        type: Date,
+        default: Date.now()
+    }
 })
 
 
@@ -27,7 +32,7 @@ PetSchema.methods.setUser = async function (user: IUser) {
 }
 
 PetSchema.methods.setBook = async function (book: IBook) {
-    this.book.push(book)
+    this.book = book
 }
 
 export default mongoose.model<IPetDocument, IPetModel>("Pet", PetSchema, "pets")

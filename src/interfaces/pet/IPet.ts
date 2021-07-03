@@ -9,8 +9,9 @@ export interface IPet extends Document {
     gender: Number;
     imgs: [String];
     user: IUser;
-    book: [IBook];
-    startDate: Date
+    book: IBook;
+    rainbow : Boolean;
+    startDate: Date;
 }
 
 export interface IPetDocument extends IPet {

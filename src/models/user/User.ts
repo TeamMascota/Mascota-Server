@@ -12,12 +12,11 @@ const UserSchema: Schema<IUserDocument> = new mongoose.Schema({
             ref: "Pet"
         }
     ],
-    book: [
-        {
-            type: mongoose.SchemaTypes.ObjectId,
-            ref: "Book"
-        }
-    ]
+    book: {
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: "Book"
+    },
+    feelingCount: { type: Number }
 })
 
 UserSchema.methods.setPet = async function (pet: IPet) {
@@ -25,7 +24,7 @@ UserSchema.methods.setPet = async function (pet: IPet) {
 }
 
 UserSchema.methods.setBook = async function (book: IBook) {
-    this.book.push(book)
+    this.book = book
 }
 
 export default mongoose.model<IUserDocument, IUserModel>("User", UserSchema, "users")

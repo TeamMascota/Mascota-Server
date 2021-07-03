@@ -5,7 +5,6 @@ export interface ISecondPartTableContents extends Document{
     _id : mongoose.Types.ObjectId;
     chapter : Number;
     title : String;
-    startDate : Date;
     userDiary : [IUserDiary];
 }
 

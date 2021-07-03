@@ -7,6 +7,7 @@ export interface ITableContents extends Document {
     _id: mongoose.Types.ObjectId;
     firstPartTableContents : [IFirstPartTableContents];
     secondPartTableContents : [ISecondPartTableContents];
+    secondPartStartDate : Date;
 }
 
 export interface ITableContentsDocument extends ITableContents {

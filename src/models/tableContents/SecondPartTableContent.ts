@@ -5,10 +5,6 @@ import { ISecondPartTableContentsDocument, ISecondPartTableContentsModel } from 
 const SecondPartTableContentsSchema: Schema<ISecondPartTableContentsDocument> = new mongoose.Schema({
     chapter: { type: Number },
     title: { type: String },
-    startDate: {
-        type: Date,
-        default: Date.now()
-    },
     userDiary: [
         {
             type: mongoose.SchemaTypes.ObjectId,

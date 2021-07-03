@@ -15,7 +15,11 @@ const TableContentsSchema: Schema<ITableContentsDocument> = new mongoose.Schema(
             type: mongoose.SchemaTypes.ObjectId,
             ref: "SecondPartTableContents"
         }
-    ]
+    ],
+    secondPartStartDate : {
+        type : Date,
+        default : Date.now()
+    }
 })
 
 TableContentsSchema.methods.setFirstPartTableContents = async function (tableContents: IFirstPartTableContents) {
