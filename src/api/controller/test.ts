@@ -1,6 +1,6 @@
 import express from "express"
-import User from "../models/user/User"
-import Pet from "../models/pet/Pet"
+import User from "../../models/user/User"
+import Pet from "../../models/pet/Pet"
 
 require("../models/user/User")
 require("../models/pet/Pet")
