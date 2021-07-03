@@ -3,13 +3,13 @@ import { IFirstPartTableContentsDocument, IFirstPartTableContentsModel } from ".
 import { IPetDiary } from "../../interfaces/diary/IPetDiary"
 
 const FirstPartTableContentsSchema: Schema<IFirstPartTableContentsDocument> = new mongoose.Schema({
-    chapter : {type : Number},
-    title : {type : String},
-    contents : {type : String},
-    petDiary : [
+    chapter: { type: Number },
+    title: { type: String },
+    contents: { type: String },
+    petDiary: [
         {
-            type : mongoose.SchemaTypes.ObjectId,
-            ref : "PetDiary"
+            type: mongoose.SchemaTypes.ObjectId,
+            ref: "PetDiary"
         }
     ]
 })

@@ -14,8 +14,8 @@ export interface IPet extends Document {
 }
 
 export interface IPetDocument extends IPet {
-    setUser : (user : IUser) => Promise<void>
-    setBook : (pet : IPet) => Promise<void>
+    setUser: (user: IUser) => Promise<void>
+    setBook: (pet: IPet) => Promise<void>
 }
 
 export interface IPetModel extends Model<IPetDocument> {

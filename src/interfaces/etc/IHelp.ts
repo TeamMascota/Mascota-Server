@@ -4,6 +4,7 @@ export interface IHelp extends Document{
     _id : mongoose.Types.ObjectId;
     classification : String;
     title : String;
+    url : String
 }
 
 export interface IHelpDocument extends IHelp{

@@ -1,22 +1,22 @@
-import mongoose,{Schema} from "mongoose"
-import {IBookDocument, IBookModel} from "../../interfaces/book/IBook"
+import mongoose, { Schema } from "mongoose"
+import { IBookDocument, IBookModel } from "../../interfaces/book/IBook"
 import { ITableContents } from "../../interfaces/tableContents/ITableContents"
 
-const BookSchema : Schema<IBookDocument> = new mongoose.Schema({
-    title :{type : String},
-    author : {type : String},
-    imgs : [
+const BookSchema: Schema<IBookDocument> = new mongoose.Schema({
+    title: { type: String },
+    author: { type: String },
+    imgs: [
         {
-            type : String
+            type: String
         }
     ],
-    tableContents : {
-        type : mongoose.SchemaTypes.ObjectId, 
-        ref : "TableContents"
+    tableContents: {
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: "TableContents"
     }
 })
 
-BookSchema.methods.setTableContents = async function(tableContents : ITableContents){
+BookSchema.methods.setTableContents = async function (tableContents: ITableContents) {
     this.tableContents = tableContents
 }
 

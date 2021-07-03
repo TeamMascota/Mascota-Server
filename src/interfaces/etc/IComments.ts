@@ -1,16 +1,16 @@
 import mongoose,{Document, Model} from "mongoose"
 
-export interface IComment extends Document{
+export interface IComments extends Document{
     _id : mongoose.Types.ObjectId;
     feeling : Number;
-    comment : String;
+    comments : String;
     classification : Number;
 }
 
-export interface ICommentDocument extends IComment{
+export interface ICommentsDocument extends IComments{
 
 }
 
-export interface ICommentModel extends Model<ICommentDocument>{
+export interface ICommentsModel extends Model<ICommentsDocument>{
     
 }

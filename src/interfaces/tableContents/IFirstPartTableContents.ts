@@ -10,7 +10,7 @@ export interface IFirstPartTableContents extends Document{
 }
 
 export interface IFirstPartTableContentsDocument extends IFirstPartTableContents{
-
+    setPetDiary : (petDiary : IPetDiary) => Promise<void>
 }
 
 export interface IFirstPartTableContentsModel extends Model<IFirstPartTableContentsDocument>{

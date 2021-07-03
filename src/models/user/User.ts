@@ -8,14 +8,14 @@ const UserSchema: Schema<IUserDocument> = new mongoose.Schema({
     password: { type: String },
     pets: [
         {
-            type : mongoose.SchemaTypes.ObjectId,
-            ref : "Pet"
+            type: mongoose.SchemaTypes.ObjectId,
+            ref: "Pet"
         }
     ],
     book: [
         {
-            type : mongoose.SchemaTypes.ObjectId,
-            ref : "Book"
+            type: mongoose.SchemaTypes.ObjectId,
+            ref: "Book"
         }
     ]
 })

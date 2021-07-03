@@ -1,7 +1,5 @@
 import mongoose,{Document, Model} from "mongoose"
-import { IBook } from "../book/IBook"
 import { ISecondPartTableContents } from "../tableContents/ISecondPartTableContents"
-import { ITableContents } from "../tableContents/ITableContents"
 
 export interface IUserDiary extends Document{
     _id : mongoose.Types.ObjectId;
@@ -14,7 +12,7 @@ export interface IUserDiary extends Document{
 }
 
 export interface IUserDiaryDocument extends IUserDiary{
-    setTableContents : (tableContents : ITableContents) => Promise<void>
+    setTableContents : (tableContents : ISecondPartTableContents) => Promise<void>
 }
 
 export interface IUserDiaryModel extends Model<IUserDiaryDocument>{

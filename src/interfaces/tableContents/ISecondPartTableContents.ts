@@ -5,12 +5,12 @@ export interface ISecondPartTableContents extends Document{
     _id : mongoose.Types.ObjectId;
     chapter : Number;
     title : String;
-    contents : String;
+    startDate : Date;
     userDiary : [IUserDiary];
 }
 
 export interface ISecondPartTableContentsDocument extends ISecondPartTableContents{
-    setUserDiary : (petDiary : IUserDiary) => Promise<void>
+    setUserDiary : (userDiary : IUserDiary) => Promise<void>
 }
 
 export interface ISecondPartTableContentsModel extends Model<ISecondPartTableContentsDocument>{
