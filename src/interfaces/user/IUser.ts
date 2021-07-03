@@ -6,8 +6,6 @@ export interface IUser extends Document {
     _id: mongoose.Types.ObjectId;
     email: String;
     password: String;
-    // pets?: PopulatedDoc<IPet & Document>;
-    // book?: PopulatedDoc<IBook & Document>;
     pets: [IPet];
     book: [IBook];
 }

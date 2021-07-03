@@ -4,12 +4,13 @@ import {IPetDiary} from "./IPetDiary"
 
 export interface IPetEmotions extends Document{
     _id : mongoose.Types.ObjectId;
-    petDiary : mongoose.Types.ObjectId | IPetDiary;
-    pet : mongoose.Types.ObjectId | IPet;
+    petDiary : IPetDiary;
+    pet : IPet;
 }
 
 export interface IPetEmotionsDocument extends IPetEmotions{
-
+    setPetDiary : (petDiary : IPetDiary) => Promise<void>
+    setPet : (pet : IPet) => Promise<void>
 }
 
 export interface IPetEmotionsModel extends Model<IPetEmotionsDocument>{

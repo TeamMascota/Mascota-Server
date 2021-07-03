@@ -7,14 +7,15 @@ export interface IPet extends Document {
     name: String;
     kind: Number;
     gender: Number;
-    imgs: Array<String>;
-    user: mongoose.Types.ObjectId | IUser;
-    book: [mongoose.Types.ObjectId | IBook];
+    imgs: [String];
+    user: IUser;
+    book: [IBook];
     startDate: Date
 }
 
 export interface IPetDocument extends IPet {
     setUser : (user : IUser) => Promise<void>
+    setBook : (pet : IPet) => Promise<void>
 }
 
 export interface IPetModel extends Model<IPetDocument> {

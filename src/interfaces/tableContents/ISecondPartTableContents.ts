@@ -6,11 +6,11 @@ export interface ISecondPartTableContents extends Document{
     chapter : Number;
     title : String;
     contents : String;
-    petDiary : Array<IUserDiary>;
+    userDiary : [IUserDiary];
 }
 
 export interface ISecondPartTableContentsDocument extends ISecondPartTableContents{
-
+    setUserDiary : (petDiary : IUserDiary) => Promise<void>
 }
 
 export interface ISecondPartTableContentsModel extends Model<ISecondPartTableContentsDocument>{
