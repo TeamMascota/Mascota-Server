@@ -1,6 +1,7 @@
 import { IPetDiary } from "../../../interfaces/diary/IPetDiary";
 import { IHelp } from "../../../interfaces/etc/IHelp";
 import { IPet } from "../../../interfaces/pet/IPet";
+import { IFirstPartTableContents } from "../../../interfaces/tableContents/IFirstPartTableContents";
 import { IUser } from "../../../interfaces/user/IUser";
 
 interface IRainbowMainPageResDto{
@@ -10,7 +11,7 @@ interface IRainbowMainPageResDto{
     help : [HelpResDto]
 }
 
-export default class RainbowMainPageResDto{
+export class RainbowMainPageResDto{
     public rainbowMainPage : IRainbowMainPageResDto;
 
     constructor(user : IUser){
@@ -32,12 +33,13 @@ export class MemoriesResDto{
     private date;
     private feel;
 
-    constructor(petDiary : IPetDiary, pet : IPet){
-        this.title = petDiary.title;
-        this.contents = petDiary.contents;
-        this.date = petDiary.date;
-        this.feel = petDiary.petEmotions.filter(petEmotion => 
-            petEmotion.pet == pet)
+    constructor(firstPartTableContents : IFirstPartTableContents[], pet : IPet){
+        
+    }
+
+    randomMemory(firstPartTableContents : IFirstPartTableContents[]){
+        const tableContentsLenght = firstPartTableContents.length
+        const min = Math.ceil(0)
     }
 }
 

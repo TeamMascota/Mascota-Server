@@ -5,8 +5,8 @@ import { ISecondPartTableContents } from "./ISecondPartTableContents";
 
 export interface ITableContents extends Document {
     _id: mongoose.Types.ObjectId;
-    firstPartTableContents : [IFirstPartTableContents];
-    secondPartTableContents : [ISecondPartTableContents];
+    firstPartTableContents : Array<IFirstPartTableContents>;
+    secondPartTableContents : Array<ISecondPartTableContents>;
     secondPartStartDate : Date;
 }
 

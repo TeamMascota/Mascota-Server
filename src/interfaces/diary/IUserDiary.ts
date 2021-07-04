@@ -5,7 +5,7 @@ export interface IUserDiary extends Document{
     _id : mongoose.Types.ObjectId;
     title : String;
     contents : String;
-    imgs : [String];
+    imgs : Array<String>;
     feeling : Number;
     tableContents : ISecondPartTableContents;
     date : Date;

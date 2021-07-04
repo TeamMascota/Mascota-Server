@@ -19,7 +19,7 @@ const PetDiarySchema : Schema<IPetDiary>= new mongoose.Schema({
     contents : {type : String},
     imgs : [
         {
-            type : String
+            type : String,
         }
     ],
     petEmotions : [
@@ -28,6 +28,10 @@ const PetDiarySchema : Schema<IPetDiary>= new mongoose.Schema({
             ref : "PetEmotions"
         }
     ],
+    episode : { 
+        type : Number,
+        default : 0
+    },
     date : { 
         type : Date,
         default : Date.now()

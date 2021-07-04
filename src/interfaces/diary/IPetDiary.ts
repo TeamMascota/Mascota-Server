@@ -6,12 +6,13 @@ import { ITableContents } from "../tableContents/ITableContents"
 
 export interface IPetDiary extends Document{
     _id : mongoose.Types.ObjectId;
-    pets : [IPet];
+    pets : Array<IPet>;
     tableContents : IFirstPartTableContents;
     title : String;
     contents : String;
-    imgs : [String];
-    petEmotions : [IPetEmotions];
+    imgs : Array<String>;
+    petEmotions : Array<IPetEmotions>;
+    episode : Number;
     date : Date; 
 }
 

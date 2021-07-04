@@ -6,7 +6,7 @@ export interface IFirstPartTableContents extends Document{
     chapter : Number;
     title : String;
     contents : String;
-    petDiary : [IPetDiary];
+    petDiary : Array<IPetDiary>;
 }
 
 export interface IFirstPartTableContentsDocument extends IFirstPartTableContents{
