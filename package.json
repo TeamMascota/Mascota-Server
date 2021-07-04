@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "ts-node src",
-    "build": "tsc && node dist"
+    "build": "tsc && node dist",
+    "test": "nodemon"
   },
   "author": "",
   "license": "ISC",

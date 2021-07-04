@@ -6,6 +6,7 @@ export interface IPetEmotions extends Document{
     _id : mongoose.Types.ObjectId;
     petDiary : IPetDiary;
     pet : IPet;
+    feeling : Number
 }
 
 export interface IPetEmotionsDocument extends IPetEmotions{

@@ -5,7 +5,7 @@ export interface IBook extends Document {
     _id: mongoose.Types.ObjectId;
     title: String;
     author: String;
-    imgs: [String];
+    imgs: String;
     tableContents: ITableContents;
 }
 

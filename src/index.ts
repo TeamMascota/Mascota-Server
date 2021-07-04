@@ -7,7 +7,7 @@ connectDB();
 app.use(express.json());
 
 // Define Routes
-app.use('/',require('./api/router/index'))
+app.use('/api',require('./api/router/index'))
 
 
 // error handler
