@@ -7,13 +7,6 @@ import mongoose from "mongoose"
 import PetEmotions from "../../../models/diary/PetEmotions";
 import { IBook } from "../../../interfaces/book/IBook";
 
-interface IRainbowMainPageResDto{
-    title : String,
-    bookImg : String,
-    memories : Array<MemoriesResDto>,
-    help : Array<HelpResDto>
-}
-
 export class RainbowMainPageResDto{
     public rainbowMainPage = {
         title : null,
@@ -23,8 +16,6 @@ export class RainbowMainPageResDto{
     }
 
     constructor(book : IBook){
-        console.log('왜 없대 ?? :'+book)
-        console.log('왜?? : '+book.title)
         this.rainbowMainPage.title = book.title//작가와 무지개다리를 건넌 동물의 이름 합친거
         this.rainbowMainPage.bookImg = book.imgs   //책 이미지에서 맨앞에?
     }

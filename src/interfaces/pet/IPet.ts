@@ -7,7 +7,7 @@ export interface IPet extends Document {
     name: String;
     kind: Number;
     gender: Number;
-    imgs: Array<String>;
+    imgs: String;
     user: IUser;
     book: IBook;
     rainbow : Boolean;

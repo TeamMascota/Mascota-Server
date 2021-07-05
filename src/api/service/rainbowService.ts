@@ -1,6 +1,8 @@
 import User from "../../models/user/User"
-import { RainbowMainPageResDto, MemoriesResDto, HelpResDto } from "../../dto/rainbow/mainPageDto/rainbowMainPageResDto"
+import { RainbowMainPageResDto, MemoriesResDto, HelpResDto } from "../../dto/rainbow/mainPageDto/RainbowMainPageResDto"
 import Help from "../../models/etc/Help"
+import { findSourceMap } from "module"
+import { MyPetInfoResDto } from "../../dto/rainbow/petDto/RainbowPetResDto"
 
 require("../../models/user/User")
 require("../../models/pet/Pet")
@@ -85,4 +87,19 @@ module.exports = {
             return Math.floor(Math.random()*max);
         }
     },
+
+    selectPet : async() => {
+        try{
+            const findUser = await User.find().populate({
+                path : "pets"
+            })
+            const rainbowPetResDto = findUser[0].pets.map(pet => 
+                new MyPetInfoResDto(pet))
+
+            console.log('pets : '+rainbowPetResDto)
+            return rainbowPetResDto
+        }catch(err){
+            throw err
+        }
+    }
 }

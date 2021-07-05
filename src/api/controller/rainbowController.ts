@@ -7,8 +7,18 @@ module.exports = {
     mainPage: async (req, res) => {
         const { userId, petId } = req.params;
         try {
-             const result = await rainbowService.getMainPage(userId, petId)
-             res.status(statusCode.OK).send(util.success(statusCode.OK,responseMessage.SUCCESS_GET_RAINBOW_MAIN_PAGE,result))
+            const result = await rainbowService.getMainPage(userId, petId)
+            res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_GET_RAINBOW_MAIN_PAGE, result))
+        } catch (err) {
+            console.error(err)
+            return res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, responseMessage.INTERNAL_SERVER_ERROR))
+        }
+    },
+
+    selectRainbowPet: async (req, res) => {
+        try {
+            const result = await rainbowService.selectPet();
+            res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_GET_RAINBOW_PET, result))
         } catch (err) {
             console.error(err)
             return res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, responseMessage.INTERNAL_SERVER_ERROR))
