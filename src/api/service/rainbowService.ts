@@ -3,9 +3,9 @@ import { RainbowMainPageResDto, MemoriesResDto, HelpResDto } from "../../dto/rai
 import Help from "../../models/etc/Help"
 import { MyPetInfoResDto } from "../../dto/rainbow/petDto/RainbowPetResDto"
 import Pet from "../../models/pet/Pet"
-import FirstPartTableContents from "../../models/tableContents/FirstPartTableContents"
-import PetDiary from "../../models/diary/PetDiary"
 import { PartingRainbowResDto } from "../../dto/rainbow/partingDto/PartingRainbowResDto"
+import { ReadyPartingAndStartRecordResDto,BookInfoResDto } from "../../dto/rainbow/readyPartingAndStartRecordDto/readyPartingAndStartRecordResDto"
+const dateMethod = require("../../modules/dateMethod")
 
 require("../../models/user/User")
 require("../../models/pet/Pet")
@@ -122,12 +122,42 @@ module.exports = {
             findPet.rainbow = true
             await findPet.save()
             const user = findPet.user
-            let epilogueCount = 0
+            let diaryCount = 0
             user.book.tableContents.firstPartTableContents.forEach(tableContent =>
-                epilogueCount += tableContent.petDiary.length)
+                diaryCount += tableContent.petDiary.length)
 
-            return new PartingRainbowResDto(epilogueCount,findPet.name)
+            return new PartingRainbowResDto(diaryCount,findPet.name)
         } catch (err) {
+            throw err
+        }
+    },
+
+    getReadyPartingPetComment: async(petId) =>{
+        try{
+            const pet = await Pet.findById(petId).populate({
+                path : "user",
+                populate : {
+                    path : "book",
+                    populate : {
+                        path : "tableContents",
+                        populate : {
+                            path : "firstPartTableContents"
+                        }
+                    }
+                }
+            })
+
+            const user = pet.user
+            const bookInfo = new BookInfoResDto(pet.user.book)
+            let diaryCount = 0
+            user.book.tableContents.firstPartTableContents.forEach(tableContent =>
+                diaryCount += tableContent.petDiary.length)
+
+            const startDate = pet.startDate
+            const dayTogether = await dateMethod.getElapsedDay(startDate)
+            
+            return new ReadyPartingAndStartRecordResDto(diaryCount, dayTogether, bookInfo)
+        }catch(err){
             throw err
         }
     }
