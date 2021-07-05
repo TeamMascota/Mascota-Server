@@ -74,7 +74,8 @@
     "bcryptjs": "^2.4.3",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
-    "mongoose": "^5.13.0"
+    "mongoose": "^5.13.0",
+    "nodemon": "^2.0.9"
   }
 }
 
