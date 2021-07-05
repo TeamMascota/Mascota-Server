@@ -1,9 +1,9 @@
 import mongoose, { Schema } from "mongoose"
-import { ITableContentsDocument, ITableContentsModel } from "../../interfaces/tableContents/ITableContents"
+import { ITableContents, ITableContentsDocument, ITableContentsModel } from "../../interfaces/tableContents/ITableContents"
 import { IFirstPartTableContents } from "../../interfaces/tableContents/IFirstPartTableContents"
 import { ISecondPartTableContents } from "../../interfaces/tableContents/ISecondPartTableContents"
 
-const TableContentsSchema: Schema<ITableContentsDocument> = new mongoose.Schema({
+const TableContentsSchema: Schema<ITableContents> = new mongoose.Schema({
     firstPartTableContents: [
         {
             type: mongoose.SchemaTypes.ObjectId,

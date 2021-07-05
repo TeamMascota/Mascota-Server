@@ -1,5 +1,4 @@
 import User from "../../models/user/User"
-import Pet from "../../models/pet/Pet"
 import { RainbowMainPageResDto, MemoriesResDto, HelpResDto } from "../../dto/rainbow/mainPageDto/rainbowMainPageResDto"
 import Help from "../../models/etc/Help"
 
@@ -8,11 +7,81 @@ require("../../models/pet/Pet")
 require("../../models/book/Book")
 require('../../models/tableContents/TableContents')
 require('../../models/tableContents/FirstPartTableContents')
+require('../../models/diary/PetDiary')
+require('../../models/diary/PetEmotions')
 require('../../models/tableContents/SecondPartTableContent')
+require('../../models/diary/UserDiary')
 require("../../models/etc/Help")
 
 module.exports = {
     getMainPage: async (userId, petId) => {
-        
+        try {
+            const findUser = await User.findById(userId).populate({
+                path: "pets"
+            }).populate({
+                path: "book",
+                populate: {
+                    path: "tableContents",
+                    populate: { 
+                        path: "firstPartTableContents",
+                        populate : {
+                            path : "petDiary",
+                            populate : {
+                                path : "petEmotions"
+                            }
+                        }
+                    }
+                }
+            })
+
+            const rainbowMainPageResDto = new RainbowMainPageResDto(findUser.book)
+            const firstPartTableContents = findUser.book.tableContents.firstPartTableContents
+
+            const validMemories = firstPartTableContents.filter(tableContents =>
+                tableContents.petDiary.length>0).map(tableContents => 
+                    tableContents.petDiary.filter(petDiary =>
+                        petDiary.pets.includes(petId))
+                )
+            //validMemories : [tableContetns [petDiary]]
+
+            let memoriesResDto = [null,null]
+            if(validMemories.length == 2){
+                for(let i = 0 ; i<2;i++){
+                    memoriesResDto[i] = new MemoriesResDto(validMemories[i],petId)
+                }
+            }else if(validMemories.length >2){
+                let firstTableContentsIndex = await getRandomNumber(validMemories.length)
+                let secondTableContentsIndex = await getRandomNumber(validMemories.length)
+
+                if(firstTableContentsIndex == secondTableContentsIndex){
+                    while(firstTableContentsIndex == secondTableContentsIndex){
+                        if(secondTableContentsIndex == firstTableContentsIndex){
+                            secondTableContentsIndex = await getRandomNumber(validMemories.length)
+                        }else{
+                            break;
+                        }
+                    }
+                }
+                memoriesResDto[0] = new MemoriesResDto(validMemories[firstTableContentsIndex],petId)
+                memoriesResDto[1] = new MemoriesResDto(validMemories[secondTableContentsIndex],petId)
+            }else if(validMemories.length == 1){
+                memoriesResDto[0] = new MemoriesResDto(validMemories[0],petId)
+            }
+            //helpResDto
+            const helps = await Help.find()
+            const helpResDto = helps.map(help => new HelpResDto(help))
+
+            rainbowMainPageResDto.setMemories(memoriesResDto)
+            rainbowMainPageResDto.setHelp(helpResDto)
+
+            return rainbowMainPageResDto
+        } catch (error) {
+            throw error
+        }
+
+        function getRandomNumber(max : number){
+            max = Math.floor(max);
+            return Math.floor(Math.random()*max);
+        }
     },
 }

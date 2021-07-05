@@ -16,7 +16,8 @@ const FirstPartTableContentsSchema: Schema<IFirstPartTableContents> = new mongoo
     petDiary: [
         {
             type: mongoose.SchemaTypes.ObjectId,
-            ref: "PetDiary"
+            ref: "PetDiary",
+            default : null
         }
     ]
 })

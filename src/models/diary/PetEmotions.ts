@@ -11,7 +11,7 @@ const PetEmotionsSchema: Schema<IPetEmotions> = new mongoose.Schema({
         type: mongoose.SchemaTypes.ObjectId,
         ref: "Pet"
     },
-    feel: { type: Number }
+    feeling: { type: Number }
 })
 
 PetEmotionsSchema.methods.setPetDiary = async function (petDiary: IPetDiary) {

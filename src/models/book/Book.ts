@@ -5,7 +5,7 @@ import { ITableContents } from "../../interfaces/tableContents/ITableContents"
 const BookSchema: Schema<IBookDocument> = new mongoose.Schema({
     title: { type: String },
     author: { type: String },
-    img: { type: String },
+    imgs: { type: String },
     tableContents: {
         type: mongoose.SchemaTypes.ObjectId,
         ref: "TableContents"
