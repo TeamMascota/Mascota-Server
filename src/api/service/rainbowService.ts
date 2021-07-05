@@ -45,10 +45,10 @@ module.exports = {
             //validMemories : [tableContetns [petDiary]]
 
             let memoriesResDto = [null,null]
-            if(validMemories.length == 2){
-                for(let i = 0 ; i<2;i++){
-                    memoriesResDto[i] = new MemoriesResDto(validMemories[i],petId)
-                }
+
+            if(validMemories.length == 2){  
+                memoriesResDto[0] = new MemoriesResDto(validMemories[0],petId)
+                memoriesResDto[1] = new MemoriesResDto(validMemories[1],petId)
             }else if(validMemories.length >2){
                 let firstTableContentsIndex = await getRandomNumber(validMemories.length)
                 let secondTableContentsIndex = await getRandomNumber(validMemories.length)
@@ -67,11 +67,12 @@ module.exports = {
             }else if(validMemories.length == 1){
                 memoriesResDto[0] = new MemoriesResDto(validMemories[0],petId)
             }
+            rainbowMainPageResDto.setMemories(memoriesResDto)
+
             //helpResDto
             const helps = await Help.find()
             const helpResDto = helps.map(help => new HelpResDto(help))
 
-            rainbowMainPageResDto.setMemories(memoriesResDto)
             rainbowMainPageResDto.setHelp(helpResDto)
 
             return rainbowMainPageResDto
