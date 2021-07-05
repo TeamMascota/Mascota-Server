@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose"
-import { IHelp, IHelpDocument, IHelpModel } from "../../interfaces/etc/IHelp"
+import { IHelpDocument, IHelpModel } from "../../interfaces/etc/IHelp"
 
-const HelpSchema: Schema<IHelp> = new mongoose.Schema({
+const HelpSchema: Schema<IHelpDocument> = new mongoose.Schema({
     classification: { type: String },
     title: { type: String },
     url: { type: String }

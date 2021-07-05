@@ -1,7 +1,7 @@
 import mongoose,{Schema} from "mongoose"
-import { IInstitution, IInstitutionDocument, IInstitutionModel } from "../../interfaces/etc/IInstitution"
+import { IInstitutionDocument, IInstitutionModel } from "../../interfaces/etc/IInstitution"
 
-const InstitutionSchema: Schema<IInstitution> = new mongoose.Schema({
+const InstitutionSchema: Schema<IInstitutionDocument> = new mongoose.Schema({
     feeling: { type: Number },
     type: { type: Number },
     contents: { type: String },

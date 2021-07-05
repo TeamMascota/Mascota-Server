@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose"
-import { IComments, ICommentsDocument, ICommentsModel } from "../../interfaces/etc/IComments"
+import { ICommentsDocument, ICommentsModel } from "../../interfaces/etc/IComments"
 
-const CommentsSchema: Schema<IComments> = new mongoose.Schema({
+const CommentsSchema: Schema<ICommentsDocument> = new mongoose.Schema({
     feeling: { type: Number },
     comments: { type: String },
     classification: { type: Number }

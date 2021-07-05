@@ -1,10 +1,10 @@
 import mongoose,{Schema} from "mongoose"
-import { IPetDiary, IPetDiaryDocument, IPetDiaryModel } from "../../interfaces/diary/IPetDiary"
+import { IPetDiaryDocument, IPetDiaryModel } from "../../interfaces/diary/IPetDiary"
 import {IPet} from "../../interfaces/pet/IPet"
 import { IPetEmotions } from "../../interfaces/diary/IPetEmotions"
 import { IFirstPartTableContents } from "../../interfaces/tableContents/IFirstPartTableContents"
 
-const PetDiarySchema : Schema<IPetDiary>= new mongoose.Schema({
+const PetDiarySchema : Schema<IPetDiaryDocument>= new mongoose.Schema({
     pets : [
         {
             type : mongoose.SchemaTypes.ObjectId,
