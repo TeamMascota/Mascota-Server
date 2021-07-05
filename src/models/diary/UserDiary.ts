@@ -1,8 +1,8 @@
 import mongoose,{Schema} from "mongoose"
-import { IUserDiary, IUserDiaryDocument, IUserDiaryModel } from "../../interfaces/diary/IUserDiary"
+import { IUserDiaryDocument, IUserDiaryModel } from "../../interfaces/diary/IUserDiary"
 import { ISecondPartTableContents } from "../../interfaces/tableContents/ISecondPartTableContents"
 
-const UserDiarySchema : Schema<IUserDiary> = new mongoose.Schema({
+const UserDiarySchema : Schema<IUserDiaryDocument> = new mongoose.Schema({
     title : { type : String},
     contents : {type : String},
     imgs : [
