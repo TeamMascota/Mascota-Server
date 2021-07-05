@@ -3,6 +3,9 @@ import { RainbowMainPageResDto, MemoriesResDto, HelpResDto } from "../../dto/rai
 import Help from "../../models/etc/Help"
 import { MyPetInfoResDto } from "../../dto/rainbow/petDto/RainbowPetResDto"
 import Pet from "../../models/pet/Pet"
+import FirstPartTableContents from "../../models/tableContents/FirstPartTableContents"
+import PetDiary from "../../models/diary/PetDiary"
+import { PartingRainbowResDto } from "../../dto/rainbow/partingDto/PartingRainbowResDto"
 
 require("../../models/user/User")
 require("../../models/pet/Pet")
@@ -102,11 +105,28 @@ module.exports = {
         }
     },
 
-    isRainbowPet: async (petId) => {
+    setPartingRainbowPet: async (petId) => {
         try {
-            const findPet = await Pet.findById(petId)
+            const findPet = await Pet.findById(petId).populate({
+                path : "user",
+                populate : {
+                    path : "book",
+                    populate : {
+                        path : "tableContents",
+                        populate : {
+                            path : "firstPartTableContents"
+                        }
+                    }
+                }
+            })
             findPet.rainbow = true
             await findPet.save()
+            const user = findPet.user
+            let epilogueCount = 0
+            user.book.tableContents.firstPartTableContents.forEach(tableContent =>
+                epilogueCount += tableContent.petDiary.length)
+
+            return new PartingRainbowResDto(epilogueCount,findPet.name)
         } catch (err) {
             throw err
         }
