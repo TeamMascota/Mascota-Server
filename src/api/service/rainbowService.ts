@@ -1,8 +1,8 @@
 import User from "../../models/user/User"
 import { RainbowMainPageResDto, MemoriesResDto, HelpResDto } from "../../dto/rainbow/mainPageDto/RainbowMainPageResDto"
 import Help from "../../models/etc/Help"
-import { findSourceMap } from "module"
 import { MyPetInfoResDto } from "../../dto/rainbow/petDto/RainbowPetResDto"
+import Pet from "../../models/pet/Pet"
 
 require("../../models/user/User")
 require("../../models/pet/Pet")
@@ -24,12 +24,12 @@ module.exports = {
                 path: "book",
                 populate: {
                     path: "tableContents",
-                    populate: { 
+                    populate: {
                         path: "firstPartTableContents",
-                        populate : {
-                            path : "petDiary",
-                            populate : {
-                                path : "petEmotions"
+                        populate: {
+                            path: "petDiary",
+                            populate: {
+                                path: "petEmotions"
                             }
                         }
                     }
@@ -40,34 +40,34 @@ module.exports = {
             const firstPartTableContents = findUser.book.tableContents.firstPartTableContents
 
             const validMemories = firstPartTableContents.filter(tableContents =>
-                tableContents.petDiary.length>0).map(tableContents => 
+                tableContents.petDiary.length > 0).map(tableContents =>
                     tableContents.petDiary.filter(petDiary =>
                         petDiary.pets.includes(petId))
                 )
             //validMemories : [tableContetns [petDiary]]
 
-            let memoriesResDto = [null,null]
+            let memoriesResDto = [null, null]
 
-            if(validMemories.length == 2){  
-                memoriesResDto[0] = new MemoriesResDto(validMemories[0],petId)
-                memoriesResDto[1] = new MemoriesResDto(validMemories[1],petId)
-            }else if(validMemories.length >2){
+            if (validMemories.length == 2) {
+                memoriesResDto[0] = new MemoriesResDto(validMemories[0], petId)
+                memoriesResDto[1] = new MemoriesResDto(validMemories[1], petId)
+            } else if (validMemories.length > 2) {
                 let firstTableContentsIndex = await getRandomNumber(validMemories.length)
                 let secondTableContentsIndex = await getRandomNumber(validMemories.length)
 
-                if(firstTableContentsIndex == secondTableContentsIndex){
-                    while(firstTableContentsIndex == secondTableContentsIndex){
-                        if(secondTableContentsIndex == firstTableContentsIndex){
+                if (firstTableContentsIndex == secondTableContentsIndex) {
+                    while (firstTableContentsIndex == secondTableContentsIndex) {
+                        if (secondTableContentsIndex == firstTableContentsIndex) {
                             secondTableContentsIndex = await getRandomNumber(validMemories.length)
-                        }else{
+                        } else {
                             break;
                         }
                     }
                 }
-                memoriesResDto[0] = new MemoriesResDto(validMemories[firstTableContentsIndex],petId)
-                memoriesResDto[1] = new MemoriesResDto(validMemories[secondTableContentsIndex],petId)
-            }else if(validMemories.length == 1){
-                memoriesResDto[0] = new MemoriesResDto(validMemories[0],petId)
+                memoriesResDto[0] = new MemoriesResDto(validMemories[firstTableContentsIndex], petId)
+                memoriesResDto[1] = new MemoriesResDto(validMemories[secondTableContentsIndex], petId)
+            } else if (validMemories.length == 1) {
+                memoriesResDto[0] = new MemoriesResDto(validMemories[0], petId)
             }
             rainbowMainPageResDto.setMemories(memoriesResDto)
 
@@ -82,23 +82,32 @@ module.exports = {
             throw error
         }
 
-        function getRandomNumber(max : number){
+        function getRandomNumber(max: number) {
             max = Math.floor(max);
-            return Math.floor(Math.random()*max);
+            return Math.floor(Math.random() * max);
         }
     },
 
-    selectPet : async() => {
-        try{
+    selectPet: async () => {
+        try {
             const findUser = await User.find().populate({
-                path : "pets"
+                path: "pets"
             })
-            const rainbowPetResDto = findUser[0].pets.map(pet => 
+            const rainbowPetResDto = findUser[0].pets.map(pet =>
                 new MyPetInfoResDto(pet))
 
-            console.log('pets : '+rainbowPetResDto)
             return rainbowPetResDto
-        }catch(err){
+        } catch (err) {
+            throw err
+        }
+    },
+
+    isRainbowPet: async (petId) => {
+        try {
+            const findPet = await Pet.findById(petId)
+            findPet.rainbow = true
+            await findPet.save()
+        } catch (err) {
             throw err
         }
     }

@@ -1,10 +1,6 @@
 import { IPetDiary } from "../../../interfaces/diary/IPetDiary";
 import { IHelp } from "../../../interfaces/etc/IHelp";
 import { IPet } from "../../../interfaces/pet/IPet";
-import { IFirstPartTableContents } from "../../../interfaces/tableContents/IFirstPartTableContents";
-import { IUser } from "../../../interfaces/user/IUser";
-import mongoose from "mongoose"
-import PetEmotions from "../../../models/diary/PetEmotions";
 import { IBook } from "../../../interfaces/book/IBook";
 
 export class RainbowMainPageResDto{
