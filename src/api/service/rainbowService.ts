@@ -11,6 +11,7 @@ import SecondPartTableContent from "../../models/tableContents/SecondPartTableCo
 import PetDiary from "../../models/diary/PetDiary"
 import PetEmotions from "../../models/diary/PetEmotions"
 import { TheBestMomentDiary } from "../../dto/rainbow/theBestMomentDto/TheBestMomentResDto"
+import { PetNameResDto } from "../../dto/rainbow/petDto/PetNameResDto"
 const dateMethod = require("../../modules/dateMethod")
 
 require("../../models/user/User")
@@ -222,6 +223,15 @@ module.exports = {
         }
     },
 
+    getPartingPetName: async (petId) => {
+        try{
+            const pet = await Pet.findById(petId)
+            return new PetNameResDto(pet)
+        }catch(err){
+            throw err
+        }
+    },
+
     postEpilogue: async (userId, data) => {
         try {
             const user = await User.findById(userId).populate({
@@ -245,7 +255,7 @@ module.exports = {
             await tableContents.firstPartTableContents.push(firstPartEpilogue)
 
             const isAlreadySecondPartTableContents = await SecondPartTableContent.find()//첫 반려동물이 무지개를 건넜는지 확인하기 위한 로직
-            
+
             //2부 목차 처음에 에필로그
             const secondPartEpilogue = new SecondPartTableContent({
                 chapter: 0,

@@ -58,6 +58,17 @@ module.exports = {
         }
     },
 
+    getPartingPetName: async (req, res) => {
+        const { petId } = req.params
+        try {
+            const result = await rainbowService.getPartingPetName(petId)
+            return res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_GET_PARTING_PETNAME, result, result))
+        } catch (err) {
+            console.error(err)
+            return res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, responseMessage.INTERNAL_SERVER_ERROR))
+        }
+    },
+
     postEpilogue: async (req, res) => {
         const { userId, petId } = req.params
         const data = req.body
