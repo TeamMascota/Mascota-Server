@@ -5,9 +5,12 @@ import { MyPetInfoResDto } from "../../dto/rainbow/petDto/RainbowPetResDto"
 import Pet from "../../models/pet/Pet"
 import { IPet } from "../../interfaces/pet/IPet"
 import { PartingRainbowResDto } from "../../dto/rainbow/partingDto/PartingRainbowResDto"
-import { ReadyPartingAndStartRecordResDto,BookInfoResDto } from "../../dto/rainbow/readyPartingAndStartRecordDto/readyPartingAndStartRecordResDto"
+import { ReadyPartingAndStartRecordResDto, BookInfoResDto } from "../../dto/rainbow/readyPartingAndStartRecordDto/ReadyPartingAndStartRecordResDto"
 import FirstPartTableContents from "../../models/tableContents/FirstPartTableContents"
 import SecondPartTableContent from "../../models/tableContents/SecondPartTableContent"
+import PetDiary from "../../models/diary/PetDiary"
+import PetEmotions from "../../models/diary/PetEmotions"
+import { TheBestMomentDiary } from "../../dto/rainbow/theBestMomentDto/TheBestMomentResDto"
 const dateMethod = require("../../modules/dateMethod")
 
 require("../../models/user/User")
@@ -43,7 +46,7 @@ module.exports = {
             })
 
             const isRainbowPet = await isRainbow(findUser.pets)
-            const rainbowButtonCheck = await rainbowCheck(findUser.pets) 
+            const rainbowButtonCheck = await rainbowCheck(findUser.pets)
             const rainbowMainPageResDto = new RainbowMainPageResDto(findUser.book, isRainbowPet, rainbowButtonCheck)
             const firstPartTableContents = findUser.book.tableContents.firstPartTableContents
 
@@ -94,19 +97,19 @@ module.exports = {
             max = Math.floor(max);
             return Math.floor(Math.random() * max);
         }
-        function isRainbow(pets : IPet[]){
+        function isRainbow(pets: IPet[]) {
             let rainbow = false
-            pets.forEach(pet =>{
-                if(pet.rainbow === true){
+            pets.forEach(pet => {
+                if (pet.rainbow === true) {
                     rainbow = true
                 }
             })
             return rainbow
         }
-        function rainbowCheck(pets : IPet[]){
+        function rainbowCheck(pets: IPet[]) {
             let check = true
-            pets.forEach(pet=>{
-                if(pet.rainbow === false){
+            pets.forEach(pet => {
+                if (pet.rainbow === false) {
                     check = false
                 }
             })
@@ -131,13 +134,13 @@ module.exports = {
     setPartingRainbowPet: async (petId) => {
         try {
             const findPet = await Pet.findById(petId).populate({
-                path : "user",
-                populate : {
-                    path : "book",
-                    populate : {
-                        path : "tableContents",
-                        populate : {
-                            path : "firstPartTableContents"
+                path: "user",
+                populate: {
+                    path: "book",
+                    populate: {
+                        path: "tableContents",
+                        populate: {
+                            path: "firstPartTableContents"
                         }
                     }
                 }
@@ -149,22 +152,22 @@ module.exports = {
             user.book.tableContents.firstPartTableContents.forEach(tableContent =>
                 diaryCount += tableContent.petDiary.length)
 
-            return new PartingRainbowResDto(diaryCount,findPet.name)
+            return new PartingRainbowResDto(diaryCount, findPet.name)
         } catch (err) {
             throw err
         }
     },
 
-    getReadyPartingPetComment: async(petId) =>{
-        try{
+    getReadyPartingPetComment: async (petId) => {
+        try {
             const pet = await Pet.findById(petId).populate({
-                path : "user",
-                populate : {
-                    path : "book",
-                    populate : {
-                        path : "tableContents",
-                        populate : {
-                            path : "firstPartTableContents"
+                path: "user",
+                populate: {
+                    path: "book",
+                    populate: {
+                        path: "tableContents",
+                        populate: {
+                            path: "firstPartTableContents"
                         }
                     }
                 }
@@ -180,27 +183,53 @@ module.exports = {
             const dayTogether = await dateMethod.getElapsedDay(startDate)
 
             return new ReadyPartingAndStartRecordResDto(diaryCount, dayTogether, bookInfo)
-        }catch(err){
+        } catch (err) {
             throw err
         }
     },
 
-    getTheBestMoment: async(userId, petId)=>{
-        try{
+    getTheBestMoment: async (userId, petId) => {
+        try {
+            const loveDiary = await PetEmotions.find({ "feeling": { $eq: 1 } }).select("petDiary").populate("petDiary").map(emotion => emotion.petDiary)
+            const joyDiary = await PetEmotions.find({ "feeling": { $eq: 2 } }).select("petDiary").populate("petDiary").map(emotion => emotion.petDiary)
+            const normalDiary = await PetEmotions.find({ "feeling": { $eq: 3 } }).select("petDiary").populate("petDiary").map(emotion => emotion.petDiary)
+            const blackBileDiary = await PetEmotions.find({ "feeling": { $eq: 4 } }).select("petDiary").populate("petDiary").map(emotion => emotion.petDiary)
+            const angryDiary = await PetEmotions.find({ "feeling": { $eq: 5 } }).select("petDiary").populate("petDiary").map(emotion => emotion.petDiary)
+            const boredDiary = await PetEmotions.find({ "feeling": { $eq: 6 } }).select("petDiary").populate("petDiary").map(emotion => emotion.petDiary)
 
-        }catch(err){
+            console.log('loveDiary : ' + loveDiary)
+            console.log('joyDiary : ' + joyDiary)
+            console.log('normalDiary : ' + normalDiary)
+            console.log('blackBileDiary : ' + blackBileDiary)
+            console.log('angryDiary : ' + angryDiary)
+            console.log('boredDiary : ' + boredDiary)
+
+        } catch (err) {
             throw err
+        }
+
+        function getPositiveRadomDiary(diaries: []) {
+            const diaryLength = diaries.length
+            const theBestMomentDiaries = []
+            if (diaryLength < 8) {
+                for (let i = 0; i < diaryLength; i++) {
+                    theBestMomentDiaries.push(new TheBestMomentDiary(diaries))
+                }
+            }
+        }
+        function getNagativeRadonDiary(diaries: []) {
+
         }
     },
 
-    postEpilogue: async(userId,data)=>{
-        try{
+    postEpilogue: async (userId, data) => {
+        try {
             const user = await User.findById(userId).populate({
-                path : "book",
-                populate : ({
-                    path : "tableContents",
-                    populate : ({
-                        path : "firstPartTableContents secondPartTableContents"
+                path: "book",
+                populate: ({
+                    path: "tableContents",
+                    populate: ({
+                        path: "firstPartTableContents secondPartTableContents"
                     })
                 })
             })
@@ -208,37 +237,43 @@ module.exports = {
 
             //1부 목차 마지막에 에필로그
             const firstPartEpilogue = new FirstPartTableContents({
-                chapter : -1,
-                title : "작가의 말",
-                contents : data.contents
-            }) 
+                chapter: -1,
+                title: data.title,
+                contents: data.contents
+            })
             await firstPartEpilogue.save()
             await tableContents.firstPartTableContents.push(firstPartEpilogue)
 
+            const isAlreadySecondPartTableContents = await SecondPartTableContent.find()//첫 반려동물이 무지개를 건넜는지 확인하기 위한 로직
+            
             //2부 목차 처음에 에필로그
             const secondPartEpilogue = new SecondPartTableContent({
-                chapter : 0,
-                title : "작가의 말",
-                contents : data.contents
+                chapter: 0,
+                title: data.title,
+                contents: data.contents
             })
-            await secondPartEpilogue.save()
-            await tableContents.secondPartTableContents.push(secondPartEpilogue)
+            const saveSecondPartEpiogue = await secondPartEpilogue.save()
+            await tableContents.secondPartTableContents.unshift(saveSecondPartEpiogue)
 
-            const season = ["봄","여름","가을","겨울"]
-            for(let i = 0;i<4;i++){
-                let chapter = 1
-                const dummySecondPartTableContents = new SecondPartTableContent({
-                    chapter,
-                    title : `${user.book.author}의 ${season[i]}`
-                })
-                await dummySecondPartTableContents.save()
-                await tableContents.secondPartTableContents.push(dummySecondPartTableContents)
-                chapter = chapter+1
+            console.log('2부 목차 길이!!!!!!!!!! : '+isAlreadySecondPartTableContents.length)
+            if (isAlreadySecondPartTableContents.length < 1) {
+                console.log('로직 돌아가나??')
+                const season = ["봄", "여름", "가을", "겨울"]
+                for (let i = 0; i < 4; i++) {
+                    let chapter = 1
+                    const dummySecondPartTableContents = new SecondPartTableContent({
+                        chapter,
+                        title: `${user.book.author}의 ${season[i]}`
+                    })
+                    const saveSecondPartEpiogue = await dummySecondPartTableContents.save()
+                    await tableContents.secondPartTableContents.push(saveSecondPartEpiogue)
+                    chapter = chapter + 1
+                }
             }
-            const test = await tableContents.save()
+            await tableContents.save()
 
             return user
-        }catch(err){
+        } catch (err) {
             throw err
         }
     }
