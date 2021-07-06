@@ -255,9 +255,7 @@ module.exports = {
             const saveSecondPartEpiogue = await secondPartEpilogue.save()
             await tableContents.secondPartTableContents.unshift(saveSecondPartEpiogue)
 
-            console.log('2부 목차 길이!!!!!!!!!! : '+isAlreadySecondPartTableContents.length)
             if (isAlreadySecondPartTableContents.length < 1) {
-                console.log('로직 돌아가나??')
                 const season = ["봄", "여름", "가을", "겨울"]
                 for (let i = 0; i < 4; i++) {
                     let chapter = 1
