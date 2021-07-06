@@ -60,7 +60,7 @@ module.exports = {
         const { userId, petId } = req.params
         const data = req.body
         try {
-            await rainbowService.postEpilogue(userId,petId,data)
+            await rainbowService.postEpilogue(userId,data)
             const result = await rainbowService.getMainPage(userId, petId)
             res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_POST_EPILOGUE, result))
         } catch (err) {

@@ -43,8 +43,8 @@ module.exports = {
             })
 
             const isRainbowPet = await isRainbow(findUser.pets)
-            console.log('######## : '+isRainbowPet)
-            const rainbowMainPageResDto = new RainbowMainPageResDto(findUser.book, isRainbowPet)
+            const rainbowButtonCheck = await rainbowCheck(findUser.pets) 
+            const rainbowMainPageResDto = new RainbowMainPageResDto(findUser.book, isRainbowPet, rainbowButtonCheck)
             const firstPartTableContents = findUser.book.tableContents.firstPartTableContents
 
             const validMemories = firstPartTableContents.filter(tableContents =>
@@ -90,7 +90,7 @@ module.exports = {
             throw error
         }
 
-        async function getRandomNumber(max: number) {
+        function getRandomNumber(max: number) {
             max = Math.floor(max);
             return Math.floor(Math.random() * max);
         }
@@ -102,6 +102,15 @@ module.exports = {
                 }
             })
             return rainbow
+        }
+        function rainbowCheck(pets : IPet[]){
+            let check = true
+            pets.forEach(pet=>{
+                if(pet.rainbow === false){
+                    check = false
+                }
+            })
+            return check
         }
     },
 
@@ -176,7 +185,7 @@ module.exports = {
         }
     },
 
-    postEpilogue: async(userId,petId,data)=>{
+    postEpilogue: async(userId,data)=>{
         try{
             const user = await User.findById(userId).populate({
                 path : "book",
@@ -189,15 +198,11 @@ module.exports = {
             })
             const tableContents = user.book.tableContents
 
-            console.log('user : '+tableContents)
-            console.log('first : '+user.book.tableContents.firstPartTableContents)
-            console.log('second : '+user.book.tableContents.secondPartTableContents)
-
             //1부 목차 마지막에 에필로그
             const firstPartEpilogue = new FirstPartTableContents({
                 chapter : -1,
                 title : "작가의 말",
-                contents : data.content
+                contents : data.contents
             }) 
             await firstPartEpilogue.save()
             await tableContents.firstPartTableContents.push(firstPartEpilogue)
@@ -206,7 +211,7 @@ module.exports = {
             const secondPartEpilogue = new SecondPartTableContent({
                 chapter : 0,
                 title : "작가의 말",
-                contents : data.content
+                contents : data.contents
             })
             await secondPartEpilogue.save()
             await tableContents.secondPartTableContents.push(secondPartEpilogue)
@@ -223,7 +228,6 @@ module.exports = {
                 chapter = chapter+1
             }
             const test = await tableContents.save()
-            console.log('!!!!!!!!!!!!!!!! : '+test)
 
             return user
         }catch(err){
