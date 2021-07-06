@@ -1,6 +1,6 @@
 import User from "../../models/user/User"
 import Pet from "../../models/pet/Pet"
-import { RainbowMainPageResDto, MemoriesResDto, HelpResDto } from "../../dto/rainbow/mainPageDto/rainbowMainPageResDto"
+import { RainbowMainPageResDto, MemoriesResDto, HelpResDto } from "../../dto/rainbow/mainPageDto/RainbowMainPageResDto"
 import Help from "../../models/etc/Help"
 
 require("../../models/user/User")

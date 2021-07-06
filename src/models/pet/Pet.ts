@@ -7,11 +7,11 @@ const PetSchema: Schema<IPetDocument> = new mongoose.Schema({
     name: { type: String },
     kind: { type: Number },
     gender: { type: Number },
-    imgs: [
+    imgs: 
         {
             type: String
         }
-    ],
+    ,
     user: {
         type: mongoose.SchemaTypes.ObjectId, ref: "User"
     },
