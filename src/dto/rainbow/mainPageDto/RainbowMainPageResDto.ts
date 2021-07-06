@@ -11,8 +11,9 @@ export class RainbowMainPageResDto{
         help : []
     }
 
-    constructor(book : IBook){
-        this.rainbowMainPage.title = book.title//작가와 무지개다리를 건넌 동물의 이름 합친거
+    constructor(book : IBook,isRainbowPet : Boolean){
+        console.log('$$$$$ : '+isRainbowPet)
+        this.rainbowMainPage.title = isRainbowPet ? "우리들의 무지개" : "무지개 준비하기"//작가와 무지개다리를 건넌 동물의 이름 합친거
         this.rainbowMainPage.bookImg = book.imgs   //책 이미지에서 맨앞에?
     }
 

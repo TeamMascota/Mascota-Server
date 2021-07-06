@@ -3,6 +3,7 @@ import { RainbowMainPageResDto, MemoriesResDto, HelpResDto } from "../../dto/rai
 import Help from "../../models/etc/Help"
 import { MyPetInfoResDto } from "../../dto/rainbow/petDto/RainbowPetResDto"
 import Pet from "../../models/pet/Pet"
+import { IPet } from "../../interfaces/pet/IPet"
 import { PartingRainbowResDto } from "../../dto/rainbow/partingDto/PartingRainbowResDto"
 import { ReadyPartingAndStartRecordResDto,BookInfoResDto } from "../../dto/rainbow/readyPartingAndStartRecordDto/readyPartingAndStartRecordResDto"
 import FirstPartTableContents from "../../models/tableContents/FirstPartTableContents"
@@ -41,7 +42,9 @@ module.exports = {
                 }
             })
 
-            const rainbowMainPageResDto = new RainbowMainPageResDto(findUser.book)
+            const isRainbowPet = await isRainbow(findUser.pets)
+            console.log('######## : '+isRainbowPet)
+            const rainbowMainPageResDto = new RainbowMainPageResDto(findUser.book, isRainbowPet)
             const firstPartTableContents = findUser.book.tableContents.firstPartTableContents
 
             const validMemories = firstPartTableContents.filter(tableContents =>
@@ -87,9 +90,18 @@ module.exports = {
             throw error
         }
 
-        function getRandomNumber(max: number) {
+        async function getRandomNumber(max: number) {
             max = Math.floor(max);
             return Math.floor(Math.random() * max);
+        }
+        function isRainbow(pets : IPet[]){
+            let rainbow = false
+            pets.forEach(pet =>{
+                if(pet.rainbow === true){
+                    rainbow = true
+                }
+            })
+            return rainbow
         }
     },
 
