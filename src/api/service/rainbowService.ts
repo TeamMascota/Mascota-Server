@@ -5,6 +5,8 @@ import { MyPetInfoResDto } from "../../dto/rainbow/petDto/RainbowPetResDto"
 import Pet from "../../models/pet/Pet"
 import { PartingRainbowResDto } from "../../dto/rainbow/partingDto/PartingRainbowResDto"
 import { ReadyPartingAndStartRecordResDto,BookInfoResDto } from "../../dto/rainbow/readyPartingAndStartRecordDto/readyPartingAndStartRecordResDto"
+import FirstPartTableContents from "../../models/tableContents/FirstPartTableContents"
+import SecondPartTableContent from "../../models/tableContents/SecondPartTableContent"
 const dateMethod = require("../../modules/dateMethod")
 
 require("../../models/user/User")
@@ -155,8 +157,63 @@ module.exports = {
 
             const startDate = pet.startDate
             const dayTogether = await dateMethod.getElapsedDay(startDate)
-            
+
             return new ReadyPartingAndStartRecordResDto(diaryCount, dayTogether, bookInfo)
+        }catch(err){
+            throw err
+        }
+    },
+
+    postEpilogue: async(userId,petId,data)=>{
+        try{
+            const user = await User.findById(userId).populate({
+                path : "book",
+                populate : ({
+                    path : "tableContents",
+                    populate : ({
+                        path : "firstPartTableContents secondPartTableContents"
+                    })
+                })
+            })
+            const tableContents = user.book.tableContents
+
+            console.log('user : '+tableContents)
+            console.log('first : '+user.book.tableContents.firstPartTableContents)
+            console.log('second : '+user.book.tableContents.secondPartTableContents)
+
+            //1부 목차 마지막에 에필로그
+            const firstPartEpilogue = new FirstPartTableContents({
+                chapter : -1,
+                title : "작가의 말",
+                contents : data.content
+            }) 
+            await firstPartEpilogue.save()
+            await tableContents.firstPartTableContents.push(firstPartEpilogue)
+
+            //2부 목차 처음에 에필로그
+            const secondPartEpilogue = new SecondPartTableContent({
+                chapter : 0,
+                title : "작가의 말",
+                contents : data.content
+            })
+            await secondPartEpilogue.save()
+            await tableContents.secondPartTableContents.push(secondPartEpilogue)
+
+            const season = ["봄","여름","가을","겨울"]
+            for(let i = 0;i<4;i++){
+                let chapter = 1
+                const dummySecondPartTableContents = new SecondPartTableContent({
+                    chapter,
+                    title : `${user.book.author}의 ${season[i]}`
+                })
+                await dummySecondPartTableContents.save()
+                await tableContents.secondPartTableContents.push(dummySecondPartTableContents)
+                chapter = chapter+1
+            }
+            const test = await tableContents.save()
+            console.log('!!!!!!!!!!!!!!!! : '+test)
+
+            return user
         }catch(err){
             throw err
         }

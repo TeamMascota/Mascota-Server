@@ -45,5 +45,27 @@ module.exports = {
             console.error(err)
             return res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, responseMessage.INTERNAL_SERVER_ERROR))
         }
+    },
+
+    theBestMoment: async (req, res) => {   //보류 무지개 로직 제일 마지막에 구현
+        try {
+
+        } catch (err) {
+            console.error(err)
+            return res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, responseMessage.INTERNAL_SERVER_ERROR))
+        }
+    },
+
+    postEpilogue: async (req, res) => {
+        const { userId, petId } = req.params
+        const data = req.body
+        try {
+            await rainbowService.postEpilogue(userId,petId,data)
+            const result = await rainbowService.getMainPage(userId, petId)
+            res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_POST_EPILOGUE, result))
+        } catch (err) {
+            console.error(err)
+            return res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, responseMessage.INTERNAL_SERVER_ERROR))
+        }
     }
 }
