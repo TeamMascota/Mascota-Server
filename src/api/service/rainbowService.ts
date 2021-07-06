@@ -185,6 +185,14 @@ module.exports = {
         }
     },
 
+    getTheBestMoment: async(userId, petId)=>{
+        try{
+
+        }catch(err){
+            throw err
+        }
+    },
+
     postEpilogue: async(userId,data)=>{
         try{
             const user = await User.findById(userId).populate({
