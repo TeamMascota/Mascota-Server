@@ -2,13 +2,15 @@ import User from "../../models/user/User"
 import Book from "../../models/book/Book"
 import TableContents from "../../models/tableContents/TableContents"
 import FirstPartTableContents from "../../models/tableContents/FirstPartTableContents"
-import PetDiary from "../../models/diary/PetDiary"
+import Pet from "../../models/pet/Pet"
 import { response } from "express"
+import PetDiary from "../../models/diary/PetDiary"
+import PetEmotions from "../../models/diary/PetEmotions"
 require("../../models/user/User")
 require("../../models/book/Book")
+require("../../models/pet/Pet")
 require('../../models/tableContents/TableContents')
 require('../../models/tableContents/FirstPartTableContents')
-require('../../models/diary/PetDiary')
 const util = require('../../modules/util')
 const responseMessage = require('../../modules/responseMessage')
 const statusCode = require('../../modules/statusCode')
@@ -18,27 +20,20 @@ module.exports = {
         try {
             // add book info
             let book = await new Book();
-            book=await Book.findById(bookData._id);
+            book = await Book.findById(bookData._id);
             book.title = await bookData.title;
             book.imgs = await bookData.image;
-            book.author= await bookData.userName;
+            book.author = await bookData.userName;
 
             //add tableContents info
             let tc = await new TableContents();
-            let tempPetDiary= await new PetDiary({
+            let ftc = await new FirstPartTableContents({
+                chapter: 0,
                 title: bookData.prologueTitle,
                 contents: bookData.prologueContents
             })
-            let ftc =await new FirstPartTableContents({
-                chapter: 0,
-                title:"프롤로그"
-                // title: bookData.prologueTitle,
-                // contents: bookData.prologueContents
-            })
 
-            await ftc.setPetDiary(tempPetDiary)
             await tc.setFirstPartTableContents(ftc);
-            await tempPetDiary.setTableContents(tc);
             await book.setTableContents(tc);
             //save db
             await book.save()
@@ -47,7 +42,46 @@ module.exports = {
             //error handling
         } catch (err) {
             console.log(err)
-            throw { statusCode: statusCode.BAD_REQUEST, responseMessage: responseMessage.NO_BOOK}
+            throw { statusCode: statusCode.BAD_REQUEST, responseMessage: responseMessage.NO_BOOK }
         }
     },
+    postPetDiary: async(diaryData)=>{
+        const writeDate= new Date(diaryData.date)
+        writeDate.setDate(writeDate.getDate() + 1);
+       // console.log(FirstPartTableContents.findById(diaryData._id))
+
+        let newPetDiary=new PetDiary({
+            tableContents:diaryData._id,
+           //episode:FirstPartTableContents.findById(diaryData._id).length, 이부분 수정하기
+            date:writeDate,
+            imgs:diaryData.diaryImages,
+            title:diaryData.title,
+            contents:diaryData.contents
+           
+        })
+        try{
+            //save petinfo
+            let petN=diaryData.character.length
+            for (let i=0;i<petN;i++){
+            const petData=await Pet.findById(diaryData.character[0]._id).populate('_id')
+            newPetDiary.setPet(petData)
+            //save emotions
+            const petEmotion=new PetEmotions({
+                pet:diaryData.character[0]._id,
+                feeling : diaryData.character[0].feeling
+            })
+            newPetDiary.setPetEmotions(petEmotion)
+        }
+        
+            console.log(newPetDiary)
+
+            //     let findPet=new Pet()
+            //     findPet=Pet.findById(diaryData.character[i]._id)
+            //     newPetDiary.setPet(findPet)
+            // }
+           //console.log(petData)
+        }catch(err){
+            console.log(err)
+        }
+    }
 }

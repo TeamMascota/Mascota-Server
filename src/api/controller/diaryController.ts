@@ -16,6 +16,19 @@ module.exports = {
             }
             return res.status(err.statusCode).send(util.fail(err.statusCode, err.responseMessage))
         }
+    },
+    postPetDiary: async (req, res) => {
+        const diaryData = req.body;
+        try {
+            const result = await diaryService.postPetDiary(diaryData)
+            res.status(statusCode.OK).send(util.success(statusCode.OK, result, ""))
+        } catch (err) {
+            console.error(err)
+            if (err.statusCode == null) {
+                err.statusCode = statusCode.INTERNAL_SERVER_ERROR;
+                err.responseMessage = responseMessage.INTERNAL_SERVER_ERROR;
+            }
+            return res.status(err.statusCode).send(util.fail(err.statusCode, err.responseMessage))
+        }
     }
 }
-export { };
