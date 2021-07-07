@@ -13,6 +13,10 @@ module.exports = {
     MISS_MATCH_PW: "비밀번호가 일치하지 않습니다",
     MISS_MATCH: "아이디나 비밀번호가 일치하지 않습니다.",
 
+    /*1부(by.sol) */
+    NO_BOOK:"존재하지 않는 책 id입니다.",
+
+
     /** 1.5부 무지개다리 (by 현종) */
     SUCCESS_GET_RAINBOW_MAIN_PAGE : "무지개 메인뷰 불러오기 성공",
     SUCCESS_GET_RAINBOW_PET : "무지개 건넌 동물 불러오기 성공",
