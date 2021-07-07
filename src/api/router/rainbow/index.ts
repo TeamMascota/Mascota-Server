@@ -7,7 +7,7 @@ router.get('/pet',rainbowController.selectRainbowPet)   //1.5부 무지개 반�
 router.get('/pet/:petId',rainbowController.setRainbowPet)   //1.5부 무지개 반려동물 선택 적용 & 이별하는 무지개 다리 멘트
 router.get('/record/:petId',rainbowController.getReadyPartingPetComment)    //1.5부 이별을 준비하는 작가의 기록 시작 멘트 불러오기
 router.get('/moment/:userId/:petId',rainbowController.theBestMoment)    //1.5부 무지개 최고의 순간
-router.get('/parting/pet/:petId',rainbowController.getPartingPetName)
+router.get('/parting/pet/:petId',rainbowController.getPartingPetName)   //1.5부 반려동물 이름 반환
 router.post('/epilogue/:userId/:petId',rainbowController.postEpilogue)  //1.5부 작가의 말 작성
 
 module.exports = router;

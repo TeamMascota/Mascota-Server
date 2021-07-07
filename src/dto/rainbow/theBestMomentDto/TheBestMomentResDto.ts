@@ -1,45 +1,45 @@
 import { IPetDiary } from "../../../interfaces/diary/IPetDiary"
+import { IComments } from "../../../interfaces/etc/IComments"
+const dateMethod = require("../../../modules/dateMethod")
 
 export class TheBestMomentsResDto{
-    theBestMoments : []
+    private theBestMoments = []
 
     constructor(){}
 
-
-}
-
-export class IllegalityTheBestMoment{   //[우울,화,심심]
-    blackBile : TheBestMoment
-    angry : TheBestMoment
-    bored : TheBestMoment
-
-    constructor(){
-        this.blackBile
-        this.angry
-        this.bored
+    setTheBestMoment(theBestMoment : TheBestMoment){
+        this.theBestMoments.push(theBestMoment)
     }
 }
 
 export class TheBestMoment{ //[사랑],[기쁨],[보통]
-    comment : null
-    feeling : null
-    diaries : []
+    private comment = null
+    private feeling = null
+    private diaries = []
 
-    constructor(){
-        this.comment
-        this.feeling
-        this.diaries
+    constructor(commentPerFeeling : IComments, theBestMomentDiary : TheBestMomentDiary[]){
+        this.comment = commentPerFeeling.comments
+        this.feeling = commentPerFeeling.feeling
+        this.diaries = theBestMomentDiary
     }
 }
 
 export class TheBestMomentDiary{
-    chapter : number
-    episode : number
-    title : string
-    contents : string
-    date : string
+    private chapter = null
+    private episode = null
+    private title = null
+    private contents = null
+    private date = null
 
-    constructor(diaryPerMood : IPetDiary[]){
-        
+    constructor(diaryPerFeeling : IPetDiary){
+        this.init(diaryPerFeeling)
+    }
+
+    async init(diaryPerFeeling : IPetDiary){
+        this.chapter = diaryPerFeeling.tableContents.chapter
+        this.episode = diaryPerFeeling.episode
+        this.title = diaryPerFeeling.title
+        this.contents = diaryPerFeeling.contents
+        this.date = await dateMethod.toStringByFormatting(diaryPerFeeling.date)
     }
 }

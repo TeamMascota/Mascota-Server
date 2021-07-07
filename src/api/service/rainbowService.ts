@@ -10,8 +10,10 @@ import FirstPartTableContents from "../../models/tableContents/FirstPartTableCon
 import SecondPartTableContent from "../../models/tableContents/SecondPartTableContent"
 import PetDiary from "../../models/diary/PetDiary"
 import PetEmotions from "../../models/diary/PetEmotions"
-import { TheBestMomentDiary } from "../../dto/rainbow/theBestMomentDto/TheBestMomentResDto"
+import { TheBestMoment, TheBestMomentDiary, TheBestMomentsResDto } from "../../dto/rainbow/theBestMomentDto/TheBestMomentResDto"
 import { PetNameResDto } from "../../dto/rainbow/petDto/PetNameResDto"
+import { IPetDiary } from "../../interfaces/diary/IPetDiary"
+import Comments from "../../models/etc/Comments"
 const dateMethod = require("../../modules/dateMethod")
 
 require("../../models/user/User")
@@ -191,43 +193,117 @@ module.exports = {
 
     getTheBestMoment: async (userId, petId) => {
         try {
-            const loveDiary = await PetEmotions.find({ "feeling": { $eq: 1 } }).select("petDiary").populate("petDiary").map(emotion => emotion.petDiary)
-            const joyDiary = await PetEmotions.find({ "feeling": { $eq: 2 } }).select("petDiary").populate("petDiary").map(emotion => emotion.petDiary)
-            const normalDiary = await PetEmotions.find({ "feeling": { $eq: 3 } }).select("petDiary").populate("petDiary").map(emotion => emotion.petDiary)
-            const blackBileDiary = await PetEmotions.find({ "feeling": { $eq: 4 } }).select("petDiary").populate("petDiary").map(emotion => emotion.petDiary)
-            const angryDiary = await PetEmotions.find({ "feeling": { $eq: 5 } }).select("petDiary").populate("petDiary").map(emotion => emotion.petDiary)
-            const boredDiary = await PetEmotions.find({ "feeling": { $eq: 6 } }).select("petDiary").populate("petDiary").map(emotion => emotion.petDiary)
+            const diaryPerFeeling = []
+            for (let i = 0; i < 6; i++) {
+                console.log(i)
+                const diaries = (await PetEmotions.find({ "feeling": { $eq: i } }).select("petDiary").populate({ path: "petDiary", populate: ({ path: "tableContents" }) })).map(emotion => emotion.petDiary)
+                if (diaries.length < 1) {
+                    diaryPerFeeling.push(null)
+                } else {
+                    diaryPerFeeling.push(diaries)
+                }
+            }
+            // const loveDiary = (await PetEmotions.find({ "feeling": { $eq: 0 } }).select("petDiary").populate({path:"petDiary",populate:({path:"tableContents"})})).map(emotion => emotion.petDiary)
+            // const joyDiary = (await PetEmotions.find({ "feeling": { $eq: 1 } }).select("petDiary").populate({path:"petDiary",populate:({path:"tableContents"})})).map(emotion => emotion.petDiary)
+            // const normalDiary = (await PetEmotions.find({ "feeling": { $eq: 2 } }).select("petDiary").populate({path:"petDiary",populate:({path:"tableContents"})})).map(emotion => emotion.petDiary)
+            // const blackBileDiary = (await PetEmotions.find({ "feeling": { $eq: 3 } }).select("petDiary").populate({path:"petDiary",populate:({path:"tableContents"})})).map(emotion => emotion.petDiary)
+            // const angryDiary = (await PetEmotions.find({ "feeling": { $eq: 4 } }).select("petDiary").populate({path:"petDiary",populate:({path:"tableContents"})})).map(emotion => emotion.petDiary)
+            // const boredDiary = (await PetEmotions.find({ "feeling": { $eq: 5 } }).select("petDiary").populate({path:"petDiary",populate:({path:"tableContents"})})).map(emotion => emotion.petDiary)
 
-            console.log('loveDiary : ' + loveDiary)
-            console.log('joyDiary : ' + joyDiary)
-            console.log('normalDiary : ' + normalDiary)
-            console.log('blackBileDiary : ' + blackBileDiary)
-            console.log('angryDiary : ' + angryDiary)
-            console.log('boredDiary : ' + boredDiary)
+            // console.log('loveDiary : ' + loveDiary)
+            // console.log('joyDiary : ' + joyDiary)
+            // console.log('normalDiary : ' + normalDiary)
+            // console.log('blackBileDiary : ' + blackBileDiary)
+            // console.log('angryDiary : ' + angryDiary)
+            // console.log('boredDiary : ' + boredDiary)
 
+            //기분에 따른 멘트와 기분을 TheBestMoment에 넣는다
+            //TheBestMoment에 dirayPerFeeling을 각 인덱스 값(기분)에 맞게 diaries에 넣는다
+            // console.log('diaryPerFeeling : '+diaryPerFeeling)
+
+            const theBestMomentsResDto = new TheBestMomentsResDto()
+            for (let j = 0; j < 6; j++) {   //긍정3개, 부정3개
+                const commentPerFeeling = await Comments.findOne({ feeling: j, classification: 2 })
+                let theBestMoment = null
+                if(j <3){
+                    theBestMoment = new TheBestMoment(commentPerFeeling, getPositiveRadomDiary(diaryPerFeeling[j]))
+                }else{
+                    theBestMoment = new TheBestMoment(commentPerFeeling, getNegativeRandomDiary(diaryPerFeeling[j]))
+                }
+                theBestMomentsResDto.setTheBestMoment(theBestMoment)
+            }
+
+            return theBestMomentsResDto
         } catch (err) {
             throw err
         }
 
-        function getPositiveRadomDiary(diaries: []) {
+        //각 기분에 따른 일기들을 배열로 묶어서 보내줘야함
+        function getPositiveRadomDiary(diaries: IPetDiary[]) {
+            if(diaries === null) return null
             const diaryLength = diaries.length
             const theBestMomentDiaries = []
             if (diaryLength < 8) {
-                for (let i = 0; i < diaryLength; i++) {
-                    theBestMomentDiaries.push(new TheBestMomentDiary(diaries))
+                for (let i = 0; i < diaryLength; i++) { //가지고 있는 일기 갯수만큼만 넣는다
+                    theBestMomentDiaries.push(new TheBestMomentDiary(diaries[i]))
+                }
+                for(let j = 0;j<8-diaryLength;j++){ //남은 일기갯수(8-가지고 있는 일기수)만큼 null로 채워준다
+                    theBestMomentDiaries.push(null)
+                }
+            } else {
+                //8개 이상의 일기중 8개만 골라서 넣어준다.
+                const indexArray = []
+                while(indexArray.length < 8){
+                    let index = getRandomNumber(diaryLength)
+                    if(!indexArray.includes(index)){
+                        indexArray.push(index)
+                    }
+                }
+                for(let k = 0;k<8;k++){
+                    theBestMomentDiaries.push(new TheBestMomentDiary(diaries[indexArray[k]]))
                 }
             }
+            return theBestMomentDiaries
         }
-        function getNagativeRadonDiary(diaries: []) {
 
+        //부정 일기는 2개씩만
+        function getNegativeRandomDiary(diaries: IPetDiary[]) {
+            if(diaries === null ) return null
+            const diaryLength = diaries.length
+            const theBestMomentDiaries = []
+            if (diaryLength < 2) {
+                for (let i = 0; i < diaryLength; i++) {
+                    theBestMomentDiaries.push(new TheBestMomentDiary(diaries[i]))
+                }
+                for( let j = 0;j<2-diaryLength;j++){
+                    theBestMomentDiaries.push(null)
+                }
+            } else {
+                const indexArray = []
+                while(indexArray.length < 2){
+                    let index = getRandomNumber(diaryLength)
+                    if(!indexArray.includes(index)){
+                        indexArray.push(index)
+                    }
+                }
+                for(let k=0;k<2;k++){
+                    theBestMomentDiaries.push(new TheBestMomentDiary(diaries[indexArray[k]]))
+                }
+            }
+            return theBestMomentDiaries
+        }
+
+        function getRandomNumber(max: number) {
+            max = Math.floor(max);
+            return Math.floor(Math.random() * max);
         }
     },
 
     getPartingPetName: async (petId) => {
-        try{
+        try {
             const pet = await Pet.findById(petId)
             return new PetNameResDto(pet)
-        }catch(err){
+        } catch (err) {
             throw err
         }
     },
