@@ -10,7 +10,7 @@ import FirstPartTableContents from "../../models/tableContents/FirstPartTableCon
 import SecondPartTableContent from "../../models/tableContents/SecondPartTableContent"
 import PetDiary from "../../models/diary/PetDiary"
 import PetEmotions from "../../models/diary/PetEmotions"
-import { TheBestMoment, TheBestMomentDiary, TheBestMomentsResDto } from "../../dto/rainbow/theBestMomentDto/TheBestMomentResDto"
+import { TheBestMoment, TheBestMomentDiary, TheBestMomentsResDto, TheBestMomentPetInformation } from "../../dto/rainbow/theBestMomentDto/TheBestMomentResDto"
 import { PetNameResDto } from "../../dto/rainbow/petDto/PetNameResDto"
 import { IPetDiary } from "../../interfaces/diary/IPetDiary"
 import Comments from "../../models/etc/Comments"
@@ -161,12 +161,12 @@ module.exports = {
         }
     },
 
-    cancelPartingPet:async(petId)=>{
-        try{
+    cancelPartingPet: async (petId) => {
+        try {
             const findPet = await Pet.findById(petId)
             findPet.rainbow = false
             await findPet.save()
-        }catch(err){
+        } catch (err) {
             throw err
         }
     },
@@ -203,6 +203,9 @@ module.exports = {
 
     getTheBestMoment: async (userId, petId) => {
         try {
+            const pet = await Pet.findById(petId)
+            const TheBestMomentPetInfo = new TheBestMomentPetInformation(pet)
+
             const diaryPerFeeling = []
             for (let i = 0; i < 6; i++) {
                 console.log(i)
@@ -218,12 +221,13 @@ module.exports = {
             for (let j = 0; j < 6; j++) {   //긍정3개, 부정3개
                 const commentPerFeeling = await Comments.findOne({ feeling: j, classification: 2 })
                 let theBestMoment = null
-                if(j <3){
+                if (j < 3) {
                     theBestMoment = new TheBestMoment(commentPerFeeling, getPositiveRadomDiary(diaryPerFeeling[j]))
-                }else{
+                } else {
                     theBestMoment = new TheBestMoment(commentPerFeeling, getNegativeRandomDiary(diaryPerFeeling[j]))
                 }
                 theBestMomentsResDto.setTheBestMoment(theBestMoment)
+                theBestMomentsResDto.setTheBestMomentPetInfo(TheBestMomentPetInfo)
             }
 
             return theBestMomentsResDto
@@ -233,26 +237,26 @@ module.exports = {
 
         //각 기분에 따른 일기들을 배열로 묶어서 보내줘야함
         function getPositiveRadomDiary(diaries: IPetDiary[]) {
-            if(diaries === null) return null
+            if (diaries === null) return null
             const diaryLength = diaries.length
             const theBestMomentDiaries = []
             if (diaryLength < 8) {
                 for (let i = 0; i < diaryLength; i++) { //가지고 있는 일기 갯수만큼만 넣는다
                     theBestMomentDiaries.push(new TheBestMomentDiary(diaries[i]))
                 }
-                for(let j = 0;j<8-diaryLength;j++){ //남은 일기갯수(8-가지고 있는 일기수)만큼 null로 채워준다
+                for (let j = 0; j < 8 - diaryLength; j++) { //남은 일기갯수(8-가지고 있는 일기수)만큼 null로 채워준다
                     theBestMomentDiaries.push(null)
                 }
             } else {
                 //8개 이상의 일기중 8개만 골라서 넣어준다.
                 const indexArray = []
-                while(indexArray.length < 8){
+                while (indexArray.length < 8) {
                     let index = getRandomNumber(diaryLength)
-                    if(!indexArray.includes(index)){
+                    if (!indexArray.includes(index)) {
                         indexArray.push(index)
                     }
                 }
-                for(let k = 0;k<8;k++){
+                for (let k = 0; k < 8; k++) {
                     theBestMomentDiaries.push(new TheBestMomentDiary(diaries[indexArray[k]]))
                 }
             }
@@ -261,25 +265,25 @@ module.exports = {
 
         //부정 일기는 2개씩만
         function getNegativeRandomDiary(diaries: IPetDiary[]) {
-            if(diaries === null ) return null
+            if (diaries === null) return null
             const diaryLength = diaries.length
             const theBestMomentDiaries = []
             if (diaryLength < 2) {
                 for (let i = 0; i < diaryLength; i++) {
                     theBestMomentDiaries.push(new TheBestMomentDiary(diaries[i]))
                 }
-                for( let j = 0;j<2-diaryLength;j++){
+                for (let j = 0; j < 2 - diaryLength; j++) {
                     theBestMomentDiaries.push(null)
                 }
             } else {
                 const indexArray = []
-                while(indexArray.length < 2){
+                while (indexArray.length < 2) {
                     let index = getRandomNumber(diaryLength)
-                    if(!indexArray.includes(index)){
+                    if (!indexArray.includes(index)) {
                         indexArray.push(index)
                     }
                 }
-                for(let k=0;k<2;k++){
+                for (let k = 0; k < 2; k++) {
                     theBestMomentDiaries.push(new TheBestMomentDiary(diaries[indexArray[k]]))
                 }
             }

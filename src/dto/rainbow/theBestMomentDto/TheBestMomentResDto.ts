@@ -1,14 +1,30 @@
 import { IPetDiary } from "../../../interfaces/diary/IPetDiary"
 import { IComments } from "../../../interfaces/etc/IComments"
+import { IPet } from "../../../interfaces/pet/IPet"
 const dateMethod = require("../../../modules/dateMethod")
 
 export class TheBestMomentsResDto{
+    private pet = {}
     private theBestMoments = []
 
     constructor(){}
 
     setTheBestMoment(theBestMoment : TheBestMoment){
         this.theBestMoments.push(theBestMoment)
+    }
+    
+    setTheBestMomentPetInfo(petInfo : TheBestMomentPetInformation){
+        this.pet = petInfo
+    }
+}
+
+export class TheBestMomentPetInformation{
+    private name = null
+    private kind = null
+
+    constructor(pet : IPet){
+        this.name = pet.name
+        this.kind = pet.kind
     }
 }
 
