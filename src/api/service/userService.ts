@@ -2,6 +2,8 @@ import { Request, Response, NextFunction } from 'express'
 import User from '../../models/user/User'
 import Book from '../../models/book/Book'
 import Pet from '../../models/pet/Pet'
+import FirstPartTableContents from '../../models/tableContents/FirstPartTableContents'
+import TableContents from '../../models/tableContents/TableContents'
 import bcrypt from 'bcryptjs'
 import { check, validationResult } from "express-validator";
 const validator = require('validator');
@@ -40,6 +42,14 @@ module.exports = {
 
             //Create book object
             const book = new Book()
+
+            //Create tableContents object
+            const tableContents=new TableContents()
+
+            //Create firstPartTableContents object
+            const firstPart =new FirstPartTableContents()
+            tableContents.setFirstPartTableContents(firstPart)
+            book.setTableContents(tableContents)
             user.setBook(book);
 
             //db save
