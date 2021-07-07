@@ -14,6 +14,7 @@ import { TheBestMoment, TheBestMomentDiary, TheBestMomentsResDto, TheBestMomentP
 import { PetNameResDto } from "../../dto/rainbow/petDto/PetNameResDto"
 import { IPetDiary } from "../../interfaces/diary/IPetDiary"
 import Comments from "../../models/etc/Comments"
+import { TheBestMomentSubResDto } from "../../dto/rainbow/theBestMomentDto/TheBestMomentSubResDto"
 const dateMethod = require("../../modules/dateMethod")
 
 require("../../models/user/User")
@@ -355,6 +356,15 @@ module.exports = {
 
             return user
         } catch (err) {
+            throw err
+        }
+    },
+
+    getTheBestMomentSub:async (petId,theBestMoment) =>{
+        try{
+            const pet = await Pet.findById(petId)
+            return new TheBestMomentSubResDto(pet,theBestMoment)
+        }catch(err){
             throw err
         }
     }

@@ -10,5 +10,6 @@ router.get('/record/:petId',rainbowController.getReadyPartingPetComment)    //1.
 router.get('/moment/:userId/:petId',rainbowController.theBestMoment)    //1.5부 무지개 최고의 순간
 router.get('/parting/pet/:petId',rainbowController.getPartingPetName)   //1.5부 반려동물 이름 반환
 router.post('/epilogue/:userId/:petId',rainbowController.postEpilogue)  //1.5부 작가의 말 작성
+router.get('/moment/sub/:userId/:petId',rainbowController.theBestMomentSub) //1.5부 무지개 서브 홈
 
 module.exports = router;

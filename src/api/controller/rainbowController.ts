@@ -91,5 +91,17 @@ module.exports = {
             console.error(err)
             return res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, responseMessage.INTERNAL_SERVER_ERROR))
         }
+    },
+
+    theBestMomentSub: async(req,res)=>{
+        const {userId, petId} = req.params
+        try{
+            const theBestMoment = await rainbowService.getTheBestMoment(userId, petId)
+            const result = await rainbowService.getTheBestMomentSub(petId,theBestMoment)
+            res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_GET_RAINBOW_SUB_PAGE,result))
+        }catch(err){
+            console.error(err)
+            return res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, responseMessage.INTERNAL_SERVER_ERROR))
+        }
     }
 }
