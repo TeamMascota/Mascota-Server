@@ -1,12 +1,12 @@
 const util = require('../../modules/util')
 const responseMessage = require('../../modules/responseMessage')
 const statusCode = require('../../modules/statusCode')
-const bookService = require('../service/bookService')
+const diaryService = require('../service/diaryService')
 module.exports = {
     postPrologue: async (req, res) => {
         const bookData = req.body;
         try {
-            const result = await bookService.postPrologue(bookData)
+            const result = await diaryService.postPrologue(bookData)
             res.status(statusCode.OK).send(util.success(statusCode.OK, result, ""))
         } catch (err) {
             console.error(err)

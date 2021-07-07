@@ -2,11 +2,13 @@ import User from "../../models/user/User"
 import Book from "../../models/book/Book"
 import TableContents from "../../models/tableContents/TableContents"
 import FirstPartTableContents from "../../models/tableContents/FirstPartTableContents"
+import PetDiary from "../../models/diary/PetDiary"
 import { response } from "express"
 require("../../models/user/User")
 require("../../models/book/Book")
 require('../../models/tableContents/TableContents')
 require('../../models/tableContents/FirstPartTableContents')
+require('../../models/diary/PetDiary')
 const util = require('../../modules/util')
 const responseMessage = require('../../modules/responseMessage')
 const statusCode = require('../../modules/statusCode')
@@ -15,24 +17,31 @@ module.exports = {
     postPrologue: async (bookData) => {
         try {
             // add book info
-            let book = new Book();
+            let book = await new Book();
             book=await Book.findById(bookData._id);
-            book.title = bookData.title;
-            book.imgs = bookData.image;
-            book.author=bookData.userName;
+            book.title = await bookData.title;
+            book.imgs = await bookData.image;
+            book.author= await bookData.userName;
 
             //add tableContents info
-            let tc = new TableContents();
-            let ftc = new FirstPartTableContents({
-                chapter: 0,
+            let tc = await new TableContents();
+            let tempPetDiary= await new PetDiary({
                 title: bookData.prologueTitle,
                 contents: bookData.prologueContents
             })
-            tc.setFirstPartTableContents(ftc);
-            await book.setTableContents(tc);
+            let ftc =await new FirstPartTableContents({
+                chapter: 0,
+                title:"프롤로그"
+                // title: bookData.prologueTitle,
+                // contents: bookData.prologueContents
+            })
 
+            await ftc.setPetDiary(tempPetDiary)
+            await tc.setFirstPartTableContents(ftc);
+            await tempPetDiary.setTableContents(tc);
+            await book.setTableContents(tc);
             //save db
-            book.save()
+            await book.save()
             return responseMessage.SUCCESS_POST_PROLOGUE;
 
             //error handling
