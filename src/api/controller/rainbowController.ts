@@ -36,6 +36,17 @@ module.exports = {
         }
     },
 
+    cancelPartingPet: async(req,res)=>{
+        const petId = req.params.petId
+        try{
+            await rainbowService.cancelPartingPet(petId)
+            return res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_DELETE_PARTING_PET))
+        }catch(err){
+            console.error(err)
+            return res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, responseMessage.INTERNAL_SERVER_ERROR))
+        }
+    },
+
     getReadyPartingPetComment: async (req, res) => {
         const petId = req.params.petId
         try {

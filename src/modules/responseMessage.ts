@@ -17,6 +17,7 @@ module.exports = {
     SUCCESS_GET_RAINBOW_MAIN_PAGE : "무지개 메인뷰 불러오기 성공",
     SUCCESS_GET_RAINBOW_PET : "무지개 건넌 동물 불러오기 성공",
     SUCCESS_GET_PARTING_PET_COMMENT : "이별하는 무지개 다리 멘트 불러오기 성공",
+    SUCCESS_DELETE_PARTING_PET : "반려동물 이별 과정 취소 성공",
     SUCCESS_GET_READY_PARTING_PET_COMMENT : "이별에 준비하는 작가의 기록 시작 멘트 불러오기 성공",
     SUCCESS_GET_BEST_MOMENT : "최고의 순간 불러오기 성공",
     SUCCESS_GET_PARTING_PETNAME : "이별할 동물 이름 가져오기 성공",

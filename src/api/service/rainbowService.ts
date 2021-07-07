@@ -161,6 +161,16 @@ module.exports = {
         }
     },
 
+    cancelPartingPet:async(petId)=>{
+        try{
+            const findPet = await Pet.findById(petId)
+            findPet.rainbow = false
+            await findPet.save()
+        }catch(err){
+            throw err
+        }
+    },
+
     getReadyPartingPetComment: async (petId) => {
         try {
             const pet = await Pet.findById(petId).populate({
@@ -203,23 +213,6 @@ module.exports = {
                     diaryPerFeeling.push(diaries)
                 }
             }
-            // const loveDiary = (await PetEmotions.find({ "feeling": { $eq: 0 } }).select("petDiary").populate({path:"petDiary",populate:({path:"tableContents"})})).map(emotion => emotion.petDiary)
-            // const joyDiary = (await PetEmotions.find({ "feeling": { $eq: 1 } }).select("petDiary").populate({path:"petDiary",populate:({path:"tableContents"})})).map(emotion => emotion.petDiary)
-            // const normalDiary = (await PetEmotions.find({ "feeling": { $eq: 2 } }).select("petDiary").populate({path:"petDiary",populate:({path:"tableContents"})})).map(emotion => emotion.petDiary)
-            // const blackBileDiary = (await PetEmotions.find({ "feeling": { $eq: 3 } }).select("petDiary").populate({path:"petDiary",populate:({path:"tableContents"})})).map(emotion => emotion.petDiary)
-            // const angryDiary = (await PetEmotions.find({ "feeling": { $eq: 4 } }).select("petDiary").populate({path:"petDiary",populate:({path:"tableContents"})})).map(emotion => emotion.petDiary)
-            // const boredDiary = (await PetEmotions.find({ "feeling": { $eq: 5 } }).select("petDiary").populate({path:"petDiary",populate:({path:"tableContents"})})).map(emotion => emotion.petDiary)
-
-            // console.log('loveDiary : ' + loveDiary)
-            // console.log('joyDiary : ' + joyDiary)
-            // console.log('normalDiary : ' + normalDiary)
-            // console.log('blackBileDiary : ' + blackBileDiary)
-            // console.log('angryDiary : ' + angryDiary)
-            // console.log('boredDiary : ' + boredDiary)
-
-            //기분에 따른 멘트와 기분을 TheBestMoment에 넣는다
-            //TheBestMoment에 dirayPerFeeling을 각 인덱스 값(기분)에 맞게 diaries에 넣는다
-            // console.log('diaryPerFeeling : '+diaryPerFeeling)
 
             const theBestMomentsResDto = new TheBestMomentsResDto()
             for (let j = 0; j < 6; j++) {   //긍정3개, 부정3개
