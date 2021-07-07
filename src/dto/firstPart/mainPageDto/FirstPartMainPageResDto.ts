@@ -46,7 +46,6 @@ export class DiaryResDto {
 }
 
 export class TableContentsResDto {
-
     private chapterId;
     private chapter;
     private chapterName;
