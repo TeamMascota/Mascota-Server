@@ -15,6 +15,7 @@ module.exports = {
 
     /*1부(by.sol) */
     NO_BOOK:"존재하지 않는 책 id입니다.",
+    SUCCESS_GET_FIRSTPART_MAINPAGE:"1부 메인뷰 불러오기 성공",
 
 
     /** 1.5부 무지개다리 (by 현종) */
