@@ -8,8 +8,8 @@ export interface IPet extends Document {
     kind: Number;
     gender: Number;
     imgs: String;
-    user?: IUser;
-    book?: IBook;
+    user: IUser;
+    book: IBook;
     rainbow : Boolean;
     startDate: Date;
 }

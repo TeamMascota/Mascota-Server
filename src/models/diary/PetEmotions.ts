@@ -1,8 +1,8 @@
 import mongoose, { Schema } from "mongoose"
 import { IPetDiary } from "../../interfaces/diary/IPetDiary"
-import { IPetEmotions, IPetEmotionsDocument, IPetEmotionsModel } from "../../interfaces/diary/IPetEmotions"
+import { IPetEmotionsDocument, IPetEmotionsModel } from "../../interfaces/diary/IPetEmotions"
 
-const PetEmotionsSchema: Schema<IPetEmotions> = new mongoose.Schema({
+const PetEmotionsSchema: Schema<IPetEmotionsDocument> = new mongoose.Schema({
     petDiary: {
         type: mongoose.SchemaTypes.ObjectId,
         ref: "PetDiary"
@@ -11,7 +11,10 @@ const PetEmotionsSchema: Schema<IPetEmotions> = new mongoose.Schema({
         type: mongoose.SchemaTypes.ObjectId,
         ref: "Pet"
     },
-    feel: { type: Number }
+    feeling: { 
+        type: Number,
+        default : 0
+    }
 })
 
 PetEmotionsSchema.methods.setPetDiary = async function (petDiary: IPetDiary) {

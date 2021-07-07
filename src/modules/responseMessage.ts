@@ -24,6 +24,9 @@ module.exports = {
 
     /** 1.5부 무지개다리 (by 현종) */
     SUCCESS_GET_RAINBOW_MAIN_PAGE : "무지개 메인뷰 불러오기 성공",
+    SUCCESS_GET_RAINBOW_PET : "무지개 건넌 동물 불러오기 성공",
+    SUCCESS_GET_PARTING_PET_COMMENT : "이별하는 무지개 다리 멘트 불러오기 성공",
+    SUCCESS_GET_READY_PARTING_PET_COMMENT : "이별에 준비하는 작가의 기록 시작 멘트 불러오기 성공",
 
     /* 서버에러 */
     INTERNAL_SERVER_ERROR: "서버 내부 오류",

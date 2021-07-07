@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "ts-node src",
+    "dev": "nodemon -r ts-node src/index.ts",
     "build": "tsc && node dist",
     "test": "nodemon"
   },
@@ -22,5 +22,6 @@
     "express": "^4.17.1",
     "express-validator": "^6.12.0",
     "mongoose": "^5.13.0"
+    "nodemon": "^2.0.9"
   }
 }

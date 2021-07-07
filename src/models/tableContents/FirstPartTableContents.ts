@@ -1,10 +1,11 @@
 import mongoose, { Schema } from "mongoose"
-import { IFirstPartTableContents, IFirstPartTableContentsDocument, IFirstPartTableContentsModel } from "../../interfaces/tableContents/IFirstPartTableContents"
+import { IFirstPartTableContentsDocument, IFirstPartTableContentsModel } from "../../interfaces/tableContents/IFirstPartTableContents"
 import { IPetDiary } from "../../interfaces/diary/IPetDiary"
 
-const FirstPartTableContentsSchema: Schema<IFirstPartTableContents> = new mongoose.Schema({
+const FirstPartTableContentsSchema: Schema<IFirstPartTableContentsDocument> = new mongoose.Schema({
     chapter: { 
-        type: Number 
+        type: Number,
+        default : 0
     },
     title: { 
         type: String 
@@ -16,7 +17,8 @@ const FirstPartTableContentsSchema: Schema<IFirstPartTableContents> = new mongoo
     petDiary: [
         {
             type: mongoose.SchemaTypes.ObjectId,
-            ref: "PetDiary"
+            ref: "PetDiary",
+            default : []
         }
     ]
 })
