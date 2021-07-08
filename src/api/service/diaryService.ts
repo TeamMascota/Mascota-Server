@@ -6,11 +6,13 @@ import Pet from "../../models/pet/Pet"
 import { response } from "express"
 import PetDiary from "../../models/diary/PetDiary"
 import PetEmotions from "../../models/diary/PetEmotions"
+import { PetDiaryPageResDto} from "../../dto/petDiary/PetDiaryPageResDto"
 require("../../models/user/User")
 require("../../models/book/Book")
 require("../../models/pet/Pet")
 require('../../models/tableContents/TableContents')
 require('../../models/tableContents/FirstPartTableContents')
+require('../../models/diary/PetDiary')
 const util = require('../../modules/util')
 const responseMessage = require('../../modules/responseMessage')
 const statusCode = require('../../modules/statusCode')
@@ -45,43 +47,53 @@ module.exports = {
             throw { statusCode: statusCode.BAD_REQUEST, responseMessage: responseMessage.NO_BOOK }
         }
     },
-    postPetDiary: async(diaryData)=>{
-        const writeDate= new Date(diaryData.date)
+    postPetDiary: async (diaryData) => {
+        const writeDate = new Date(diaryData.date)
         writeDate.setDate(writeDate.getDate() + 1);
-       // console.log(FirstPartTableContents.findById(diaryData._id))
+        // console.log(FirstPartTableContents.findById(diaryData._id))
 
-        let newPetDiary=new PetDiary({
-            tableContents:diaryData._id,
-           //episode:FirstPartTableContents.findById(diaryData._id).length, 이부분 수정하기
-            date:writeDate,
-            imgs:diaryData.diaryImages,
-            title:diaryData.title,
-            contents:diaryData.contents
-           
+        let newPetDiary = new PetDiary({
+            tableContents: diaryData._id,
+            //episode:FirstPartTableContents.findById(diaryData._id).length, 이부분 수정하기
+            date: writeDate,
+            imgs: diaryData.diaryImages,
+            title: diaryData.title,
+            contents: diaryData.contents
+
         })
-        try{
+        try {
             //save petinfo
-            let petN=diaryData.character.length
-            for (let i=0;i<petN;i++){
-            const petData=await Pet.findById(diaryData.character[0]._id).populate('_id')
-            newPetDiary.setPet(petData)
-            //save emotions
-            const petEmotion=new PetEmotions({
-                pet:diaryData.character[0]._id,
-                feeling : diaryData.character[0].feeling
-            })
-            newPetDiary.setPetEmotions(petEmotion)
-        }
-        
+            let petN = diaryData.character.length
+            for (let i = 0; i < petN; i++) {
+                const petData = await Pet.findById(diaryData.character[0]._id).populate('_id')
+                newPetDiary.setPet(petData)
+                //save emotions
+                const petEmotion = new PetEmotions({
+                    pet: diaryData.character[0]._id,
+                    feeling: diaryData.character[0].feeling
+                })
+                newPetDiary.setPetEmotions(petEmotion)
+            }
+
             console.log(newPetDiary)
 
             //     let findPet=new Pet()
             //     findPet=Pet.findById(diaryData.character[i]._id)
             //     newPetDiary.setPet(findPet)
             // }
-           //console.log(petData)
-        }catch(err){
+            //console.log(petData)
+        } catch (err) {
             console.log(err)
+        }
+    },
+    getPetDiary: async (petDiaryId) => {
+        try {
+            const findPetDiary = PetDiary.findById(petDiaryId);
+            let petDiaryPageResDto = await new PetDiaryPageResDto(findPetDiary)
+            return petDiaryPageResDto
+        } catch (err) {
+            console.log(err)
+            //throw err, noPetDiaryId
         }
     }
 }
