@@ -72,8 +72,4 @@ module.exports = {
             throw err
         }
     },
-
-    getYearDiary: async (year, month, part) => {
-        
-    }
 }
