@@ -1,28 +1,27 @@
 import { IPetDiary } from "../../../interfaces/diary/IPetDiary";
 import { IHelp } from "../../../interfaces/etc/IHelp";
 import { IPet } from "../../../interfaces/pet/IPet";
-import { IFirstPartTableContents } from "../../../interfaces/tableContents/IFirstPartTableContents";
-import { IUser } from "../../../interfaces/user/IUser";
-
-interface IRainbowMainPageResDto{
-    title : String,
-    bookImg : String,
-    memories : [MemoriesResDto],
-    help : [HelpResDto]
-}
+import { IBook } from "../../../interfaces/book/IBook";
 
 export class RainbowMainPageResDto{
-    public rainbowMainPage : IRainbowMainPageResDto;
-
-    constructor(user : IUser){
-        this.rainbowMainPage.title //작가와 무지개다리를 건넌 동물의 이름 합친거
-        this.rainbowMainPage.bookImg = user.book.imgs   //책 이미지에서 맨앞에?
+    public rainbowMainPage = {
+        title : null,
+        bookImg : null,
+        rainbowCheck : false,
+        memories : [],
+        help : []
     }
 
-    setMemories(memories : MemoriesResDto){
-        this.rainbowMainPage.memories.push(memories)
+    constructor(book : IBook,isRainbowPet : boolean,rainbowButtonCheck : boolean){
+        this.rainbowMainPage.title = isRainbowPet ? "우리들의 무지개" : "무지개 준비하기"//작가와 무지개다리를 건넌 동물의 이름 합친거
+        this.rainbowMainPage.bookImg = book.imgs 
+        this.rainbowMainPage.rainbowCheck = rainbowButtonCheck
     }
-    setHelp(helps : [HelpResDto]){
+
+    setMemories(memories : MemoriesResDto[]){
+        this.rainbowMainPage.memories = memories
+    }
+    setHelp(helps : HelpResDto[]){
         this.rainbowMainPage.help = helps
     }
 }
@@ -31,15 +30,25 @@ export class MemoriesResDto{
     private title;
     private contents;
     private date;
-    private feel;
+    private feeling;
 
-    constructor(firstPartTableContents : IFirstPartTableContents[], pet : IPet){
-        
+    constructor(petDiaries : IPetDiary[], petId : IPet){
+        const diaryIndex = this.getRandomMemoryIndex(petDiaries.length)
+        const randomDiary = petDiaries[diaryIndex]
+        console.log("랜덤된 petEmotion "+randomDiary.petEmotions.filter(petEmotion =>
+            petEmotion.pet == petId)[0])
+
+        this.title = randomDiary.title
+        this.contents = randomDiary.contents
+        this.date = randomDiary.date
+        this.feeling = randomDiary.petEmotions.filter(petEmotion =>
+            petEmotion.pet == petId)[0].feeling
     }
 
-    randomMemory(firstPartTableContents : IFirstPartTableContents[]){
-        const tableContentsLenght = firstPartTableContents.length
-        const min = Math.ceil(0)
+    getRandomMemoryIndex(max : number){
+        let min = Math.ceil(0);
+        max = Math.floor(max);
+        return Math.floor(Math.random()*(max-min))+min;
     }
 }
 
