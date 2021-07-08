@@ -15,6 +15,7 @@ module.exports = {
 
     /*1부(by.sol) */
     NO_BOOK:"존재하지 않는 책 id입니다.",
+    NO_DIARY:"존재하지 않는 다이어리 id입니다.",
 
 
     /** 1.5부 무지개다리 (by 현종) */

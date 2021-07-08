@@ -32,7 +32,7 @@ module.exports = {
         }
     },
     getPetDiary: async(req,res)=>{
-        const petDiaryId=req.params;
+        const petDiaryId=req.params.id;//id를 뺴면 객체를 보내줌
         try {
             const result = await diaryService.getPetDiary(petDiaryId)
             res.status(statusCode.OK).send(util.success(statusCode.OK, result, ""))
@@ -46,7 +46,7 @@ module.exports = {
         }
     },
     putPetDiary: async(req,res)=>{
-        const petDiaryId=req.params;
+        const petDiaryId=req.params.id;
         const diaryData=req.body;
         try {
             const result = await diaryService.putPetDiary(petDiaryId,diaryData)
@@ -61,7 +61,7 @@ module.exports = {
         }
     },
     deletePetDiary:async(req,res)=>{
-        const petDiaryId=req.params;
+        const petDiaryId=req.params.id;
         try{
             const result = await diaryService.deletePetDiary(petDiaryId,)
             res.status(statusCode.OK).send(util.success(statusCode.OK, result, ""))

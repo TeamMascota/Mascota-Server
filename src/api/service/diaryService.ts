@@ -7,6 +7,7 @@ import { response } from "express"
 import PetDiary from "../../models/diary/PetDiary"
 import PetEmotions from "../../models/diary/PetEmotions"
 import { PetDiaryPageResDto } from "../../dto/petDiary/PetDiaryPageResDto"
+import { isNull } from "util"
 require("../../models/user/User")
 require("../../models/book/Book")
 require("../../models/pet/Pet")
@@ -48,21 +49,23 @@ module.exports = {
         }
     },
     postPetDiary: async (diaryData) => {
-        const writeDate = new Date(diaryData.date)
+        const writeDate = await new Date(diaryData.date)
         writeDate.setDate(writeDate.getDate() + 1);
         // console.log(FirstPartTableContents.findById(diaryData._id))
-
+        const temp =await FirstPartTableContents.findById(diaryData._id)
+        //console.log("temp:",temp,"end")
         let newPetDiary = new PetDiary({
             tableContents: diaryData._id,
-            //episode:FirstPartTableContents.findById(diaryData._id).length, 이부분 수정하기
+            episode:temp.petDiary.length, 
             date: writeDate,
             imgs: diaryData.diaryImages,
             title: diaryData.title,
             contents: diaryData.contents
 
         })
+      
         try {
-            //save petinfo
+                //save petinfo
             let petN = diaryData.character.length
             for (let i = 0; i < petN; i++) {
                 const petData = await Pet.findById(diaryData.character[0]._id).populate('_id')
@@ -76,41 +79,48 @@ module.exports = {
             }
 
             console.log(newPetDiary)
+            await newPetDiary.save()
 
-            //     let findPet=new Pet()
-            //     findPet=Pet.findById(diaryData.character[i]._id)
-            //     newPetDiary.setPet(findPet)
-            // }
-            //console.log(petData)
+            await temp.setPetDiary(newPetDiary) //db관련은 await 붙이기(setter,save...)
+            await temp.save()
+            console.log(temp._id)
+
         } catch (err) {
             console.log(err)
+            throw { statusCode: statusCode.BAD_REQUEST, responseMessage: responseMessage.NO_DIARY }
         }
     },
     getPetDiary: async (petDiaryId) => {
-        try {
-            const findPetDiary = PetDiary.findById(petDiaryId);
-            //let petDiaryPageResDto = await new PetDiaryPageResDto(findPetDiary) 이부분
-            // return petDiaryPageResDto
+        try { 
+            //console.log(petDiaryId);
+            const findPetDiary = await PetDiary.findById(petDiaryId).populate('pets').populate('tableContents');
+            //console.log(findPetDiary)
+            let petDiaryPageResDto = await new PetDiaryPageResDto(findPetDiary) //이부분
+            //console.log(petDiaryPageResDto)
+            return petDiaryPageResDto
+            
         } catch (err) {
             console.log(err)
-            //throw err, noPetDiaryId
+            throw { statusCode: statusCode.BAD_REQUEST, responseMessage: responseMessage.NO_DIARY }
         }
     },
     putPetDiary: async (petDiaryId, diaryData) => {
         try {
             const findPetDiary = PetDiary.findById(petDiaryId);
-            const writeDate = new Date(diaryData.date)
-            writeDate.setDate(writeDate.getDate() + 1);
+            console.log(findPetDiary)
+            // const writeDate = new Date(diaryData.date)
+            //writeDate.setDate(writeDate.getDate() + 1);
             // console.log(FirstPartTableContents.findById(diaryData._id))
+            const ftc= await FirstPartTableContents.findById(diaryData._id)
+            //const episodeN=ftc.petDiary.length
 
             let newPetDiary = new PetDiary({
-                tableContents: diaryData._id,
-                //episode:FirstPartTableContents.findById(diaryData._id).length, 이부분 수정하기
-                date: writeDate,
+                tableContents: (await findPetDiary).tableContents,
+                episode:(await findPetDiary).episode, 
+                date: (await findPetDiary).date,
                 imgs: diaryData.diaryImages,
                 title: diaryData.title,
                 contents: diaryData.contents
-
             })
             //save petinfo
             let petN = diaryData.character.length
@@ -126,18 +136,33 @@ module.exports = {
             }
 
             console.log(newPetDiary)
-
+            newPetDiary.save()
 
         } catch (err) {
             console.log(err)
+            throw { statusCode: statusCode.BAD_REQUEST, responseMessage: responseMessage.NO_DIARY }
         }
 
     },
     deletePetDiary:async(petDiaryId)=>{
         try{
-            const findPetDiary=PetDiary.findById(petDiaryId);
+            let findPetDiary= await PetDiary.findById(petDiaryId).populate('tableContents');
+            console.log(findPetDiary)
             //화 정렬 순서 맞추기
             //해당 목차인것들 모두 가져오기. findPetDiary의 idx 뒤로 다 -1
+            let allDiaries=await (PetDiary.find({}).populate('tableContents')).find({(TableContents.chapter) : (findPetDiary.tableContents.chapter)});
+            console.log("all",allDiaries)
+            //let sameChapterDiaries=await allDiaries.find({tableContents.chapter:findPetDiary.tableContents.chapter})
+           //for(let i=0;i<(await findPetDiary.tableContents.petDiary.length;i++){
+            //     for(let j=0;j<await findTableContents[i].petDiary.length;j++){
+            //         if(findTableContents[i].petDiary[j].episode>=findPetDiary.episode){
+            //             findTableContents[i].petDiary[j].episode--;
+            //         }
+            //     }
+            //findPetDiary = null;
+        }catch(err){
+            console.log(err)
+            throw { statusCode: statusCode.BAD_REQUEST, responseMessage: responseMessage.NO_DIARY }
         }
     }
     

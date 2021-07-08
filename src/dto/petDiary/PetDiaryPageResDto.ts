@@ -12,22 +12,29 @@ export class PetDiaryPageResDto{
     public petDiaryPage = {
         _id:null,
         chapter:null,
+        episode:null,
         title : null,
         bookImg : [],
         date:null,
         contents:null,
         timeTogether:null
     }
+    
 
     constructor(petDiary : IPetDiary){
-        _id:petDiary._id
-        chapter:petDiary.tableContents.chapter
-        title:petDiary.title
-        bookImg:petDiary.imgs
-        date:petDiary.date
-        contents:petDiary.contents
         //가장 먼저 있는 애 기준 날짜 정리
-        timeTogether: dateMethod.getElapsedDay(petDiary.pets[0].startDate)
+        this.init(petDiary)
+    }
+    async init(petDiary:IPetDiary){
+        const temp= petDiary.populate('_id')
+        this.petDiaryPage._id=petDiary._id
+        //this.petDiaryPage.chapter=temp.chapter
+        this.petDiaryPage.title=petDiary.title
+        this.petDiaryPage.bookImg=petDiary.imgs
+        this.petDiaryPage.date=petDiary.date
+        this.petDiaryPage.episode=petDiary.episode
+        this.petDiaryPage.contents=petDiary.contents
+        this.petDiaryPage.timeTogether= await dateMethod.getElapsedDay(petDiary.pets[0].startDate)
     }
 
 }
