@@ -16,6 +16,10 @@ const UserDiarySchema : Schema<IUserDiaryDocument> = new mongoose.Schema({
         type : mongoose.SchemaTypes.ObjectId,
         ref : "SecondPartTableContents"
     },
+    episode : {
+        type : Number,
+        default : 0
+    },
     date : {
         type : Date,
         default : Date.now()
