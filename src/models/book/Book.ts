@@ -9,6 +9,10 @@ const BookSchema: Schema<IBookDocument> = new mongoose.Schema({
     tableContents: {
         type: mongoose.SchemaTypes.ObjectId,
         ref: "TableContents"
+    },
+    date : {
+        type : Date,
+        default : Date.now()
     }
 })
 

@@ -3,7 +3,7 @@ import {IUserDiary} from "../diary/IUserDiary"
 
 export interface ISecondPartTableContents extends Document{
     _id : mongoose.Types.ObjectId;
-    chapter : Number;
+    chapter : number;
     title : String;
     contents : String;
     userDiary : Array<IUserDiary>;
