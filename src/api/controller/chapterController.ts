@@ -1,13 +1,13 @@
 const util = require('../../modules/util')
 const responseMessage = require('../../modules/responseMessage')
 const statusCode = require('../../modules/statusCode')
-const diaryService = require('../service/diaryService')
+const chapterService = require('../service/chapterService')
 
 module.exports = {
     getChapterDiary: async (req, res) => {
-        const chapterId = req.parms.id;
+        const chapterId=req.params.id;//id를 뺴면 객체를 보내줌
         try {
-            const result = await diaryService.getChapterDiary(chapterId)
+            const result = await chapterService.getChapterDiary(chapterId)
             res.status(statusCode.OK).send(util.success(statusCode.OK, result, ""))
         } catch (err) {
             console.error(err)
