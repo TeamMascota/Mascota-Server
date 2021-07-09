@@ -27,5 +27,10 @@ module.exports = {
         const elapsedDay = elapsedMs / (1000*60*60*24)
 
         return elapsedDay
+    },
+
+    getLastDateOfMonth : async(year, month)=>{
+        const lastDate = new Date(year,month,0)
+        return lastDate.getDate()
     }
 }

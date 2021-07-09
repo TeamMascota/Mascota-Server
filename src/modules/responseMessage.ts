@@ -24,6 +24,9 @@ module.exports = {
     SUCCESS_POST_EPILOGUE : "1부 끝 작가의말 - 에필로그 작성 성공",
     SUCCESS_GET_RAINBOW_SUB_PAGE : "무지개 서브뷰 불러오기 성공",
 
+    /**캘린더 */
+    SUCCESS_GET_MONTH_CALENDAR : "해당 월의 캘린더 가져오기 성공",
+    SUCCESS_GET_YEAR_CALENDAR : "해당 년의 캘린더 가져오기 성공",
     /* 서버에러 */
     INTERNAL_SERVER_ERROR: "서버 내부 오류",
 }
