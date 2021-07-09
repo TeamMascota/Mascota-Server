@@ -27,6 +27,10 @@ module.exports = {
     /**캘린더 */
     SUCCESS_GET_MONTH_CALENDAR : "해당 월의 캘린더 가져오기 성공",
     SUCCESS_GET_YEAR_CALENDAR : "해당 년의 캘린더 가져오기 성공",
+
+    /**2부 */
+    SUCCESS_GET_SECOND_PART_MAIN_PAGE : "2부 메인페이지 불러오기 성공",
+
     /* 서버에러 */
     INTERNAL_SERVER_ERROR: "서버 내부 오류",
 }
