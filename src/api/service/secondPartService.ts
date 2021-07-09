@@ -4,6 +4,7 @@ import UserDiary from "../../models/diary/UserDiary"
 import User from "../../models/user/User"
 import Book from "../../models/book/Book"
 import { SecondPartMainPageResDto, SecondPartMainPageTableContents } from "../../dto/secondPart/SecondPartMainPageResDto"
+import { SecondPartDiariesOfMonth, SecondPartDiariesOfMonthResDto } from "../../dto/secondPart/SecondPartDiariesOfMonthResDto"
 const dateMethod = require("../../modules/dateMethod")
 
 require('../../models/tableContents/FirstPartTableContents')
@@ -44,18 +45,42 @@ module.exports = {
                     )[0].userDiary.sort((a, b) =>
                         b.episode - a.episode
                     )
-            }else{
+            } else {
                 sortSecondPartTableContents.push({
-                    nextEpisode : 1,
-                    episode : 0,
-                    title : epilogue.title,
-                    contents : epilogue.contents,
-                    date : user.book.tableContents.secondPartStartDate
+                    nextEpisode: 1,
+                    episode: 0,
+                    title: epilogue.title,
+                    contents: epilogue.contents,
+                    date: user.book.tableContents.secondPartStartDate
                 })
             }
 
             return new SecondPartMainPageResDto(user, sortSecondPartTableContents[0])
         } catch (err) {
+            throw err
+        }
+    },
+
+    getDiaryOfTableContents: async (tableContentsId) => {
+        try{
+            const tableContents = await SecondPartTableContent.findById(tableContentsId).populate({
+                path : "userDiary"
+            })
+            const test = tableContents.userDiary.filter( userDiary =>
+                userDiary.date.getMonth() == 6
+            )
+
+            const secondPartDiariesOfMonth : SecondPartDiariesOfMonth[]= []
+            for(let i = 12 ; i >0 ;i--){
+                if((tableContents.userDiary.map(diary=>diary.date.getMonth() == i)).includes(true)){
+                    const filteringDiaries = tableContents.userDiary.filter(userDiary=>
+                        userDiary.date.getMonth() == i)
+                        secondPartDiariesOfMonth.push(new SecondPartDiariesOfMonth(i+1,filteringDiaries))
+                }
+            }
+
+            return new SecondPartDiariesOfMonthResDto(tableContents, secondPartDiariesOfMonth)
+        }catch(err){
             throw err
         }
     }
