@@ -6,6 +6,8 @@ import { response } from "express"
 import PetDiary from "../../models/diary/PetDiary"
 import PetEmotions from "../../models/diary/PetEmotions"
 import { DiariesResDto, MonthlyDiaryResDto, PetChapterDiaryResDto } from "../../dto/petChapter/PetChapterDiary"
+import User from "../../models/user/User"
+import { ChapterListResDto, ChapterResDto } from "../../dto/petChapter/ChapterList"
 require("../../models/user/User")
 require("../../models/book/Book")
 require("../../models/pet/Pet")
@@ -22,7 +24,7 @@ module.exports = {
         try {
             //챕터 id로 1부 목차
             //findFirstTableContents 
-            const findFirstTableContents = await FirstPartTableContents.findById(chapterId).populate({path:"petDiary",populate:({path:"petEmotions"})});
+            const findFirstTableContents = await FirstPartTableContents.findById(chapterId).populate({ path: "petDiary", populate: ({ path: "petEmotions" }) });
             //.populate({path:"petDiary",populate:({path:"petEmotions"})})
             let newChapterDiary = new PetChapterDiaryResDto(findFirstTableContents)
             //월별로 자르기
@@ -35,7 +37,7 @@ module.exports = {
                         cnt++;
                         let newDiary = new DiariesResDto(findFirstTableContents.petDiary[i])//diary                     
                         monthly.setDiaries(newDiary)
-                        console.log(findFirstTableContents.petDiary[i].petEmotions[0].feeling)
+                        //console.log(findFirstTableContents.petDiary[i].petEmotions[0].feeling)
                     }
                 }
                 monthly.setMonthCount(cnt)
@@ -49,5 +51,15 @@ module.exports = {
             console.log(err)
             throw { statusCode: statusCode.BAD_REQUEST, responseMessage: responseMessage.NO_DIARY }
         }
+    },
+    getChapterList: async (userId) => {
+        const findUserChapter = await User.findById(userId).populate({ path: "book", populate: ({ path: "tableContents", populate: ({ path: "firstPartTableContents" }) }) });
+        let chapterList = new ChapterListResDto()
+        for (let i = 0; i < findUserChapter.book.tableContents.firstPartTableContents.length; i++) {
+            let newChapter = new ChapterResDto(new FirstPartTableContents(findUserChapter.book.tableContents.firstPartTableContents[i]))
+            chapterList.setChapterList(newChapter)
+        }
+        console.log(chapterList)
+        return chapterList
     }
 }
