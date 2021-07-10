@@ -23,10 +23,12 @@ module.exports = {
     getChapterDiary: async (chapterId) => {
         try {
             //챕터 id로 1부 목차
-            //findFirstTableContents 
-            const findFirstTableContents = await FirstPartTableContents.findById(chapterId).populate({ path: "petDiary", populate: ({ path: "petEmotions" }) });
+
+            const findFirstTableContents = await FirstPartTableContents.findById(chapterId).populate({ path: "petDiary", populate: ({ path: "petEmotions pets" }) });
             //.populate({path:"petDiary",populate:({path:"petEmotions"})})
+
             let newChapterDiary = new PetChapterDiaryResDto(findFirstTableContents)
+
             //월별로 자르기
             for (let m = 1; m <= 12; m++) {
                 let cnt = 0;
