@@ -62,28 +62,48 @@ module.exports = {
         console.log(chapterList)
         return chapterList
     },
-    postChapterList:async(userId,chapterTitle)=>{
-        const findUserChapter = await User.findById(userId).populate({ path: "book", populate: ({ path: "tableContents", populate: ({ path: "firstPartTableContents" }) }) });
-        const newFirstPartTable=new FirstPartTableContents();//chapter,title
-        console.log(findUserChapter)
-        console.log(chapterTitle)
-        let max=0
-            
-        for (let i=0;i<findUserChapter.book.tableContents.firstPartTableContents.length;i++){
-            if(max<findUserChapter.book.tableContents.firstPartTableContents[i].chapter){
-                max=Number(findUserChapter.book.tableContents.firstPartTableContents[i].chapter)
+    postChapterList: async (userId, chapterTitle) => {
+        try {
+            const findUserChapter = await User.findById(userId).populate({ path: "book", populate: ({ path: "tableContents", populate: ({ path: "firstPartTableContents" }) }) });
+            const newFirstPartTable = new FirstPartTableContents();//chapter,title
+            console.log(findUserChapter)
+            console.log(chapterTitle)
+            let max = 0
+
+            for (let i = 0; i < findUserChapter.book.tableContents.firstPartTableContents.length; i++) {
+                if (max < findUserChapter.book.tableContents.firstPartTableContents[i].chapter) {
+                    max = Number(findUserChapter.book.tableContents.firstPartTableContents[i].chapter)
+                }
             }
+            newFirstPartTable.chapter = max
+            newFirstPartTable.title = chapterTitle
+
+            await newFirstPartTable.save()
+            findUserChapter.book.tableContents.firstPartTableContents.push(newFirstPartTable)
+            let newTableContents = new TableContents(findUserChapter.book.tableContents)
+            await newTableContents.save()
+
+            console.log(newTableContents)
+
+            return responseMessage.SUCCESS_POST_CHAPTERLIST;
+        } catch (err) {
+            console.log(err)
+            throw { statusCode: statusCode.BAD_REQUEST, responseMessage: responseMessage.NO_CONTENTS }
         }
-        newFirstPartTable.chapter=max+1
-        newFirstPartTable.title=chapterTitle
+    },
+    putChapterList: async (chapterId, chapterTitle) => {
+        try {
+            const findChapter = await FirstPartTableContents.findById(chapterId);
+            findChapter.title = chapterTitle
+            const editFirstPartTableContents = new FirstPartTableContents(findChapter)
+            await editFirstPartTableContents.save()
+            console.log(editFirstPartTableContents)
 
-        await newFirstPartTable.save()
-        findUserChapter.book.tableContents.firstPartTableContents.push(newFirstPartTable)
-        let newTableContents=new TableContents(findUserChapter.book.tableContents)
-        await newTableContents.save()
-
-        console.log(newTableContents)
-
-        return responseMessage.SUCCESS_POST_CHAPTERLIST;        
+            return responseMessage.SUCCESS_PUT_CHAPTERLIST;
+        }
+        catch (err) {
+            console.log(err)
+            throw { statusCode: statusCode.BAD_REQUEST, responseMessage: responseMessage.NO_CONTENTS }
+        }
     }
 }
