@@ -99,7 +99,7 @@ module.exports = {
     addSecondPartChapter:async(chapterData)=>{
         try{
             let newChapter = new SecondPartTableContent({
-                title : chapterData.title,
+                title : chapterData.chapterTitle,
                 chapter : await getNextChapter()
             })
             await newChapter.save()
