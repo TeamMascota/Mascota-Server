@@ -44,10 +44,10 @@ module.exports = {
             const book = new Book()
 
             //Create tableContents object
-            const tableContents=new TableContents()
+            const tableContents = new TableContents()
 
             //Create firstPartTableContents object
-            const firstPart =new FirstPartTableContents()
+            const firstPart = new FirstPartTableContents()
             tableContents.setFirstPartTableContents(firstPart)
             book.setTableContents(tableContents)
             user.setBook(book);
@@ -55,7 +55,7 @@ module.exports = {
             //db save
             await user.save();
 
-            return {bookId:book._id};
+            return { bookId: book._id };
         },
     login: async (email, password) => {
         const errors = validationResult(email);
@@ -68,15 +68,17 @@ module.exports = {
             throw { statusCode: statusCode.NO_CONTENT, responseMessage: responseMessage.NO_USER };
         }
         bcrypt.compare(password, user.password, function (err, isMatch) {
-            if (err) {
-                return console.log(err)
-            } else if (!isMatch) {
+            if (!isMatch&& !err) {
                 //return fail
-                throw { statusCode: statusCode.BAD_REQUEST, responseMessage: responseMessage.MISS_MATCH_PW };
-            } else {
+                console.log("wrong password")
+                return false;
+            }else if(isMatch &&!err){
                 //result==true
-                console.log("password matches");
-                return responseMessage.SIGN_IN_SUCCESS;
+                console.log("password matches")
+                return true;
+            }else {
+                console.log(err)
+                throw { statusCode: statusCode.BAD_REQUEST, responseMessage: responseMessage.SIGN_IN_FAIL };
             }
         })
     }

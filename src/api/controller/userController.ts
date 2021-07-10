@@ -25,7 +25,12 @@ module.exports = {
         const { email, password } = req.body;
         try {
             const result = await userService.login(email, password);
-            res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SIGN_IN_SUCCESS, ""))
+            if (result) {
+                res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SIGH_IN_SUCCESS, ""))
+            } else {
+                return res.status(statusCode.UNAUTHORIZED).send(util.fail(statusCode.UNAUTHORIZED, responseMessage.MISS_MATCH_PW))
+            }
+
         } catch (err) {
             if (err.statusCode == null) {
                 err.statusCode = statusCode.INTERNAL_SERVER_ERROR;
@@ -36,3 +41,5 @@ module.exports = {
         }
     }
 }
+
+//return res.status(statusCode.UNAUTHORIZED).send(util.fail(statusCode.UNAUTHORIZED, responseMessage.MISS_MATCH_PW))
