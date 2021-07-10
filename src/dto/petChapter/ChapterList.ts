@@ -11,8 +11,7 @@ require('../../models/tableContents/FirstPartTableContents')
 const dateMethod = require('../../modules/dateMethod')
 
 export class ChapterListResDto{
-    public tableContents = [ ]
-        
+    public tableContents = [ ]        
     setChapterList(chapter:ChapterResDto){
         this.tableContents.push(chapter)
     }

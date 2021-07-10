@@ -61,5 +61,29 @@ module.exports = {
         }
         console.log(chapterList)
         return chapterList
+    },
+    postChapterList:async(userId,chapterTitle)=>{
+        const findUserChapter = await User.findById(userId).populate({ path: "book", populate: ({ path: "tableContents", populate: ({ path: "firstPartTableContents" }) }) });
+        const newFirstPartTable=new FirstPartTableContents();//chapter,title
+        console.log(findUserChapter)
+        console.log(chapterTitle)
+        let max=0
+            
+        for (let i=0;i<findUserChapter.book.tableContents.firstPartTableContents.length;i++){
+            if(max<findUserChapter.book.tableContents.firstPartTableContents[i].chapter){
+                max=Number(findUserChapter.book.tableContents.firstPartTableContents[i].chapter)
+            }
+        }
+        newFirstPartTable.chapter=max+1
+        newFirstPartTable.title=chapterTitle
+
+        await newFirstPartTable.save()
+        findUserChapter.book.tableContents.firstPartTableContents.push(newFirstPartTable)
+        let newTableContents=new TableContents(findUserChapter.book.tableContents)
+        await newTableContents.save()
+
+        console.log(newTableContents)
+
+        return responseMessage.SUCCESS_POST_CHAPTERLIST;        
     }
 }
