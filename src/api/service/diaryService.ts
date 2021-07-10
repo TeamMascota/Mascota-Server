@@ -39,7 +39,7 @@ module.exports = {
             await book.setTableContents(tc);
             //save db
             await book.save()
-            
+
             return responseMessage.SUCCESS_POST_PROLOGUE;
 
             //error handling
@@ -93,11 +93,11 @@ module.exports = {
     },
     getPetDiary: async (petDiaryId) => {
         try {
-            //console.log(petDiaryId);
-            const findPetDiary = await PetDiary.findById(petDiaryId).populate('pets').populate('tableContents');
-            //console.log(findPetDiary)
+            const findPetDiary = await PetDiary.findById(petDiaryId).populate('pets').populate('tableContents').populate('petEmotions');
             let petDiaryPageResDto = await new PetDiaryPageResDto(findPetDiary) //이부분
-            //console.log(petDiaryPageResDto)
+            for (let i = 0; i < findPetDiary.petEmotions.length; i++) {
+                petDiaryPageResDto.setFeelingList(findPetDiary.petEmotions[i])
+            }
             return petDiaryPageResDto
 
         } catch (err) {

@@ -13,6 +13,20 @@ module.exports = {
             return `0${value}`
         }
     },
+    toKoreanByFormatting : async(source) => {
+        const year = source.getFullYear()
+        const month = leftPad(source.getMonth() + 1);
+        const day = leftPad(source.getDate())
+
+        return year+"년 "+month+"월 "+day+"일"
+
+        function leftPad(value){
+            if(value >= 10){
+                return value
+            }
+            return `0${value}`
+        }
+    },
 
     getElapsedDay : async(startDate : Date) => {
         const now = new Date()

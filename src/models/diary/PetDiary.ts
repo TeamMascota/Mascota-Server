@@ -54,4 +54,6 @@ PetDiarySchema.methods.setPetEmotions = async function(petEmotions : IPetEmotion
     this.petEmotions.push(petEmotions)
 }
 
+
+
 export default mongoose.model<IPetDiaryDocument, IPetDiaryModel>("PetDiary", PetDiarySchema, "petDiaries")
