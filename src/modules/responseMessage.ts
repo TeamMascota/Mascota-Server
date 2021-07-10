@@ -32,6 +32,7 @@ module.exports = {
     SUCCESS_GET_SECOND_PART_MAIN_PAGE : "2부 메인페이지 불러오기 성공",
     SUCCESS_GET_SECOND_PART_DIARY_OF_TABLECONTENTS : "2부 목차별 일기 불러오기 성공",
     SUCCESS_GET_SECOND_PART_CHAPTER_LIST : "2부 목차 리스트 불러오기 성공",
+    SUCCESS_POST_SECOND_PART_ADD_CHAPTER : "2부 목차 추가 성공",
 
     /* 서버에러 */
     INTERNAL_SERVER_ERROR: "서버 내부 오류",

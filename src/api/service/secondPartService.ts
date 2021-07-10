@@ -6,6 +6,7 @@ import Book from "../../models/book/Book"
 import { SecondPartMainPageResDto, SecondPartMainPageTableContents } from "../../dto/secondPart/SecondPartMainPageResDto"
 import { SecondPartDiariesOfMonth, SecondPartDiariesOfMonthResDto } from "../../dto/secondPart/SecondPartDiariesOfMonthResDto"
 import { SecondPartChapterListResDto } from "../../dto/secondPart/SecondPartChapterListResDto"
+import TableContents from "../../models/tableContents/TableContents"
 const dateMethod = require("../../modules/dateMethod")
 
 require('../../models/tableContents/FirstPartTableContents')
@@ -92,6 +93,30 @@ module.exports = {
             return new SecondPartChapterListResDto(chapterList)
         }catch(err){
             throw err
+        }
+    },
+
+    addSecondPartChapter:async(chapterData)=>{
+        try{
+            let newChapter = new SecondPartTableContent({
+                title : chapterData.title,
+                chapter : await getNextChapter()
+            })
+            await newChapter.save()
+
+            const tableContents = (await TableContents.find())[0]
+            await tableContents.setSecondPartTableContents(newChapter)
+            await tableContents.save()
+
+        }catch(err){
+            throw err
+        }
+
+        async function getNextChapter(){
+            const secondPartTableContents = (await SecondPartTableContent.find())
+            const secondPartLength = secondPartTableContents.length
+
+            return secondPartTableContents[secondPartLength-1].chapter +1 
         }
     }
 }
