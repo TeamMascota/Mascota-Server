@@ -61,6 +61,20 @@ module.exports = {
             }
             return res.status(err.statusCode).send(util.fail(err.statusCode, err.responseMessage))
         }
+    },
+    deleteChapterList:async(req,res)=>{
+        const chapterId=req.params.id
+        try {
+            const result = await chapterService.deleteChapterList(chapterId)
+            res.status(statusCode.OK).send(util.success(statusCode.OK,responseMessage.SUCCESS_DELETE_CHAPTERLIST , result))
+        } catch (err) {
+            console.error(err)
+            if (err.statusCode == null) {
+                err.statusCode = statusCode.INTERNAL_SERVER_ERROR;
+                err.responseMessage = responseMessage.INTERNAL_SERVER_ERROR;
+            }
+            return res.status(err.statusCode).send(util.fail(err.statusCode, err.responseMessage))
+        }
     }
 }
 export{}

@@ -105,5 +105,31 @@ module.exports = {
             console.log(err)
             throw { statusCode: statusCode.BAD_REQUEST, responseMessage: responseMessage.NO_CONTENTS }
         }
+    },
+    deleteChapterList: async (chapterId) => {
+        try {
+            let findChapter = await FirstPartTableContents.findById(chapterId);
+            const curChapter = findChapter.chapter
+            const allFirstTableContents = await FirstPartTableContents.find({});
+            let updateFTC=new FirstPartTableContents()
+            //해당 목차보다 큰 목차 -=1
+            for (let i = 0; i < allFirstTableContents.length; i++) {
+                if (allFirstTableContents[i].chapter > curChapter) {
+                    allFirstTableContents[i].chapter = Number(allFirstTableContents[i].chapter) - 1;
+                }
+                //db save
+                updateFTC=allFirstTableContents[i]
+                await updateFTC.save()
+            }
+            console.log(allFirstTableContents)
+
+            //해당 목차 삭제
+            findChapter=null;
+            return responseMessage.SUCCESS_DELETE_CHAPTERLIST;
+        }
+        catch (err) {
+            console.log(err)
+            throw { statusCode: statusCode.BAD_REQUEST, responseMessage: responseMessage.NO_CONTENTS }
+        }
     }
 }
