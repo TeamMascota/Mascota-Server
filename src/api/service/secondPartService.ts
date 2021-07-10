@@ -118,5 +118,16 @@ module.exports = {
 
             return secondPartTableContents[secondPartLength-1].chapter +1 
         }
+    },
+
+    modifySecondPartChapterInfo:async(chapterId,modifyChapterData)=>{
+        try{
+            const findSecondPartTableContents = await SecondPartTableContent.update(
+                {_id : chapterId},
+                {$set : {title : modifyChapterData.chapterTitle}}
+                )
+        }catch(err){
+            throw err
+        }
     }
 }

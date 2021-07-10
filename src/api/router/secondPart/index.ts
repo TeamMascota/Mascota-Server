@@ -6,5 +6,6 @@ router.get('/main/:userId', secondPartController.getMainPage)
 router.get('/chapter/user/:tableContentsId', secondPartController.getDiaryOfTableContents)
 router.get('/chapter/list',secondPartController.getSecondPartChapterList)
 router.post('/chapter',secondPartController.addSecondPartChapter)
+router.put('/chapter/:chapterId',secondPartController.modifySecondPartChapterInfo)
 
 module.exports = router

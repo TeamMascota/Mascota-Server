@@ -45,5 +45,17 @@ module.exports = {
             console.error(err)
             return res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, responseMessage.INTERNAL_SERVER_ERROR))
         }
+    },
+
+    modifySecondPartChapterInfo:async(req,res)=>{
+        const {chapterId} = req.params
+        const modifyChapterData = req.body
+        try{
+            await secondPartService.modifySecondPartChapterInfo(chapterId, modifyChapterData)
+            return res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_PUT_SECOND_PART_MODIFY_CHAPTER))
+        }catch(err){
+            console.error(err)
+            return res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, responseMessage.INTERNAL_SERVER_ERROR))
+        }
     }
 }
