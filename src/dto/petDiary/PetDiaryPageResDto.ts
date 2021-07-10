@@ -9,7 +9,7 @@ require('../../models/tableContents/FirstPartTableContents')
 const dateMethod = require('../../modules/dateMethod')
 
 export class PetDiaryPageResDto{
-    public petDiaryPage = {
+    public petDiary = {
         _id:null,
         chapter:null,
         episode:null,
@@ -17,7 +17,8 @@ export class PetDiaryPageResDto{
         bookImg : [],
         date:null,
         contents:null,
-        timeTogether:null
+        timeTogether:null,
+        kind:null
     }
     
 
@@ -26,15 +27,15 @@ export class PetDiaryPageResDto{
         this.init(petDiary)
     }
     async init(petDiary:IPetDiary){
-        const temp= petDiary.populate('_id')
-        this.petDiaryPage._id=petDiary._id
+        this.petDiary._id=petDiary._id
         //this.petDiaryPage.chapter=temp.chapter
-        this.petDiaryPage.title=petDiary.title
-        this.petDiaryPage.bookImg=petDiary.imgs
-        this.petDiaryPage.date=petDiary.date
-        this.petDiaryPage.episode=petDiary.episode
-        this.petDiaryPage.contents=petDiary.contents
-        this.petDiaryPage.timeTogether= await dateMethod.getElapsedDay(petDiary.pets[0].startDate)
+        this.petDiary.title=petDiary.title
+        this.petDiary.bookImg=petDiary.imgs
+        this.petDiary.date=petDiary.date
+        this.petDiary.episode=petDiary.episode
+        this.petDiary.contents=petDiary.contents
+        this.petDiary.kind=petDiary.pets[0].kind
+        this.petDiary.timeTogether= await dateMethod.getElapsedDay(petDiary.pets[0].startDate)
     }
 
 }

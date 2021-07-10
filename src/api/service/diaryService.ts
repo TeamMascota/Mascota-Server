@@ -7,7 +7,6 @@ import { response } from "express"
 import PetDiary from "../../models/diary/PetDiary"
 import PetEmotions from "../../models/diary/PetEmotions"
 import { PetDiaryPageResDto } from "../../dto/petDiary/PetDiaryPageResDto"
-import { isNull } from "util"
 import { TIMEOUT } from "dns"
 require("../../models/user/User")
 require("../../models/book/Book")
@@ -23,12 +22,11 @@ module.exports = {
     postPrologue: async (bookData) => {
         try {
             // add book info
-            let book = await new Book();
-            book = await Book.findById(bookData._id);
-            book.title = await bookData.title;
-            book.imgs = await bookData.image;
-            book.author = await bookData.userName;
-
+            let book = await Book.findById(bookData._id);
+            book.title = bookData.title;
+            book.imgs = bookData.image;
+            book.author = bookData.userName;
+            console.log(book)
             //add tableContents info
             let tc = await new TableContents();
             let ftc = await new FirstPartTableContents({
@@ -41,6 +39,7 @@ module.exports = {
             await book.setTableContents(tc);
             //save db
             await book.save()
+            
             return responseMessage.SUCCESS_POST_PROLOGUE;
 
             //error handling
@@ -53,7 +52,7 @@ module.exports = {
         const writeDate = await new Date(diaryData.date)
         writeDate.setDate(writeDate.getDate() + 1);
         // console.log(FirstPartTableContents.findById(diaryData._id))
-        const temp = await FirstPartTableContents.findById(diaryData._id)
+        const temp = await FirstPartTableContents.findById(diaryData._id).populate('petDiary')
         //console.log("temp:",temp,"end")
         let newPetDiary = new PetDiary({
             tableContents: diaryData._id,
@@ -108,13 +107,8 @@ module.exports = {
     },
     putPetDiary: async (petDiaryId, diaryData) => {
         try {
-            const findPetDiary = PetDiary.findById(petDiaryId);
-            console.log(findPetDiary)
-            // const writeDate = new Date(diaryData.date)
-            //writeDate.setDate(writeDate.getDate() + 1);
-            // console.log(FirstPartTableContents.findById(diaryData._id))
+            let findPetDiary = await PetDiary.findById(petDiaryId);
             const ftc = await FirstPartTableContents.findById(diaryData._id)
-            //const episodeN=ftc.petDiary.length
 
             let newPetDiary = new PetDiary({
                 tableContents: (await findPetDiary).tableContents,
@@ -124,21 +118,25 @@ module.exports = {
                 title: diaryData.title,
                 contents: diaryData.contents
             })
+
             //save petinfo
             let petN = diaryData.character.length
             for (let i = 0; i < petN; i++) {
-                const petData = await Pet.findById(diaryData.character[0]._id).populate('_id')
+                const petData = await Pet.findById(diaryData.character[i]._id).populate('_id')
                 newPetDiary.setPet(petData)
                 //save emotions
-                const petEmotion = new PetEmotions({
-                    pet: diaryData.character[0]._id,
-                    feeling: diaryData.character[0].feeling
-                })
-                newPetDiary.setPetEmotions(petEmotion)
+                let emotion = new PetEmotions()
+                emotion.pet = diaryData.character[i]._id
+                emotion.feeling = diaryData.character[i].feeling
+                emotion.setPetDiary(findPetDiary)
+                newPetDiary.setPetEmotions(emotion)
+                await emotion.save()
             }
-
             console.log(newPetDiary)
-            newPetDiary.save()
+            //newPetDiary._id=findPetDiary._id
+            findPetDiary = newPetDiary
+            //await newPetDiary.save()
+            await findPetDiary.save()
             return responseMessage.SUCCESS_EDIT_PETDIARY;
 
         } catch (err) {
@@ -163,7 +161,8 @@ module.exports = {
                     await temp.save()
                 }
             }
-            findPetDiary=null;
+            findPetDiary = null;
+
             return responseMessage.SUCCESS_DELETE_PETDIARY;
         } catch (err) {
             console.log(err)
