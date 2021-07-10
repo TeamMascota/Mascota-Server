@@ -5,6 +5,7 @@ import User from "../../models/user/User"
 import Book from "../../models/book/Book"
 import { SecondPartMainPageResDto, SecondPartMainPageTableContents } from "../../dto/secondPart/SecondPartMainPageResDto"
 import { SecondPartDiariesOfMonth, SecondPartDiariesOfMonthResDto } from "../../dto/secondPart/SecondPartDiariesOfMonthResDto"
+import { SecondPartChapterListResDto } from "../../dto/secondPart/SecondPartChapterListResDto"
 const dateMethod = require("../../modules/dateMethod")
 
 require('../../models/tableContents/FirstPartTableContents')
@@ -80,6 +81,15 @@ module.exports = {
             }
 
             return new SecondPartDiariesOfMonthResDto(tableContents, secondPartDiariesOfMonth)
+        }catch(err){
+            throw err
+        }
+    },
+
+    getSecondPartChapterList:async()=>{
+        try{
+            const chapterList = await SecondPartTableContent.find()
+            return new SecondPartChapterListResDto(chapterList)
         }catch(err){
             throw err
         }

@@ -31,7 +31,7 @@ export class SecondPartDiariesOfMonth{
 
 export class SecondPartDiaries{
     private days = null
-    private weekdays = null
+    private dayOfWeek = null
     private feeling = null
     private kind = null
     private title = null
@@ -42,7 +42,7 @@ export class SecondPartDiaries{
         const weeks = ["일","월","화","수","목","금","토"]
 
         this.days = userDiary.date.getDate()
-        this.weekdays = weeks[userDiary.date.getDay()]
+        this.dayOfWeek = weeks[userDiary.date.getDay()]
         this.feeling = userDiary.feeling
         this.kind = 0
         this.title = userDiary.title
