@@ -9,7 +9,6 @@ app.use(express.json());
 // Define Routes
 app.use('/api',require('./api/router/index'))
 
-
 // error handler
 app.use(function (err, req, res, next) {
   // set locals, only providing error in development
