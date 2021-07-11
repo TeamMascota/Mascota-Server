@@ -24,12 +24,14 @@ const PetDiarySchema : Schema<IPetDiaryDocument>= new mongoose.Schema({
     imgs : [
         {
             type : String,
+            default : []
         }
     ],
     petEmotions : [
         {
             type : mongoose.SchemaTypes.ObjectId,
-            ref : "PetEmotions"
+            ref : "PetEmotions",
+            default : []
         }
     ],
     episode : { 
@@ -53,5 +55,7 @@ PetDiarySchema.methods.setTableContents = async function(tableContents : IFirstP
 PetDiarySchema.methods.setPetEmotions = async function(petEmotions : IPetEmotions){
     this.petEmotions.push(petEmotions)
 }
+
+
 
 export default mongoose.model<IPetDiaryDocument, IPetDiaryModel>("PetDiary", PetDiarySchema, "petDiaries")
