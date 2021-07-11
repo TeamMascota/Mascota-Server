@@ -11,7 +11,7 @@ export interface IBook extends Document {
 }
 
 export interface IBookDocument extends IBook {
-    setTableContents : (tableContents : ITableContents) => Promise<void>
+    setTableContents: (tableContents: ITableContents) => Promise<void>
 }
 
 export interface IBookModel extends Model<IBookDocument> {

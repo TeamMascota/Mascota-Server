@@ -13,3 +13,5 @@ router.post('/epilogue/:userId/:petId',rainbowController.postEpilogue)  //1.5부
 router.get('/moment/sub/:userId/:petId',rainbowController.theBestMomentSub) //1.5부 무지개 서브 홈
 
 module.exports = router;
+//solve error TS2451 : Cannot redeclare block-scoped variable
+export{};

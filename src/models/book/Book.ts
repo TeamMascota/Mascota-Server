@@ -15,9 +15,8 @@ const BookSchema: Schema<IBookDocument> = new mongoose.Schema({
         default : Date.now()
     }
 })
-
-BookSchema.methods.setTableContents = async function (tableContents: ITableContents) {
-    this.tableContents = tableContents
+BookSchema.methods.setTableContents=async function(tableContents: ITableContents){
+    this.tableContents=tableContents
 }
 
 export default mongoose.model<IBookDocument, IBookModel>("Book", BookSchema, "books")
