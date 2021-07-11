@@ -14,4 +14,3 @@ router.get('/moment/sub/:userId/:petId',rainbowController.theBestMomentSub) //1.
 
 module.exports = router;
 //solve error TS2451 : Cannot redeclare block-scoped variable
-export{};
