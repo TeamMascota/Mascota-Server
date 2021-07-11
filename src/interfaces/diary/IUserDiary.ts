@@ -8,7 +8,7 @@ export interface IUserDiary extends Document{
     imgs : Array<String>;
     feeling : Number;
     tableContents : ISecondPartTableContents;
-    episode : Number
+    episode : number
     date : Date;
 }
 
