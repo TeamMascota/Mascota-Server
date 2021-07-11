@@ -64,43 +64,43 @@ module.exports = {
     },
 
     getDiaryOfTableContents: async (tableContentsId) => {
-        try{
+        try {
             const tableContents = await SecondPartTableContent.findById(tableContentsId).populate({
-                path : "userDiary"
+                path: "userDiary"
             })
-            const test = tableContents.userDiary.filter( userDiary =>
+            const test = tableContents.userDiary.filter(userDiary =>
                 userDiary.date.getMonth() == 6
             )
 
-            const secondPartDiariesOfMonth : SecondPartDiariesOfMonth[]= []
-            for(let i = 12 ; i >0 ;i--){
-                if((tableContents.userDiary.map(diary=>diary.date.getMonth() == i)).includes(true)){
-                    const filteringDiaries = tableContents.userDiary.filter(userDiary=>
+            const secondPartDiariesOfMonth: SecondPartDiariesOfMonth[] = []
+            for (let i = 12; i > 0; i--) {
+                if ((tableContents.userDiary.map(diary => diary.date.getMonth() == i)).includes(true)) {
+                    const filteringDiaries = tableContents.userDiary.filter(userDiary =>
                         userDiary.date.getMonth() == i)
-                        secondPartDiariesOfMonth.push(new SecondPartDiariesOfMonth(i+1,filteringDiaries))
+                    secondPartDiariesOfMonth.push(new SecondPartDiariesOfMonth(i + 1, filteringDiaries))
                 }
             }
 
             return new SecondPartDiariesOfMonthResDto(tableContents, secondPartDiariesOfMonth)
-        }catch(err){
+        } catch (err) {
             throw err
         }
     },
 
-    getSecondPartChapterList:async()=>{
-        try{
+    getSecondPartChapterList: async () => {
+        try {
             const chapterList = await SecondPartTableContent.find()
             return new SecondPartChapterListResDto(chapterList)
-        }catch(err){
+        } catch (err) {
             throw err
         }
     },
 
-    addSecondPartChapter:async(chapterData)=>{
-        try{
+    addSecondPartChapter: async (chapterData) => {
+        try {
             let newChapter = new SecondPartTableContent({
-                title : chapterData.chapterTitle,
-                chapter : await getNextChapter()
+                title: chapterData.chapterTitle,
+                chapter: await getNextChapter()
             })
             await newChapter.save()
 
@@ -108,25 +108,66 @@ module.exports = {
             await tableContents.setSecondPartTableContents(newChapter)
             await tableContents.save()
 
-        }catch(err){
+        } catch (err) {
             throw err
         }
 
-        async function getNextChapter(){
+        async function getNextChapter() {
             const secondPartTableContents = (await SecondPartTableContent.find())
             const secondPartLength = secondPartTableContents.length
 
-            return secondPartTableContents[secondPartLength-1].chapter +1 
+            return secondPartTableContents[secondPartLength - 1].chapter + 1
         }
     },
 
-    modifySecondPartChapterInfo:async(chapterId,modifyChapterData)=>{
-        try{
-            const findSecondPartTableContents = await SecondPartTableContent.update(
-                {_id : chapterId},
-                {$set : {title : modifyChapterData.chapterTitle}}
-                )
-        }catch(err){
+    modifySecondPartChapterInfo: async (chapterId, modifyChapterData) => {
+        try {
+            await SecondPartTableContent.update(
+                { _id: chapterId },
+                { $set: { title: modifyChapterData.chapterTitle } }
+            )
+        } catch (err) {
+            throw err
+        }
+    },
+
+    deleteSecondPartChapter: async (chapterId) => {
+        try {
+            //삭제하고자하는 2부 목차
+            const findSecondPartChapter = await SecondPartTableContent.findById(chapterId).populate({
+                path: "userDiary"
+            })
+            if(findSecondPartChapter === null){
+                throw { statusCode : 400 }
+            }
+            //전체 2부 목차
+            const tableContents = (await TableContents.find().populate({
+                path: "secondPartTableContents"
+            }))[0]
+
+            //삭제할 2부 목차의 chapter보다 큰 챕터 배열 & chapter -1씩 줄임 & 저장
+            tableContents.secondPartTableContents.filter(secondPartTable =>
+                secondPartTable.chapter > findSecondPartChapter.chapter).forEach(async secondPartTable => {
+                    secondPartTable.chapter -= 1
+                    await secondPartTable.save()
+                })
+            
+
+            //2부 목차에서 해당 목차 삭제
+            await SecondPartTableContent.deleteOne({_id: `${chapterId}`})
+
+            //2부 목차에 들어있던 userDiary 삭제
+            const userDiaries = findSecondPartChapter.userDiary;
+
+            userDiaries.forEach(async userDiary => {
+                await UserDiary.deleteOne({_id:`${userDiary._id}`})
+            })
+
+            //총 목차(1부,2부)에서 해당 목차 secondPartTableContents배열에서 삭제
+            const idx = tableContents.secondPartTableContents.findIndex(secondPartTable => secondPartTable._id == chapterId)
+            tableContents.secondPartTableContents.splice(idx,1)
+            await tableContents.save()
+        } catch (err) {
             throw err
         }
     }

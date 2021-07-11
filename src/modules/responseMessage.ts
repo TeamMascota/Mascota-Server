@@ -34,6 +34,8 @@ module.exports = {
     SUCCESS_GET_SECOND_PART_CHAPTER_LIST : "2부 목차 리스트 불러오기 성공",
     SUCCESS_POST_SECOND_PART_ADD_CHAPTER : "2부 목차 추가 성공",
     SUCCESS_PUT_SECOND_PART_MODIFY_CHAPTER: "2부 목차 수정 성공",
+    SUCCESS_DELETE_SECOND_PART_DELETE_CHAPTER : "2부 목차 삭제 성공",
+    FAIL_TO_GET_SECOND_PART_TABLE_CONTENTS : "잘못된 2부 목차의 ID입니다.",
 
     /* 서버에러 */
     INTERNAL_SERVER_ERROR: "서버 내부 오류",
