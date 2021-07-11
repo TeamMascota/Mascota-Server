@@ -12,7 +12,7 @@ export interface IPetDiary extends Document{
     contents : String;
     imgs : Array<String>;
     petEmotions : Array<IPetEmotions>;
-    episode : Number;
+    episode : number;
     date : Date; 
 }
 
