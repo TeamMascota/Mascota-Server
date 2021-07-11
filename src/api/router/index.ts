@@ -1,6 +1,5 @@
 import express from "express"
 const router = express.Router()
 
-//router.use('/book',require('./book')) //1부,2부 책
-router.use('/diary',require('./diary'));//1부 일기
+router.use('/chapter',require('./chapter'));//1부 목차
 module.exports = router;
