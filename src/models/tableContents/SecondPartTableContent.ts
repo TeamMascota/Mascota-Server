@@ -3,12 +3,23 @@ import { IUserDiary } from "../../interfaces/diary/IUserDiary"
 import { ISecondPartTableContentsDocument, ISecondPartTableContentsModel } from "../../interfaces/tableContents/ISecondPartTableContents"
 
 const SecondPartTableContentsSchema: Schema<ISecondPartTableContentsDocument> = new mongoose.Schema({
-    chapter: { type: Number },
-    title: { type: String },
+    chapter: { 
+        type: Number,
+        default : 0
+    },
+    title: { 
+        type: String,
+        default : null
+    },
+    contents : {
+        type : String,
+        default : null
+    },
     userDiary: [
         {
             type: mongoose.SchemaTypes.ObjectId,
-            ref: "UserDiary"
+            ref: "UserDiary",
+            default: []
         }
     ]
 })

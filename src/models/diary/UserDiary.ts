@@ -7,13 +7,18 @@ const UserDiarySchema : Schema<IUserDiaryDocument> = new mongoose.Schema({
     contents : {type : String},
     imgs : [
         {
-            type : String
+            type : String,
+            default : []
         }
     ],
     feeling : {type : Number},
     tableContents : {
         type : mongoose.SchemaTypes.ObjectId,
         ref : "SecondPartTableContents"
+    },
+    episode : {
+        type : Number,
+        default : 0
     },
     date : {
         type : Date,
