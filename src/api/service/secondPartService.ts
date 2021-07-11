@@ -140,6 +140,7 @@ module.exports = {
             if(findSecondPartChapter === null){
                 throw { statusCode : 400 }
             }
+
             //전체 2부 목차
             const tableContents = (await TableContents.find().populate({
                 path: "secondPartTableContents"
