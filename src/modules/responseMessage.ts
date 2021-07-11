@@ -20,10 +20,17 @@ module.exports = {
     /*1부(by.sol) */
     NO_BOOK:"존재하지 않는 책 id입니다.",
     NO_DIARY:"존재하지 않는 다이어리 id입니다.",
+    NO_CONTENTS:"존재하지 않는 정보입니다.",
     SUCCESS_POST_PETDIARY:"반려동물 다이어리 작성 성공",
     SUCCESS_EDIT_PETDIARY:"반려동물 다이어리 수정 성공",
     SUCCESS_DELETE_PETDIARY:"반려동물 다이어리 삭제 성공",
+    SUCCESS_GET_CHAPTER_PETDIARY:"목차별 다이어리 조회 성공",
+    SUCCESS_GET_CHAPTERLIST: "목차 리스트 조회 성공",
+    SUCCESS_POST_CHAPTERLIST: "목차 리스트 추가 성공",
+    SUCCESS_EDIT_CHAPTERLIST: "목차 리스트 수정 성공",
+    SUCCESS_DELETE_CHAPTERLIST: "목차 리스트 삭제 성공",
     SUCCESS_REGISTER_PET: "반려동물 등록 성공",
+
 
     /** 1.5부 무지개다리 (by 현종) */
     SUCCESS_GET_RAINBOW_MAIN_PAGE : "무지개 메인뷰 불러오기 성공",
