@@ -95,13 +95,13 @@ module.exports = {
         try {
             const findPetDiary = await PetDiary.findById(petDiaryId).populate('pets').populate('tableContents').populate('petEmotions');
             let petDiaryPageResDto = await new PetDiaryPageResDto(findPetDiary) //이부분
-           // console.log("feelingList",findPetDiary.pets[0],";",findPetDiary.petEmotions[0].feeling)
-              
+            // console.log("feelingList",findPetDiary.pets[0],";",findPetDiary.petEmotions[0].feeling)
+
             for (let i = 0; i < findPetDiary.petEmotions.length; i++) {
-                let feelingList=new FeelingListDto(findPetDiary.pets[i])
+                let feelingList = new FeelingListDto(findPetDiary.pets[i])
                 feelingList.setFeeling(findPetDiary.petEmotions[i])
                 petDiaryPageResDto.setFeelingList(feelingList)
-                 }
+            }
             return petDiaryPageResDto
 
         } catch (err) {
