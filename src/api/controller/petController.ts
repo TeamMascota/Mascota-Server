@@ -1,15 +1,15 @@
-const util = require('../../modules/util')
-const responseMessage = require('../../modules/responseMessage')
-const statusCode = require('../../modules/statusCode')
+var util = require('../../modules/util')
+var responseMessage = require('../../modules/responseMessage')
+var statusCode = require('../../modules/statusCode')
 const petService = require('../service/petService')
 
 
 module.exports = {
     registerPet: async (req, res) => {
         let reqData=req.body;
-        console.log(req.body)
+        const images = req.files.map(img => img.location)
         try {
-            const result = await petService.registerPet(reqData);
+            await petService.registerPet(reqData,images);
             res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_REGISTER_PET, ""))
         } catch (err) {
             if (err.statusCode == null) {
@@ -19,6 +19,5 @@ module.exports = {
             console.error(err)
             res.status(err.statusCode).send(util.fail(err.statusCode, err.responseMessage))
         }
-    }
+    },
 }
-export{};
