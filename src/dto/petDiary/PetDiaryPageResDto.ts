@@ -7,7 +7,6 @@ require('../../models/tableContents/TableContents')
 require('../../models/tableContents/FirstPartTableContents')
 const dateMethod = require('../../modules/dateMethod')
 
-<<<<<<< HEAD
 export class PetDiaryPageResDto {
     public petDiary = {
         _id: null,
@@ -39,28 +38,6 @@ export class PetDiaryPageResDto {
     }
     setFeelingList(emotion: IPetEmotions) {
         this.petDiary.feelingList.push(emotion.feeling)
-=======
-export class PetDiaryPageResDto{
-    public petDiaryPage = {
-        _id:null,
-        chapter:null,
-        title : null,
-        bookImg : [],
-        date:null,
-        contents:null,
-        timeTogether:null
-    }
-
-    constructor(petDiary : IPetDiary){
-        _id:petDiary._id
-        chapter:petDiary.tableContents.chapter
-        title:petDiary.title
-        bookImg:petDiary.imgs
-        date:petDiary.date
-        contents:petDiary.contents
-        //가장 먼저 있는 애 기준 날짜 정리
-        timeTogether: dateMethod.getElapsedDay(petDiary.pets[0].startDate)
->>>>>>> 35fa17a68301c84a39481a189b351a8878cd923c
     }
 
 }

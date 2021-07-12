@@ -360,11 +360,11 @@ module.exports = {
         }
     },
 
-    getTheBestMomentSub:async (petId,theBestMoment) =>{
-        try{
+    getTheBestMomentSub: async (petId, theBestMoment) => {
+        try {
             const pet = await Pet.findById(petId)
-            return new TheBestMomentSubResDto(pet,theBestMoment)
-        }catch(err){
+            return new TheBestMomentSubResDto(pet, theBestMoment)
+        } catch (err) {
             throw err
         }
     }
