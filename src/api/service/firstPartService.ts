@@ -26,20 +26,19 @@ module.exports = {
                 path: "pets"
             }).populate({
                 path: "book",
-                populate: {
+                populate: ({
                     path: "tableContents",
-                    populate: {
+                    populate: ({
                         path: "firstPartTableContents",
-                        populate: {
+                        populate: ({
                             path: "petDiary",
                             populate: {
                                 path: "petEmotions"
                             }
-                        }
-                    }
-                }
+                        })
+                    })
+                })
             })
-            console.log(findUser)
 
             let newBook=new Book()
             let newTableContents=new TableContents()
@@ -58,20 +57,22 @@ module.exports = {
             }
             
             const firstPartMainPageResDto = new FirstPartMainPageResDto(findUser.book)
-            let lastTableNumber = findUser.book.tableContents.firstPartTableContents.length
+            let lastTableNumber = findUser.book.tableContents.firstPartTableContents.length-1
             //console.log("#:",lastTableNumber)
-            console.log(firstPartMainPageResDto)
             
             const lastDiary = new DiaryResDto(findUser.book.tableContents.firstPartTableContents[lastTableNumber])
-            console.log("lastDiary:",lastDiary)
             //tableContents
             for (let i = 0; i < lastTableNumber; i++) {
                 let tableContentsResDto = new TableContentsResDto(findUser.book.tableContents.firstPartTableContents[i])
                 firstPartMainPageResDto.setTableContents(tableContentsResDto)
             }
             firstPartMainPageResDto.setDiary(lastDiary)
-            
-            return {firstPartMainPageResDto};
+
+            if(findUser.book.tableContents.secondPartTableContents.length > 1){
+                firstPartMainPageResDto.setSecondPartBook(findUser)
+            }
+
+            return firstPartMainPageResDto
 
         } catch (err) {
             console.log(err)
