@@ -25,21 +25,17 @@ module.exports = {
         const { email, password } = req.body;
         try {
             const result = await userService.login(email, password);
-            if (result) {
-                res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SIGH_IN_SUCCESS, ""))
-            } else {
-                return res.status(statusCode.UNAUTHORIZED).send(util.fail(statusCode.UNAUTHORIZED, responseMessage.MISS_MATCH_PW))
-            }
+            console.log('얘가나오면 안되는데 : ', result)
+            res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SIGH_IN_SUCCESS))
 
         } catch (err) {
+            console.log('bbbbb : ' + err.statusCode)
             if (err.statusCode == null) {
                 err.statusCode = statusCode.INTERNAL_SERVER_ERROR;
                 err.responseMessage = responseMessage.INTERNAL_SERVER_ERROR;
             }
-            console.error(err)
+            console.error('!!!!!' + err)
             res.status(err.statusCode).send(util.fail(err.statusCode, err.responseMessage))
         }
     }
 }
-
-//return res.status(statusCode.UNAUTHORIZED).send(util.fail(statusCode.UNAUTHORIZED, responseMessage.MISS_MATCH_PW))

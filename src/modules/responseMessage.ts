@@ -30,7 +30,7 @@ module.exports = {
     SUCCESS_EDIT_CHAPTERLIST: "목차 리스트 수정 성공",
     SUCCESS_DELETE_CHAPTERLIST: "목차 리스트 삭제 성공",
     SUCCESS_REGISTER_PET: "반려동물 등록 성공",
-
+    SUCCESS_GET_FIRSTPART_MAINPAGE:"1부 메인뷰 불러오기 성공",
 
     /** 1.5부 무지개다리 (by 현종) */
     SUCCESS_GET_RAINBOW_MAIN_PAGE : "무지개 메인뷰 불러오기 성공",

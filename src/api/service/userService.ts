@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express'
+import { Request, Response, NextFunction, response } from 'express'
 import User from '../../models/user/User'
 import Book from '../../models/book/Book'
 import Pet from '../../models/pet/Pet'
@@ -58,28 +58,25 @@ module.exports = {
             return { bookId: book._id };
         },
     login: async (email, password) => {
-        const errors = validationResult(email);
-        if (!errors.isEmpty()) {
-            throw { statusCode: statusCode.BAD_REQUEST, responseMessage: responseMessage.EMPTY_ID };
-        }
-        let user = await User.findOne({ email });
-        if (!user) {
-            //등록되지 않은 email
-            throw { statusCode: statusCode.NO_CONTENT, responseMessage: responseMessage.NO_USER };
-        }
-        bcrypt.compare(password, user.password, function (err, isMatch) {
-            if (!isMatch&& !err) {
-                //return fail
-                console.log("wrong password")
-                return false;
-            }else if(isMatch &&!err){
-                //result==true
-                console.log("password matches")
-                return true;
-            }else {
-                console.log(err)
+        try {
+            const errors = validationResult(email);
+            if (!errors.isEmpty()) {
+                throw { statusCode: statusCode.BAD_REQUEST, responseMessage: responseMessage.EMPTY_ID };
+            }
+            let user = await User.findOne({ email });
+            if (!user) {
+                //등록되지 않은 email
+                throw { statusCode: statusCode.NO_CONTENT, responseMessage: responseMessage.NO_USER };
+            }
+
+            const test = await bcrypt.compare(password, user.password)
+            console.log('asdada' + test)
+            if (!test) {
                 throw { statusCode: statusCode.BAD_REQUEST, responseMessage: responseMessage.SIGN_IN_FAIL };
             }
-        })
+
+        } catch (err) {
+            throw err
+        }
     }
 }
