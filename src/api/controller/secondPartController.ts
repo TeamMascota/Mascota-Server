@@ -1,3 +1,5 @@
+import { Result } from "express-validator"
+
 var util = require('../../modules/util')
 var responseMessage = require('../../modules/responseMessage')
 var statusCode = require('../../modules/statusCode')
@@ -75,51 +77,52 @@ module.exports = {
     getSecondPartDiary: async (req, res) => {
         const { diaryId } = req.params
         try {
-            await secondPartService.getSecondPartDiary(diaryId)
-            return res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_DELETE_SECOND_PART_DELETE_CHAPTER))
+            const result=await secondPartService.getSecondPartDiary(diaryId)
+            return res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_GET_SECOND_PART_DIARY,result))
         } catch (err) {
             console.error(err)
             if (err.statusCode === 400) {
-                return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, responseMessage.FAIL_TO_GET_SECOND_PART_TABLE_CONTENTS))
+                return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, responseMessage.FAIL_TO_GET_SECOND_PART_DIARY_ID))
             }
             return res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, responseMessage.INTERNAL_SERVER_ERROR))
         }
     },
     addSecondPartDiary: async (req, res) => {
-        const { userData } = req.body
+        const diaryData  = req.body
         try {
-            await secondPartService.addSecondPartDiary(userData)
-            return res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_DELETE_SECOND_PART_DELETE_CHAPTER))
+            await secondPartService.addSecondPartDiary(diaryData)
+            return res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_POST_SECOND_PART_DIARY))
         } catch (err) {
             console.error(err)
             if (err.statusCode === 400) {
-                return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, responseMessage.FAIL_TO_GET_SECOND_PART_TABLE_CONTENTS))
+                return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, responseMessage.FAIL_TO_POST_SECOND_PART_DIARY))
             }
             return res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, responseMessage.INTERNAL_SERVER_ERROR))
         }
     },
     modifySecondPartDiary: async (req, res) => {
-        const { diaryId } = req.params.id
+        const { diaryId } = req.params
+        const diaryData=req.body
         try {
-            await secondPartService.modifySecondPartDiary(diaryId)
-            return res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_DELETE_SECOND_PART_DELETE_CHAPTER))
+            await secondPartService.modifySecondPartDiary(diaryId,diaryData)
+            return res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_PUT_SECOND_PART_DIARY))
         } catch (err) {
             console.error(err)
             if (err.statusCode === 400) {
-                return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, responseMessage.FAIL_TO_GET_SECOND_PART_TABLE_CONTENTS))
+                return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, responseMessage.FAIL_TO_PUT_SECOND_PART_DIARY))
             }
             return res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, responseMessage.INTERNAL_SERVER_ERROR))
         }
     },
     deleteSecondPartDiary: async (req, res) => {
-        const { diaryId } = req.params.id
+        const { diaryId } = req.params
         try {
-            await secondPartService.getSecondPartDiary(diaryId)
-            return res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_DELETE_SECOND_PART_DELETE_CHAPTER))
+            await secondPartService.deleteSecondPartDiary(diaryId)
+            return res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_DELETE_SECOND_PART_DELETE_DIARY))
         } catch (err) {
             console.error(err)
             if (err.statusCode === 400) {
-                return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, responseMessage.FAIL_TO_GET_SECOND_PART_TABLE_CONTENTS))
+                return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, responseMessage.FAIL_TO_DELETE_SECOND_PART_DIARY))
             }
             return res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, responseMessage.INTERNAL_SERVER_ERROR))
         }
