@@ -8,5 +8,8 @@ router.get('/chapter/list', secondPartController.getSecondPartChapterList)
 router.post('/chapter', secondPartController.addSecondPartChapter)
 router.put('/chapter/:chapterId', secondPartController.modifySecondPartChapterInfo)
 router.delete('/chapter/:chapterId', secondPartController.deleteSecondPartChapter)
-
+router.get('/diary/user/:diaryId',secondPartController.getSecondPartDiary)//2부 일기 조회
+// router.post('/diary/user',secondPartController.addSecondPartDiary)//2부 일기 작성
+// router.put('/diary/user/:diaryId',secondPartController.modifySecondPartUserDiary)//2부 일기 수정
+// router.delete('/diary/user/:diaryId',secondPartController.deleteSecondPartDiary)//2부 일기 삭제
 module.exports = router

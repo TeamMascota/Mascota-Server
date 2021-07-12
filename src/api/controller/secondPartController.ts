@@ -59,22 +59,69 @@ module.exports = {
         }
     },
 
-    deleteSecondPartChapter: async(req,res)=>{
-        const {chapterId} = req.params
-        try{
+    deleteSecondPartChapter: async (req, res) => {
+        const { chapterId } = req.params
+        try {
             await secondPartService.deleteSecondPartChapter(chapterId)
             return res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_DELETE_SECOND_PART_DELETE_CHAPTER))
-        }catch(err){
+        } catch (err) {
             console.error(err)
-            if(err.statusCode === 400){
+            if (err.statusCode === 400) {
                 return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, responseMessage.FAIL_TO_GET_SECOND_PART_TABLE_CONTENTS))
             }
             return res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, responseMessage.INTERNAL_SERVER_ERROR))
         }
     },
-    
-    addSecondPartDiary:async(req,res)=>{
-        const 
+    getSecondPartDiary: async (req, res) => {
+        const { diaryId } = req.params
+        try {
+            await secondPartService.getSecondPartDiary(diaryId)
+            return res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_DELETE_SECOND_PART_DELETE_CHAPTER))
+        } catch (err) {
+            console.error(err)
+            if (err.statusCode === 400) {
+                return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, responseMessage.FAIL_TO_GET_SECOND_PART_TABLE_CONTENTS))
+            }
+            return res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, responseMessage.INTERNAL_SERVER_ERROR))
+        }
+    },
+    addSecondPartDiary: async (req, res) => {
+        const { userData } = req.body
+        try {
+            await secondPartService.addSecondPartDiary(userData)
+            return res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_DELETE_SECOND_PART_DELETE_CHAPTER))
+        } catch (err) {
+            console.error(err)
+            if (err.statusCode === 400) {
+                return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, responseMessage.FAIL_TO_GET_SECOND_PART_TABLE_CONTENTS))
+            }
+            return res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, responseMessage.INTERNAL_SERVER_ERROR))
+        }
+    },
+    modifySecondPartDiary: async (req, res) => {
+        const { diaryId } = req.params.id
+        try {
+            await secondPartService.modifySecondPartDiary(diaryId)
+            return res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_DELETE_SECOND_PART_DELETE_CHAPTER))
+        } catch (err) {
+            console.error(err)
+            if (err.statusCode === 400) {
+                return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, responseMessage.FAIL_TO_GET_SECOND_PART_TABLE_CONTENTS))
+            }
+            return res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, responseMessage.INTERNAL_SERVER_ERROR))
+        }
+    },
+    deleteSecondPartDiary: async (req, res) => {
+        const { diaryId } = req.params.id
+        try {
+            await secondPartService.getSecondPartDiary(diaryId)
+            return res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_DELETE_SECOND_PART_DELETE_CHAPTER))
+        } catch (err) {
+            console.error(err)
+            if (err.statusCode === 400) {
+                return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, responseMessage.FAIL_TO_GET_SECOND_PART_TABLE_CONTENTS))
+            }
+            return res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, responseMessage.INTERNAL_SERVER_ERROR))
+        }
     }
-
 }

@@ -6,6 +6,7 @@ import Book from "../../models/book/Book"
 import { SecondPartMainPageResDto, SecondPartMainPageTableContents } from "../../dto/secondPart/SecondPartMainPageResDto"
 import { SecondPartDiariesOfMonth, SecondPartDiariesOfMonthResDto } from "../../dto/secondPart/SecondPartDiariesOfMonthResDto"
 import { SecondPartChapterListResDto } from "../../dto/secondPart/SecondPartChapterListResDto"
+import { SecondPartDiaryResDto } from "../../dto/secondPart/SecondPartDiaryResDto"
 import TableContents from "../../models/tableContents/TableContents"
 const dateMethod = require("../../modules/dateMethod")
 
@@ -170,5 +171,27 @@ module.exports = {
         } catch (err) {
             throw err
         }
+    },getSecondPartDiary:async(diaryId)=>{
+        try {
+            console.log(diaryId)
+            console.log(await UserDiary.findById(diaryId))
+            const findSecondPartDiary = await UserDiary.findById(diaryId).populate('users').populate('tableContents');
+            console.log(findSecondPartDiary)
+            let secondPartDiaryResDto = await new SecondPartDiaryResDto(findSecondPartDiary)
+
+            return secondPartDiaryResDto
+
+        } catch (err) {
+            console.log(err)
+            throw { statusCode: statusCode.BAD_REQUEST, responseMessage: responseMessage.NO_DIARY }
+        }
+
     }
+    // ,addSecondPartDiary:async()=>{
+
+    // },modifySecondPartDiary:async(diaryId)=>{
+
+    // },deleteSecondPartDiary:async(diaryId)=>{
+
+    // }
 }
