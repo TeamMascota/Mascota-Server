@@ -1,6 +1,6 @@
-const util = require('../../modules/util')
-const responseMessage = require('../../modules/responseMessage')
-const statusCode = require('../../modules/statusCode')
+var util = require('../../modules/util')
+var responseMessage = require('../../modules/responseMessage')
+var statusCode = require('../../modules/statusCode')
 const petService = require('../service/petService')
 
 
@@ -19,6 +19,11 @@ module.exports = {
             console.error(err)
             res.status(err.statusCode).send(util.fail(err.statusCode, err.responseMessage))
         }
+    },
+    setImages:async(req,res)=>{
+        const imagesUrls = req.files.map(file=>file.location)
+        res.send({
+            imagesUrls
+        })
     }
 }
-export{};
