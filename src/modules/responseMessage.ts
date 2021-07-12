@@ -30,17 +30,32 @@ module.exports = {
     SUCCESS_EDIT_CHAPTERLIST: "목차 리스트 수정 성공",
     SUCCESS_DELETE_CHAPTERLIST: "목차 리스트 삭제 성공",
 
-
     /* 반려동물 등록 (by 솔)*/
     SUCCESS_REGISTER_PET: "반려동물 등록 성공",
-
-    /*1부 반려동물 일기 (by 솔)*/
 
     /** 1.5부 무지개다리 (by 현종) */
     SUCCESS_GET_RAINBOW_MAIN_PAGE : "무지개 메인뷰 불러오기 성공",
     SUCCESS_GET_RAINBOW_PET : "무지개 건넌 동물 불러오기 성공",
     SUCCESS_GET_PARTING_PET_COMMENT : "이별하는 무지개 다리 멘트 불러오기 성공",
+    SUCCESS_DELETE_PARTING_PET : "반려동물 이별 과정 취소 성공",
     SUCCESS_GET_READY_PARTING_PET_COMMENT : "이별에 준비하는 작가의 기록 시작 멘트 불러오기 성공",
+    SUCCESS_GET_BEST_MOMENT : "최고의 순간 불러오기 성공",
+    SUCCESS_GET_PARTING_PETNAME : "이별할 동물 이름 가져오기 성공",
+    SUCCESS_POST_EPILOGUE : "1부 끝 작가의말 - 에필로그 작성 성공",
+    SUCCESS_GET_RAINBOW_SUB_PAGE : "무지개 서브뷰 불러오기 성공",
+
+    /**캘린더 */
+    SUCCESS_GET_MONTH_CALENDAR : "해당 월의 캘린더 가져오기 성공",
+    SUCCESS_GET_YEAR_CALENDAR : "해당 년의 캘린더 가져오기 성공",
+
+    /**2부 */
+    SUCCESS_GET_SECOND_PART_MAIN_PAGE : "2부 메인페이지 불러오기 성공",
+    SUCCESS_GET_SECOND_PART_DIARY_OF_TABLECONTENTS : "2부 목차별 일기 불러오기 성공",
+    SUCCESS_GET_SECOND_PART_CHAPTER_LIST : "2부 목차 리스트 불러오기 성공",
+    SUCCESS_POST_SECOND_PART_ADD_CHAPTER : "2부 목차 추가 성공",
+    SUCCESS_PUT_SECOND_PART_MODIFY_CHAPTER: "2부 목차 수정 성공",
+    SUCCESS_DELETE_SECOND_PART_DELETE_CHAPTER : "2부 목차 삭제 성공",
+    FAIL_TO_GET_SECOND_PART_TABLE_CONTENTS : "잘못된 2부 목차의 ID입니다.",
 
     /* 서버에러 */
     INTERNAL_SERVER_ERROR: "서버 내부 오류",

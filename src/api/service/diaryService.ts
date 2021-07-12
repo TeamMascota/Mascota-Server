@@ -108,34 +108,24 @@ module.exports = {
     putPetDiary: async (petDiaryId, diaryData) => {
         try {
             let findPetDiary = await PetDiary.findById(petDiaryId);
-            const ftc = await FirstPartTableContents.findById(diaryData._id)
-
-            let newPetDiary = new PetDiary({
-                tableContents: (await findPetDiary).tableContents,
-                episode: (await findPetDiary).episode,
-                date: (await findPetDiary).date,
-                imgs: diaryData.diaryImages,
-                title: diaryData.title,
-                contents: diaryData.contents
-            })
-
+            findPetDiary.tableContents = findPetDiary.tableContents
+            findPetDiary.episode = findPetDiary.episode
+            findPetDiary.date = findPetDiary.date
+            findPetDiary.imgs = diaryData.diaryImages
+            findPetDiary.title = diaryData.title
+            findPetDiary.contents = diaryData.contents
             //save petinfo
             let petN = diaryData.character.length
             for (let i = 0; i < petN; i++) {
                 const petData = await Pet.findById(diaryData.character[i]._id).populate('_id')
-                newPetDiary.setPet(petData)
+                findPetDiary.setPet(petData)
                 //save emotions
                 let emotion = new PetEmotions()
                 emotion.pet = diaryData.character[i]._id
                 emotion.feeling = diaryData.character[i].feeling
                 emotion.setPetDiary(findPetDiary)
-                newPetDiary.setPetEmotions(emotion)
                 await emotion.save()
             }
-            console.log(newPetDiary)
-            //newPetDiary._id=findPetDiary._id
-            findPetDiary = newPetDiary
-            //await newPetDiary.save()
             await findPetDiary.save()
             return responseMessage.SUCCESS_EDIT_PETDIARY;
 
@@ -161,8 +151,8 @@ module.exports = {
                     await temp.save()
                 }
             }
-            findPetDiary = null;
-
+            await PetDiary.deleteOne({ _id: findPetDiary })
+            console.log(findPetDiary)
             return responseMessage.SUCCESS_DELETE_PETDIARY;
         } catch (err) {
             console.log(err)

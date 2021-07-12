@@ -7,6 +7,7 @@ export interface IBook extends Document {
     author: String;
     imgs: String;
     tableContents: ITableContents;
+    date : Date
 }
 
 export interface IBookDocument extends IBook {

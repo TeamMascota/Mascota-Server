@@ -1,7 +1,7 @@
-const util = require('../../modules/util')
-const responseMessage = require('../../modules/responseMessage')
-const statusCode = require('../../modules/statusCode')
-const diaryService = require('../service/diaryService')
+var util = require('../../modules/util')
+var responseMessage = require('../../modules/responseMessage')
+var statusCode = require('../../modules/statusCode')
+var diaryService = require('../service/diaryService')
 module.exports = {
     postPrologue: async (req, res) => {
         const bookData = req.body;

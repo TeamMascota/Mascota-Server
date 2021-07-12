@@ -24,12 +24,14 @@ const PetDiarySchema : Schema<IPetDiaryDocument>= new mongoose.Schema({
     imgs : [
         {
             type : String,
+            default : []
         }
     ],
     petEmotions : [
         {
             type : mongoose.SchemaTypes.ObjectId,
-            ref : "PetEmotions"
+            ref : "PetEmotions",
+            default : []
         }
     ],
     episode : { 
