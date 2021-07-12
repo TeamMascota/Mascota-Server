@@ -1,0 +1,7 @@
+var express = require('express');
+var router = express.Router();
+var petController = require('../../controller/petController');
+var upload = require('../../../modules/multer');
+router.post('/register', upload.array('images', 4), petController.registerPet); //register pet
+module.exports = router;
+//# sourceMappingURL=index.js.map

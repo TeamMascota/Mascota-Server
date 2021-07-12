@@ -7,9 +7,9 @@ const petService = require('../service/petService')
 module.exports = {
     registerPet: async (req, res) => {
         let reqData=req.body;
-        console.log(req.body)
+        const images = req.files.map(img => img.location)
         try {
-            const result = await petService.registerPet(reqData);
+            await petService.registerPet(reqData,images);
             res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_REGISTER_PET, ""))
         } catch (err) {
             if (err.statusCode == null) {
@@ -20,10 +20,4 @@ module.exports = {
             res.status(err.statusCode).send(util.fail(err.statusCode, err.responseMessage))
         }
     },
-    setImages:async(req,res)=>{
-        const imagesUrls = req.files.map(file=>file.location)
-        res.send({
-            imagesUrls
-        })
-    }
 }

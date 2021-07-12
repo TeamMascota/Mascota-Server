@@ -10,7 +10,7 @@ var mongoose = require('mongoose')
 require("../../models/user/User")
 require("../../models/pet/Pet")
 module.exports = {
-    registerPet: async (reqData) => {
+    registerPet: async (reqData, images) => {
         try{
         //error handling
             let pets=[];
@@ -21,7 +21,7 @@ module.exports = {
                     name: reqData.pets[i].name,
                     kind: reqData.pets[i].kind,
                     gender: reqData.pets[i].gender,
-                    imgs: reqData.pets[i].petImages,
+                    imgs: images[i],
                     user: mongoose.Types.ObjectId(reqData._id),
                     rainbow: false,
                     startDate: new Date(startDate)
@@ -37,7 +37,6 @@ module.exports = {
             for (let i = 0; i < pets.length; i++) {
                 await pets[i].save();
             } 
-            return responseMessage.SUCCESS_REGISTER_PET;
         }catch(err){
             console.log(err)
             throw { statusCode: statusCode.INTERNAL_SERVER_ERROR, responseMessage: responseMessage.INTERNAL_SERVER_ERROR };
