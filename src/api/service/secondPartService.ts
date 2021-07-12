@@ -216,19 +216,18 @@ module.exports = {
             throw err
         }
     }, deleteSecondPartDiary: async (diaryId) => {
-        try{
-            const findDiary=await UserDiary.findById(diaryId).populate('tableConents');
-            console.log(findDiary)
-            const userDiaries=(await SecondPartTableContent.findOne({chapter:{$eq:findDiary.tableContents.chapter}})).userDiary
-            for(let i=0;i<userDiaries.length;i++){
-                let userChapter=await UserDiary.findById(userDiaries[i])
-                if(findDiary.episode<=userChapter.episode){
-                    userChapter.episode=Number(userChapter)-1
+        try {
+            const findDiary = await UserDiary.findById(diaryId).populate('tableContents');
+            const userDiaries = (await SecondPartTableContent.findOne({ chapter: { $eq: findDiary.tableContents.chapter } })).userDiary
+            for (let i = 0; i < userDiaries.length; i++) {
+                let userChapter = await UserDiary.findById(userDiaries[i])
+                if (findDiary.episode <= userChapter.episode) {
+                    userChapter.episode = Number(userChapter.episode) - 1
                     await userChapter.save()
                 }
             }
-            await UserDiary.deleteOne({_id:findDiary})
-        }catch(err){
+            await UserDiary.deleteOne({ _id: findDiary })
+        } catch (err) {
             throw err
         }
     }
