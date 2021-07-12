@@ -1,6 +1,6 @@
 import express from "express"
 const router = express.Router()
-const firstPartController = require('../../controller/FirstPartController')
+const firstPartController = require('../../controller/firstPartController')
 
 //1부 메인페이지 불러오기
 router.get('/main/:userId', firstPartController.mainPage)
