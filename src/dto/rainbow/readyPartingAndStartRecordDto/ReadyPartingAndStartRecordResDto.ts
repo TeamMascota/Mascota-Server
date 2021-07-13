@@ -17,7 +17,6 @@ export class BookInfoResDto{
     bookImg = null;
     author = null;
     constructor(book : IBook){
-        console.log('!!!!!!! : '+book)
         this.title = book.title
         this.bookImg = book.imgs
         this.author = book.author
