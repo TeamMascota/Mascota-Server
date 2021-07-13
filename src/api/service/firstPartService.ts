@@ -58,6 +58,7 @@ module.exports = {
             
             const firstPartMainPageResDto = new FirstPartMainPageResDto(findUser.book)
             let lastTableNumber = findUser.book.tableContents.firstPartTableContents.length-1
+            console.log('11111 : '+lastTableNumber)
             //console.log("#:",lastTableNumber)
             
             const lastDiary = new DiaryResDto(findUser.book.tableContents.firstPartTableContents[lastTableNumber])

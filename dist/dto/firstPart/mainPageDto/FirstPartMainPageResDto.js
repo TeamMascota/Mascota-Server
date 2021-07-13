@@ -38,6 +38,7 @@ exports.FirstPartMainPageResDto = FirstPartMainPageResDto;
 class DiaryResDto {
     //가장 마지막 화 들어감
     constructor(firstPartTableContents) {
+        console.log('bbbbbb : ' + firstPartTableContents);
         this.init(firstPartTableContents);
     }
     init(firstPartTableContents) {
@@ -60,7 +61,7 @@ class TableContentsResDto {
         this.chapterId = firstPartTableContents._id; //목차 Id
         this.chapter = firstPartTableContents.chapter;
         this.chapterName = firstPartTableContents.title;
-        this.episodePerchapterCount = firstPartTableContents.petDiary.length;
+        this.episodePerchapterCount = firstPartTableContents.petDiary.length < 1 ? 0 : firstPartTableContents.petDiary.length;
     }
 }
 exports.TableContentsResDto = TableContentsResDto;

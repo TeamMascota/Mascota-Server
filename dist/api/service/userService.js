@@ -14,8 +14,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const User_1 = __importDefault(require("../../models/user/User"));
 const Book_1 = __importDefault(require("../../models/book/Book"));
-const FirstPartTableContents_1 = __importDefault(require("../../models/tableContents/FirstPartTableContents"));
-const TableContents_1 = __importDefault(require("../../models/tableContents/TableContents"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const express_validator_1 = require("express-validator");
 const validator = require('validator');
@@ -39,25 +37,17 @@ module.exports = {
         if (user) {
             throw { statusCode: statusCode.BAD_REQUEST, responseMessage: responseMessage.ALREADY_ID };
         }
+        const book = new Book_1.default();
         user = new User_1.default({
             email,
-            password
+            password,
+            book
         });
+        yield book.save();
         //Encrpyt password
         const salt = yield bcryptjs_1.default.genSalt(10);
         user.password = yield bcryptjs_1.default.hash(password, salt);
-        //Create book object
-        const book = new Book_1.default();
-        //Create tableContents object
-        const tableContents = new TableContents_1.default();
-        //Create firstPartTableContents object
-        const firstPart = new FirstPartTableContents_1.default();
-        tableContents.setFirstPartTableContents(firstPart);
-        book.setTableContents(tableContents);
-        user.setBook(book);
-        //db save
-        yield user.save();
-        return { bookId: book._id };
+        user.save();
     }),
     login: (email, password) => __awaiter(void 0, void 0, void 0, function* () {
         try {
@@ -65,7 +55,9 @@ module.exports = {
             if (!errors.isEmpty()) {
                 throw { statusCode: statusCode.BAD_REQUEST, responseMessage: responseMessage.EMPTY_ID };
             }
-            let user = yield User_1.default.findOne({ email });
+            let user = yield User_1.default.findOne({ email }).populate({
+                path: "pets"
+            });
             if (!user) {
                 //등록되지 않은 email
                 throw { statusCode: statusCode.NO_CONTENT, responseMessage: responseMessage.NO_USER };
@@ -75,6 +67,8 @@ module.exports = {
             if (!test) {
                 throw { statusCode: statusCode.BAD_REQUEST, responseMessage: responseMessage.SIGN_IN_FAIL };
             }
+            const petId = user.pets[0]._id;
+            return { userId: user._id, petId: petId };
         }
         catch (err) {
             throw err;

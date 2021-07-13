@@ -49,6 +49,14 @@ module.exports = {
     SUCCESS_PUT_SECOND_PART_MODIFY_CHAPTER: "2부 목차 수정 성공",
     SUCCESS_DELETE_SECOND_PART_DELETE_CHAPTER: "2부 목차 삭제 성공",
     FAIL_TO_GET_SECOND_PART_TABLE_CONTENTS: "잘못된 2부 목차의 ID입니다.",
+    SUCCESS_GET_SECOND_PART_DIARY: "2부 일기 불러오기 성공",
+    FAIL_TO_GET_SECOND_PART_DIARY_ID: "잘못된 2부 일기의 ID입니다.",
+    SUCCESS_POST_SECOND_PART_DIARY: "2부 일기 작성 성공",
+    FAIL_TO_POST_SECOND_PART_DIARY: "2부 일기 작성 실패",
+    SUCCESS_PUT_SECOND_PART_DIARY: "2부 일기 수정 성공",
+    FAIL_TO_PUT_SECOND_PART_DIARY: "2부 일기 수정 실패",
+    SUCCESS_DELETE_SECOND_PART_DELETE_DIARY: "2부 일기 삭제 성공",
+    FAIL_TO_DELETE_SECOND_PART_DIARY: "2부 일기 삭제 실패",
     /* 서버에러 */
     INTERNAL_SERVER_ERROR: "서버 내부 오류",
 };

@@ -11,12 +11,16 @@ var util = require('../../modules/util');
 var responseMessage = require('../../modules/responseMessage');
 var statusCode = require('../../modules/statusCode');
 var diaryService = require('../service/diaryService');
+var firstPartService = require('../service/firstPartService');
 module.exports = {
     postPrologue: (req, res) => __awaiter(this, void 0, void 0, function* () {
+        const { userId } = req.params;
         const bookData = req.body;
+        const bookImage = req.file.location;
         try {
-            const result = yield diaryService.postPrologue(bookData);
-            res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_POST_PROLOGUE, ""));
+            yield diaryService.postPrologue(userId, bookData);
+            //const result=await firstPartService.getMainPage(userId)
+            res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_POST_PROLOGUE));
         }
         catch (err) {
             console.error(err);
@@ -29,8 +33,9 @@ module.exports = {
     }),
     postPetDiary: (req, res) => __awaiter(this, void 0, void 0, function* () {
         const diaryData = req.body;
+        const diaryImages = req.files.map(file => file.location);
         try {
-            const result = yield diaryService.postPetDiary(diaryData);
+            const result = yield diaryService.postPetDiary(diaryData, diaryImages);
             res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_POST_PETDIARY, ""));
         }
         catch (err) {

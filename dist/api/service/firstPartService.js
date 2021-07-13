@@ -66,6 +66,7 @@ module.exports = {
             }
             const firstPartMainPageResDto = new FirstPartMainPageResDto_1.FirstPartMainPageResDto(findUser.book);
             let lastTableNumber = findUser.book.tableContents.firstPartTableContents.length - 1;
+            console.log('11111 : ' + lastTableNumber);
             //console.log("#:",lastTableNumber)
             const lastDiary = new FirstPartMainPageResDto_1.DiaryResDto(findUser.book.tableContents.firstPartTableContents[lastTableNumber]);
             //tableContents

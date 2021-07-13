@@ -18,6 +18,7 @@ const User_1 = __importDefault(require("../../models/user/User"));
 const SecondPartMainPageResDto_1 = require("../../dto/secondPart/SecondPartMainPageResDto");
 const SecondPartDiariesOfMonthResDto_1 = require("../../dto/secondPart/SecondPartDiariesOfMonthResDto");
 const SecondPartChapterListResDto_1 = require("../../dto/secondPart/SecondPartChapterListResDto");
+const SecondPartDiaryResDto_1 = require("../../dto/secondPart/SecondPartDiaryResDto");
 const TableContents_1 = __importDefault(require("../../models/tableContents/TableContents"));
 const dateMethod = require("../../modules/dateMethod");
 require('../../models/tableContents/FirstPartTableContents');
@@ -154,6 +155,64 @@ module.exports = {
             const idx = tableContents.secondPartTableContents.findIndex(secondPartTable => secondPartTable._id == chapterId);
             tableContents.secondPartTableContents.splice(idx, 1);
             yield tableContents.save();
+        }
+        catch (err) {
+            throw err;
+        }
+    }), getSecondPartDiary: (diaryId) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            console.log(diaryId);
+            const findSecondPartDiary = yield UserDiary_1.default.findById(diaryId).populate('users').populate('tableContents');
+            console.log(findSecondPartDiary);
+            let secondPartDiaryResDto = yield new SecondPartDiaryResDto_1.SecondPartDiaryResDto(findSecondPartDiary);
+            console.log(secondPartDiaryResDto);
+            return secondPartDiaryResDto;
+        }
+        catch (err) {
+            console.log(err);
+            throw { statusCode: 400 };
+        }
+    }), addSecondPartDiary: (diaryData) => __awaiter(void 0, void 0, void 0, function* () {
+        const secondPartTableContents = yield SecondPartTableContent_1.default.findById(diaryData.chapterId).populate('userDiary');
+        console.log("length: ", secondPartTableContents.userDiary.length);
+        let newUserDiary = new UserDiary_1.default({
+            tableContents: diaryData.chapterId,
+            episode: secondPartTableContents.userDiary.length,
+            imgs: diaryData.diaryImages,
+            title: diaryData.title,
+            contents: diaryData.contents,
+            feeling: diaryData.feeling
+        });
+        secondPartTableContents.setUserDiary(newUserDiary);
+        yield secondPartTableContents.save();
+        try {
+            console.log(newUserDiary);
+            yield newUserDiary.save();
+        }
+        catch (err) {
+            console.log(err);
+            throw { statusCode: 400 };
+        }
+    }),
+    modifySecondPartDiary: (diaryId, diaryData) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            yield UserDiary_1.default.updateOne({ _id: diaryId }, { $set: { imgs: diaryData.diaryImages, title: diaryData.title, contents: diaryData.contents, feeling: diaryData.feeling } });
+        }
+        catch (err) {
+            throw err;
+        }
+    }), deleteSecondPartDiary: (diaryId) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const findDiary = yield UserDiary_1.default.findById(diaryId).populate('tableContents');
+            const userDiaries = (yield SecondPartTableContent_1.default.findOne({ chapter: { $eq: findDiary.tableContents.chapter } })).userDiary;
+            for (let i = 0; i < userDiaries.length; i++) {
+                let userChapter = yield UserDiary_1.default.findById(userDiaries[i]);
+                if (findDiary.episode <= userChapter.episode) {
+                    userChapter.episode = Number(userChapter.episode) - 1;
+                    yield userChapter.save();
+                }
+            }
+            yield UserDiary_1.default.deleteOne({ _id: findDiary });
         }
         catch (err) {
             throw err;

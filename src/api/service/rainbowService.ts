@@ -212,9 +212,7 @@ module.exports = {
 
             const diaryPerFeeling = []
             for (let i = 0; i < 6; i++) {
-                console.log(i)
                 const diaries = (await PetEmotions.find({ "feeling": { $eq: i } }).select("petDiary").populate({ path: "petDiary", populate: ({ path: "tableContents" }) })).map(emotion => emotion.petDiary)
-                console.log('diaries : '+diaries)
                 if (diaries.length < 1) {
                     diaryPerFeeling.push(null)
                 } else {
