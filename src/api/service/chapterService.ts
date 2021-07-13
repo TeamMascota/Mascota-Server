@@ -30,18 +30,22 @@ module.exports = {
             let newChapterDiary = new PetChapterDiaryResDto(findFirstTableContents)
 
             //월별로 자르기
-            for (let m = 1; m <= 12; m++) {
+            for (let m = 12; m >= 1; m--) {
                 let cnt = 0;
                 //1화부터
                 let monthly = new MonthlyDiaryResDto()
+
                 for (let i = 0; i < findFirstTableContents.petDiary.length; i++) {
+
                     if (m == findFirstTableContents.petDiary[i].date.getMonth()) {
                         cnt++;
                         let newDiary = new DiariesResDto(findFirstTableContents.petDiary[i])//diary                     
                         monthly.setDiaries(newDiary)
                         //console.log(findFirstTableContents.petDiary[i].petEmotions[0].feeling)
                     }
+
                 }
+                if (cnt == 0) continue
                 monthly.setMonthCount(cnt)
                 monthly.setMonth(m)
                 newChapterDiary.setMonthly(monthly)
@@ -77,7 +81,7 @@ module.exports = {
                     max = Number(findUserChapter.book.tableContents.firstPartTableContents[i].chapter)
                 }
             }
-            newFirstPartTable.chapter = max+1
+            newFirstPartTable.chapter = max + 1
             newFirstPartTable.title = chapterTitle
 
             await newFirstPartTable.save()
@@ -113,25 +117,25 @@ module.exports = {
             let findChapter = await FirstPartTableContents.findById(chapterId);
             const curChapter = findChapter.chapter
             const allFirstTableContents = await FirstPartTableContents.find({});
-            let updateFTC=new FirstPartTableContents()
+            let updateFTC = new FirstPartTableContents()
             //해당 목차보다 큰 목차 -=1
             for (let i = 0; i < allFirstTableContents.length; i++) {
                 if (allFirstTableContents[i].chapter > curChapter) {
                     allFirstTableContents[i].chapter = Number(allFirstTableContents[i].chapter) - 1;
                 }
                 //db save
-                updateFTC=allFirstTableContents[i]
+                updateFTC = allFirstTableContents[i]
                 await updateFTC.save()
             }
             console.log(allFirstTableContents)
 
             //해당 목차 삭제
-            await FirstPartTableContents.deleteOne({_id:chapterId})
+            await FirstPartTableContents.deleteOne({ _id: chapterId })
 
             const tableContents = (await TableContents.find())[0]
-            for(let j = 0;j<tableContents.firstPartTableContents.length;j++){
-                if(tableContents.firstPartTableContents[j] == chapterId){
-                    tableContents.firstPartTableContents.splice(j,1)
+            for (let j = 0; j < tableContents.firstPartTableContents.length; j++) {
+                if (tableContents.firstPartTableContents[j] == chapterId) {
+                    tableContents.firstPartTableContents.splice(j, 1)
                 }
             }
             await tableContents.save()

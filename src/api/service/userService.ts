@@ -42,7 +42,8 @@ module.exports = {
             //Encrpyt password
             const salt = await bcrypt.genSalt(10);
             user.password = await bcrypt.hash(password, salt);
-            user.save()
+            await user.save()
+
         },
     login: async (email, password) => {
         try {

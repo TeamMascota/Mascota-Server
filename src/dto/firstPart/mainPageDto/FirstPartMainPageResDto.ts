@@ -50,8 +50,11 @@ export class DiaryResDto {
         const firstPartTableContents = petDiary.tableContents
         this.chapter = firstPartTableContents.chapter
         this.episode = firstPartTableContents.petDiary.length;
-
-        this._id = petDiary._id
+        //if(this.chapter==0){
+        //    this._id="60ed3acde5003a744892ce27"
+        //}else{
+            this._id=petDiary._id
+        //}
         this.title = petDiary.title;
         this.contents = petDiary.contents;
         this.date = await dateMethod.toStringByFormatting(petDiary.date);

@@ -74,7 +74,6 @@ module.exports = {
             if(findUser.book.tableContents.secondPartTableContents.length > 1){
                 firstPartMainPageResDto.setSecondPartBook(findUser)
             }
-
             return firstPartMainPageResDto
 
         } catch (err) {
