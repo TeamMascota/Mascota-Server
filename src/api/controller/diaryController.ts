@@ -7,11 +7,12 @@ module.exports = {
     postPrologue: async (req, res) => {
         const {userId}=req.params
         const bookData = req.body;
+        const bookImage = req.file.location
         try {
             await diaryService.postPrologue(userId,bookData)
             //const result=await firstPartService.getMainPage(userId)
             res.status(statusCode.OK).send(util.success(statusCode.OK,responseMessage.SUCCESS_POST_PROLOGUE))
-        } catch (err) {
+ } catch (err) {
             console.error(err)
             if (err.statusCode == null) {
                 err.statusCode = statusCode.INTERNAL_SERVER_ERROR;
@@ -22,8 +23,9 @@ module.exports = {
     },
     postPetDiary: async (req, res) => {
         const diaryData = req.body;
+        const diaryImages = req.files.map(file=>file.location)
         try {
-            const result = await diaryService.postPetDiary(diaryData)
+            const result = await diaryService.postPetDiary(diaryData,diaryImages)
             res.status(statusCode.OK).send(util.success(statusCode.OK,responseMessage.SUCCESS_POST_PETDIARY, ""))
         } catch (err) {
             console.error(err)

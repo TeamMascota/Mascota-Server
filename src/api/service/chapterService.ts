@@ -77,7 +77,7 @@ module.exports = {
                     max = Number(findUserChapter.book.tableContents.firstPartTableContents[i].chapter)
                 }
             }
-            newFirstPartTable.chapter = max
+            newFirstPartTable.chapter = max+1
             newFirstPartTable.title = chapterTitle
 
             await newFirstPartTable.save()
@@ -126,7 +126,16 @@ module.exports = {
             console.log(allFirstTableContents)
 
             //해당 목차 삭제
-            findChapter=null;
+            await FirstPartTableContents.deleteOne({_id:chapterId})
+
+            const tableContents = (await TableContents.find())[0]
+            for(let j = 0;j<tableContents.firstPartTableContents.length;j++){
+                if(tableContents.firstPartTableContents[j] == chapterId){
+                    tableContents.firstPartTableContents.splice(j,1)
+                }
+            }
+            await tableContents.save()
+
             return responseMessage.SUCCESS_DELETE_CHAPTERLIST;
         }
         catch (err) {
