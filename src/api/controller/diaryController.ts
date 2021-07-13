@@ -5,8 +5,9 @@ var diaryService = require('../service/diaryService')
 module.exports = {
     postPrologue: async (req, res) => {
         const bookData = req.body;
+        const bookImage = req.file.location
         try {
-            const result = await diaryService.postPrologue(bookData)
+            const result = await diaryService.postPrologue(bookData,bookImage)
             res.status(statusCode.OK).send(util.success(statusCode.OK,responseMessage.SUCCESS_POST_PROLOGUE, ""))
         } catch (err) {
             console.error(err)
@@ -19,8 +20,9 @@ module.exports = {
     },
     postPetDiary: async (req, res) => {
         const diaryData = req.body;
+        const diaryImages = req.files.map(file=>file.location)
         try {
-            const result = await diaryService.postPetDiary(diaryData)
+            const result = await diaryService.postPetDiary(diaryData,diaryImages)
             res.status(statusCode.OK).send(util.success(statusCode.OK,responseMessage.SUCCESS_POST_PETDIARY, ""))
         } catch (err) {
             console.error(err)

@@ -48,7 +48,7 @@ module.exports = {
             throw { statusCode: statusCode.BAD_REQUEST, responseMessage: responseMessage.NO_BOOK }
         }
     },
-    postPetDiary: async (diaryData) => {
+    postPetDiary: async (diaryData,diaryImages) => {
         const writeDate = await new Date(diaryData.date)
         writeDate.setDate(writeDate.getDate() + 1);
         // console.log(FirstPartTableContents.findById(diaryData._id))
@@ -58,7 +58,7 @@ module.exports = {
             tableContents: diaryData._id,
             episode: temp.petDiary.length,
             date: writeDate,
-            imgs: diaryData.diaryImages,
+            imgs: diaryImages,
             title: diaryData.title,
             contents: diaryData.contents
 
