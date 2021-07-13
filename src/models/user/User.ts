@@ -9,12 +9,12 @@ const UserSchema: Schema<IUserDocument> = new mongoose.Schema({
     pets: [
         {
             type: mongoose.SchemaTypes.ObjectId,
-            ref: "Pet"
+            ref: "Pet",
         }
     ],
     book: {
         type: mongoose.SchemaTypes.ObjectId,
-        ref: "Book"
+        ref: "Book",
     },
     feelingCount: { type: Number }
 })

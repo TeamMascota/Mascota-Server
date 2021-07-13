@@ -31,31 +31,18 @@ module.exports = {
                 throw { statusCode: statusCode.BAD_REQUEST, responseMessage: responseMessage.ALREADY_ID };
             }
 
+            const book=new Book()
             user = new User({
                 email,
-                password
+                password,
+                book
             });
+            await book.save()
 
             //Encrpyt password
             const salt = await bcrypt.genSalt(10);
             user.password = await bcrypt.hash(password, salt);
-
-            //Create book object
-            const book = new Book()
-
-            //Create tableContents object
-            const tableContents = new TableContents()
-
-            //Create firstPartTableContents object
-            const firstPart = new FirstPartTableContents()
-            tableContents.setFirstPartTableContents(firstPart)
-            book.setTableContents(tableContents)
-            user.setBook(book);
-
-            //db save
-            await user.save();
-
-            return { bookId: book._id };
+            user.save()
         },
     login: async (email, password) => {
         try {
@@ -74,7 +61,7 @@ module.exports = {
             if (!test) {
                 throw { statusCode: statusCode.BAD_REQUEST, responseMessage: responseMessage.SIGN_IN_FAIL };
             }
-
+            return user._id
         } catch (err) {
             throw err
         }
