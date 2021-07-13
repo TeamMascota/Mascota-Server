@@ -2,12 +2,15 @@ var util = require('../../modules/util')
 var responseMessage = require('../../modules/responseMessage')
 var statusCode = require('../../modules/statusCode')
 var diaryService = require('../service/diaryService')
+var firstPartService=require('../service/firstPartService')
 module.exports = {
     postPrologue: async (req, res) => {
+        const {userId}=req.params
         const bookData = req.body;
         try {
-            const result = await diaryService.postPrologue(bookData)
-            res.status(statusCode.OK).send(util.success(statusCode.OK,responseMessage.SUCCESS_POST_PROLOGUE, ""))
+            await diaryService.postPrologue(userId,bookData)
+            //const result=await firstPartService.getMainPage(userId)
+            res.status(statusCode.OK).send(util.success(statusCode.OK,responseMessage.SUCCESS_POST_PROLOGUE))
         } catch (err) {
             console.error(err)
             if (err.statusCode == null) {
