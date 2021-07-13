@@ -5,7 +5,7 @@ import { IBook } from "../../../interfaces/book/IBook";
 import { IFirstPartTableContents } from "../../../interfaces/tableContents/IFirstPartTableContents";
 import { ITableContents } from "../../../interfaces/tableContents/ITableContents";
 import { IUser } from "../../../interfaces/user/IUser";
-const dateMethod=require('../../../modules/dateMethod')
+const dateMethod = require('../../../modules/dateMethod')
 
 export class FirstPartMainPageResDto {
     public firstPartMainPage = {
@@ -13,7 +13,7 @@ export class FirstPartMainPageResDto {
         bookImg: null,
         diary: {},
         tableContents: [],
-        secondPartBook : null
+        secondPartBook: null
     }
 
     constructor(book: IBook) {
@@ -28,7 +28,7 @@ export class FirstPartMainPageResDto {
     setTableContents(tableContents: TableContentsResDto) {
         this.firstPartMainPage.tableContents.push(tableContents)
     }
-    setSecondPartBook(user : IUser){
+    setSecondPartBook(user: IUser) {
         this.firstPartMainPage.secondPartBook = new SecondPartBookResDto(user)
     }
 }
@@ -42,20 +42,19 @@ export class DiaryResDto {
     private date;
 
     //가장 마지막 화 들어감
-    constructor(firstPartTableContents: IFirstPartTableContents) {
-        this.init(firstPartTableContents)
+    constructor(petDiary: IPetDiary) {
+        this.init(petDiary)
     }
 
-    async init(firstPartTableContents: IFirstPartTableContents){
-        console.log('!!!!!!!!!!!!!!! : '+firstPartTableContents)
+    async init(petDiary: IPetDiary) {
+        const firstPartTableContents = petDiary.tableContents
         this.chapter = firstPartTableContents.chapter
         this.episode = firstPartTableContents.petDiary.length;
-        console.log('@@@@@@@ : '+this.episode)
-        console.log('######## : '+firstPartTableContents.petDiary[this.episode-1])
-        this._id = firstPartTableContents.petDiary[this.episode-1]._id
-        this.title = firstPartTableContents.petDiary[this.episode-1].title;
-        this.contents = firstPartTableContents.petDiary[this.episode-1].contents;
-        this.date = await dateMethod.toStringByFormatting(firstPartTableContents.petDiary[this.episode-1].date);
+
+        this._id = petDiary._id
+        this.title = petDiary.title;
+        this.contents = petDiary.contents;
+        this.date = await dateMethod.toStringByFormatting(petDiary.date);
     }
 }
 
@@ -66,24 +65,24 @@ export class TableContentsResDto {
     private episodePerchapterCount;
 
     constructor(firstPartTableContents: IFirstPartTableContents) {
-            this.chapterId = firstPartTableContents._id //목차 Id
-            this.chapter = firstPartTableContents.chapter;
-            this.chapterName = firstPartTableContents.title;
-            this.episodePerchapterCount = firstPartTableContents.petDiary.length;
+        this.chapterId = firstPartTableContents._id //목차 Id
+        this.chapter = firstPartTableContents.chapter;
+        this.chapterName = firstPartTableContents.title;
+        this.episodePerchapterCount = firstPartTableContents.petDiary.length;
     }
 }
 
-export class SecondPartBookResDto{
+export class SecondPartBookResDto {
     private userId
     private imgs
     private author
     private date
 
-    constructor(user : IUser){
+    constructor(user: IUser) {
         this.init(user)
     }
 
-    async init(user : IUser){
+    async init(user: IUser) {
         this.userId = user._id
         this.imgs = user.book.imgs
         this.author = user.book.author

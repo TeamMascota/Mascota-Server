@@ -8,7 +8,7 @@ const statusCode = require('../../modules/statusCode')
 import Book from "../../models/book/Book"
 import TableContents from "../../models/tableContents/TableContents"
 import FirstPartTableContents from "../../models/tableContents/FirstPartTableContents"
-
+import PetDiary from "../../models/diary/PetDiary"
 require("../../models/user/User")
 require("../../models/pet/Pet")
 require("../../models/book/Book")
@@ -39,7 +39,7 @@ module.exports = {
                     })
                 })
             })
-
+            console.log("user",findUser)
             let newBook=new Book()
             let newTableContents=new TableContents()
             let newFirstPartTableContents=new FirstPartTableContents()
@@ -57,11 +57,25 @@ module.exports = {
             }
             
             const firstPartMainPageResDto = new FirstPartMainPageResDto(findUser.book)
-            let lastTableNumber = findUser.book.tableContents.firstPartTableContents.length-1
-            //console.log("#:",lastTableNumber)
+            let allPetDiaries = await PetDiary.find({}).populate('tableContents')
+            let petDiaryNumber=(await allPetDiaries).length
+            // //prologue
+            // if(petDiaryNumber==0){
+            //     let prologue=findUser.book.tableContents.firstPartTableContents[0]
+            //     const prologueDiary=new Diary({
+            //     chapter=0,
+            //     episode=0,
+            //     _id="60ed4a6a1d5f293a94db7e3d",
+            //     title=prologue.title,
+            //     contents=prologue.contents
+            //     })  
+            // }
+            //가장 마지막 일기
+            const lastDiary = new DiaryResDto(allPetDiaries[petDiaryNumber-1])
             
-            const lastDiary = new DiaryResDto(findUser.book.tableContents.firstPartTableContents[lastTableNumber])
             //tableContents
+            let lastTableNumber=findUser.book.tableContents.firstPartTableContents.length
+            console.log("lastTable", TableContents)
             for (let i = 0; i < lastTableNumber; i++) {
                 let tableContentsResDto = new TableContentsResDto(findUser.book.tableContents.firstPartTableContents[i])
                 firstPartMainPageResDto.setTableContents(tableContentsResDto)
