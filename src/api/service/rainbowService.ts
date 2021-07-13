@@ -126,7 +126,7 @@ module.exports = {
             const findUser = await User.find().populate({
                 path: "pets"
             })
-            const rainbowPetResDto = findUser[0].pets.map(pet =>
+            const rainbowPetResDto = findUser[0].pets.filter(pet=>!pet.rainbow).map(pet =>
                 new MyPetInfoResDto(pet))
 
             return rainbowPetResDto

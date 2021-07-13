@@ -50,7 +50,9 @@ module.exports = {
             if (!errors.isEmpty()) {
                 throw { statusCode: statusCode.BAD_REQUEST, responseMessage: responseMessage.EMPTY_ID };
             }
-            let user = await User.findOne({ email });
+            let user = await User.findOne({ email }).populate({
+                path : "pets"
+            });
             if (!user) {
                 //등록되지 않은 email
                 throw { statusCode: statusCode.NO_CONTENT, responseMessage: responseMessage.NO_USER };
@@ -61,7 +63,8 @@ module.exports = {
             if (!test) {
                 throw { statusCode: statusCode.BAD_REQUEST, responseMessage: responseMessage.SIGN_IN_FAIL };
             }
-            return user._id
+            const petId = user.pets[0]._id
+            return { userId : user._id, petId : petId}
         } catch (err) {
             throw err
         }
