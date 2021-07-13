@@ -19,12 +19,12 @@ const responseMessage = require('../../modules/responseMessage')
 const statusCode = require('../../modules/statusCode')
 
 module.exports = {
-    postPrologue: async (bookData) => {
+    postPrologue: async (bookData,bookImage) => {
         try {
             // add book info
             let book = await Book.findById(bookData._id);
             book.title = bookData.title;
-            book.imgs = bookData.image;
+            book.imgs = bookImage;
             book.author = bookData.userName;
             console.log(book)
             //add tableContents info
