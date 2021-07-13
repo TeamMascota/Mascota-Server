@@ -61,7 +61,7 @@ module.exports = {
             if (!test) {
                 throw { statusCode: statusCode.BAD_REQUEST, responseMessage: responseMessage.SIGN_IN_FAIL };
             }
-
+            return user._id
         } catch (err) {
             throw err
         }
