@@ -13,6 +13,7 @@ require("../../models/pet/Pet")
 require('../../models/tableContents/TableContents')
 require('../../models/tableContents/FirstPartTableContents')
 require('../../models/diary/PetDiary')
+require('../../models/diary/PetEmotions')
 const util = require('../../modules/util')
 const responseMessage = require('../../modules/responseMessage')
 const statusCode = require('../../modules/statusCode')
@@ -67,14 +68,15 @@ module.exports = {
             //save petinfo
             let petN = diaryData.character.length
             for (let i = 0; i < petN; i++) {
-                const petData = await Pet.findById(diaryData.character[0]._id).populate('_id')
+                const petData = await Pet.findById(diaryData.character[i]._id).populate('_id')
                 newPetDiary.setPet(petData)
                 //save emotions
                 const petEmotion = new PetEmotions({
-                    pet: diaryData.character[0]._id,
-                    feeling: diaryData.character[0].feeling
+                    pet: diaryData.character[i]._id,
+                    feeling: diaryData.character[i].feeling
                 })
                 newPetDiary.setPetEmotions(petEmotion)
+                await petEmotion.save()
             }
 
             console.log(newPetDiary)
@@ -116,7 +118,7 @@ module.exports = {
             //save petinfo
             let petN = diaryData.character.length
             for (let i = 0; i < petN; i++) {
-                const petData = await Pet.findById(diaryData.character[i]._id).populate('_id')
+                const petData = await Pet.findById(diaryData.character[i]._id)
                 findPetDiary.setPet(petData)
                 //save emotions
                 let emotion = new PetEmotions()
@@ -136,11 +138,17 @@ module.exports = {
     },
     deletePetDiary: async (petDiaryId) => {
         try {
-            let findPetDiary = await PetDiary.findById(petDiaryId).populate('tableContents');
-            console.log(findPetDiary)
+            let findPetDiary = await PetDiary.findById(petDiaryId).populate('tableContents').populate('petEmotions');
+            console.log('!!!!! : '+findPetDiary)
             //화 정렬 순서 맞추기
             //해당 목차인것들 모두 가져오기. findPetDiary의 idx 뒤로 다 -1
             // let allDiaries=await (PetDiary.find({}).populate('tableContents'))
+            let thisDiariesTableContent = findPetDiary.tableContents
+            for(let j = 0;j<thisDiariesTableContent.petDiary.length;j++){
+                if(thisDiariesTableContent.petDiary[j]._id == petDiaryId){
+                    thisDiariesTableContent.petDiary.splice(j,1)
+                }
+            }
             let petDiaries = (await FirstPartTableContents.findOne({ chapter: { $eq: findPetDiary.tableContents.chapter } })).petDiary
 
             for (let i = 0; i < petDiaries.length; i++) {
@@ -150,7 +158,13 @@ module.exports = {
                     await temp.save()
                 }
             }
+
+            findPetDiary.petEmotions.forEach(async petEmotion=>{
+                await PetEmotions.deleteOne({_id:petEmotion._id})
+            })
+
             await PetDiary.deleteOne({ _id: findPetDiary })
+            await thisDiariesTableContent.save()
             console.log(findPetDiary)
             return responseMessage.SUCCESS_DELETE_PETDIARY;
         } catch (err) {

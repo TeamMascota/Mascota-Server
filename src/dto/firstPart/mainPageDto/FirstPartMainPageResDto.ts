@@ -69,7 +69,7 @@ export class TableContentsResDto {
             this.chapterId = firstPartTableContents._id //목차 Id
             this.chapter = firstPartTableContents.chapter;
             this.chapterName = firstPartTableContents.title;
-            this.episodePerchapterCount = firstPartTableContents.petDiary.length;
+            this.episodePerchapterCount = firstPartTableContents.petDiary.length < 1 ? 0 : firstPartTableContents.petDiary.length;
     }
 }
 
