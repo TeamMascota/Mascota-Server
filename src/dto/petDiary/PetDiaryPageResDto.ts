@@ -1,5 +1,6 @@
 import { IPetDiary, IPetDiaryDocument } from "../../interfaces/diary/IPetDiary";
 import { IPetEmotions } from "../../interfaces/diary/IPetEmotions";
+import { IPet } from "../../interfaces/pet/IPet";
 require("../../models/user/User")
 require("../../models/book/Book")
 require("../../models/pet/Pet")
@@ -17,8 +18,9 @@ export class PetDiaryPageResDto {
         date: null,
         contents: null,
         timeTogether: null,
-        kind: null,
+        // kind: null,
         feelingList: []
+        //feeling,kind,img
     }
 
 
@@ -33,12 +35,29 @@ export class PetDiaryPageResDto {
         this.petDiary.date = await dateMethod.toKoreanByFormatting(petDiary.date)
         this.petDiary.episode = petDiary.episode
         this.petDiary.contents = petDiary.contents
-        this.petDiary.kind = petDiary.pets[0].kind
+        // this.petDiary.kind = petDiary.pets[0].kind
         this.petDiary.timeTogether = await dateMethod.getElapsedDay(petDiary.pets[0].startDate)
     }
-    setFeelingList(emotion: IPetEmotions) {
-        this.petDiary.feelingList.push(emotion.feeling)
+    setFeelingList(feelingList:FeelingListDto) {
+        this.petDiary.feelingList.push(feelingList)
     }
 
+}
+
+export class FeelingListDto{
+        private feeling=null
+        private kind=null
+        private petImgs=null
+    constructor(pet:IPet){
+        this.kind=pet.kind
+        this.petImgs=pet.imgs
+    }
+    setFeeling(emotion:IPetEmotions){
+        this.feeling=emotion.feeling
+    }
+
+
+    
+    
 }
 export { }

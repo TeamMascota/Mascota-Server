@@ -6,7 +6,7 @@ import FirstPartTableContents from "../../models/tableContents/FirstPartTableCon
 import Pet from "../../models/pet/Pet"
 import PetDiary from "../../models/diary/PetDiary"
 import PetEmotions from "../../models/diary/PetEmotions"
-import { PetDiaryPageResDto } from "../../dto/petDiary/PetDiaryPageResDto"
+import { FeelingListDto, PetDiaryPageResDto } from "../../dto/petDiary/PetDiaryPageResDto"
 require("../../models/user/User")
 require("../../models/book/Book")
 require("../../models/pet/Pet")
@@ -96,8 +96,12 @@ module.exports = {
         try {
             const findPetDiary = await PetDiary.findById(petDiaryId).populate('pets').populate('tableContents').populate('petEmotions');
             let petDiaryPageResDto = await new PetDiaryPageResDto(findPetDiary) //이부분
+            // console.log("feelingList",findPetDiary.pets[0],";",findPetDiary.petEmotions[0].feeling)
+
             for (let i = 0; i < findPetDiary.petEmotions.length; i++) {
-                petDiaryPageResDto.setFeelingList(findPetDiary.petEmotions[i])
+                let feelingList = new FeelingListDto(findPetDiary.pets[i])
+                feelingList.setFeeling(findPetDiary.petEmotions[i])
+                petDiaryPageResDto.setFeelingList(feelingList)
             }
             return petDiaryPageResDto
 

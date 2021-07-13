@@ -6,6 +6,7 @@ import Book from "../../models/book/Book"
 import { SecondPartMainPageResDto, SecondPartMainPageTableContents } from "../../dto/secondPart/SecondPartMainPageResDto"
 import { SecondPartDiariesOfMonth, SecondPartDiariesOfMonthResDto } from "../../dto/secondPart/SecondPartDiariesOfMonthResDto"
 import { SecondPartChapterListResDto } from "../../dto/secondPart/SecondPartChapterListResDto"
+import { SecondPartDiaryResDto } from "../../dto/secondPart/SecondPartDiaryResDto"
 import TableContents from "../../models/tableContents/TableContents"
 const dateMethod = require("../../modules/dateMethod")
 
@@ -137,8 +138,8 @@ module.exports = {
             const findSecondPartChapter = await SecondPartTableContent.findById(chapterId).populate({
                 path: "userDiary"
             })
-            if(findSecondPartChapter === null){
-                throw { statusCode : 400 }
+            if (findSecondPartChapter === null) {
+                throw { statusCode: 400 }
             }
 
             //전체 2부 목차
@@ -152,22 +153,81 @@ module.exports = {
                     secondPartTable.chapter -= 1
                     await secondPartTable.save()
                 })
-            
 
             //2부 목차에서 해당 목차 삭제
-            await SecondPartTableContent.deleteOne({_id: `${chapterId}`})
+            await SecondPartTableContent.deleteOne({ _id: `${chapterId}` })
 
             //2부 목차에 들어있던 userDiary 삭제
             const userDiaries = findSecondPartChapter.userDiary;
 
             userDiaries.forEach(async userDiary => {
-                await UserDiary.deleteOne({_id:`${userDiary._id}`})
+                await UserDiary.deleteOne({ _id: `${userDiary._id}` })
             })
 
             //총 목차(1부,2부)에서 해당 목차 secondPartTableContents배열에서 삭제
             const idx = tableContents.secondPartTableContents.findIndex(secondPartTable => secondPartTable._id == chapterId)
-            tableContents.secondPartTableContents.splice(idx,1)
+            tableContents.secondPartTableContents.splice(idx, 1)
             await tableContents.save()
+        } catch (err) {
+            throw err
+        }
+    }, getSecondPartDiary: async (diaryId) => {
+        try {
+            console.log(diaryId)
+            const findSecondPartDiary = await UserDiary.findById(diaryId).populate('users').populate('tableContents');
+            console.log(findSecondPartDiary)
+            let secondPartDiaryResDto = await new SecondPartDiaryResDto(findSecondPartDiary)
+            console.log(secondPartDiaryResDto)
+            return secondPartDiaryResDto
+
+        } catch (err) {
+            console.log(err)
+            throw { statusCode: 400 }
+        }
+
+    }, addSecondPartDiary: async (diaryData) => {
+        const secondPartTableContents = await SecondPartTableContent.findById(diaryData.chapterId).populate('userDiary')
+        console.log("length: ", secondPartTableContents.userDiary.length)
+        let newUserDiary = new UserDiary({
+            tableContents: diaryData.chapterId,
+            episode: secondPartTableContents.userDiary.length,
+            imgs: diaryData.diaryImages,
+            title: diaryData.title,
+            contents: diaryData.contents,
+            feeling: diaryData.feeling
+        })
+        secondPartTableContents.setUserDiary(newUserDiary)
+        await secondPartTableContents.save()
+        try {
+            console.log(newUserDiary)
+            await newUserDiary.save()
+        } catch (err) {
+            console.log(err)
+            throw { statusCode: 400 }
+        }
+    }
+    ,
+    modifySecondPartDiary: async (diaryId, diaryData) => {
+        try {
+            await UserDiary.updateOne(
+                { _id: diaryId },
+                { $set: { imgs: diaryData.diaryImages, title: diaryData.title, contents: diaryData.contents, feeling: diaryData.feeling } }
+            )
+        } catch (err) {
+            throw err
+        }
+    }, deleteSecondPartDiary: async (diaryId) => {
+        try {
+            const findDiary = await UserDiary.findById(diaryId).populate('tableContents');
+            const userDiaries = (await SecondPartTableContent.findOne({ chapter: { $eq: findDiary.tableContents.chapter } })).userDiary
+            for (let i = 0; i < userDiaries.length; i++) {
+                let userChapter = await UserDiary.findById(userDiaries[i])
+                if (findDiary.episode <= userChapter.episode) {
+                    userChapter.episode = Number(userChapter.episode) - 1
+                    await userChapter.save()
+                }
+            }
+            await UserDiary.deleteOne({ _id: findDiary })
         } catch (err) {
             throw err
         }
