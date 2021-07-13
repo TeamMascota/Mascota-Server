@@ -152,6 +152,8 @@ module.exports = {
             findPet.rainbow = true
             await findPet.save()
             const user = findPet.user
+            // for()
+
             let diaryCount = 0
             user.book.tableContents.firstPartTableContents.forEach(tableContent =>
                 diaryCount += tableContent.petDiary.length)
