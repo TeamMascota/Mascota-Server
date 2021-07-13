@@ -3,7 +3,7 @@ var router = express.Router();
 let rainbowController = require('../../controller/rainbowController');
 router.get('/main/:userId/:petId', rainbowController.mainPage); //1.5부 무지개 홈 화면 불러오기
 router.get('/pet', rainbowController.selectRainbowPet); //1.5부 무지개 반려동물 선택 화면 불러오기
-router.get('/pet/:petId', rainbowController.setRainbowPet); //1.5부 무지개 반려동물 선택 적용 & 이별하는 무지개 다리 멘트
+router.put('/pet/:petId', rainbowController.setRainbowPet); //1.5부 무지개 반려동물 선택 적용 & 이별하는 무지개 다리 멘트
 router.delete('/pet/:petId', rainbowController.cancelPartingPet); //1.5부 무지개 반려동물 떠나보내기 취소
 router.get('/record/:petId', rainbowController.getReadyPartingPetComment); //1.5부 이별을 준비하는 작가의 기록 시작 멘트 불러오기
 router.get('/moment/:userId/:petId', rainbowController.theBestMoment); //1.5부 무지개 최고의 순간

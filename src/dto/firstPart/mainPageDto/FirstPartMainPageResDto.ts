@@ -43,6 +43,7 @@ export class DiaryResDto {
 
     //가장 마지막 화 들어감
     constructor(firstPartTableContents: IFirstPartTableContents) {
+        console.log('bbbbbb : '+firstPartTableContents)
         this.init(firstPartTableContents)
     }
 

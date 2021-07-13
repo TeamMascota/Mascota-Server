@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const Book_1 = __importDefault(require("../../models/book/Book"));
+const User_1 = __importDefault(require("../../models/user/User"));
 const TableContents_1 = __importDefault(require("../../models/tableContents/TableContents"));
 const FirstPartTableContents_1 = __importDefault(require("../../models/tableContents/FirstPartTableContents"));
 const Pet_1 = __importDefault(require("../../models/pet/Pet"));
@@ -25,38 +25,61 @@ require("../../models/pet/Pet");
 require('../../models/tableContents/TableContents');
 require('../../models/tableContents/FirstPartTableContents');
 require('../../models/diary/PetDiary');
+require('../../models/diary/PetEmotions');
 const util = require('../../modules/util');
 const responseMessage = require('../../modules/responseMessage');
 const statusCode = require('../../modules/statusCode');
 module.exports = {
-    postPrologue: (bookData) => __awaiter(void 0, void 0, void 0, function* () {
+    postPrologue: (userId, bookData) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            // add book info
-            let book = yield Book_1.default.findById(bookData._id);
-            book.title = bookData.title;
-            book.imgs = bookData.image;
-            book.author = bookData.userName;
-            console.log(book);
-            //add tableContents info
-            let tc = yield new TableContents_1.default();
-            let ftc = yield new FirstPartTableContents_1.default({
+            console.log(userId);
+            //Create user object
+            const user = yield User_1.default.findById(userId).populate('book');
+            console.log('user : ' + user);
+            // await Book.update(
+            //     {_id: user.book._id },
+            //     {$set: {title: bookData.title, imgs: bookData.image,author: bookData.userName}}
+            //     )
+            const setBook = user.book;
+            setBook.title = bookData.title,
+                setBook.imgs = bookData.imgs,
+                setBook.author = bookData.userName;
+            //Create tableContents object
+            const tableContents = new TableContents_1.default();
+            setBook.tableContents = tableContents;
+            yield tableContents.save();
+            yield user.save();
+            yield setBook.save();
+            //Create firstPartTableContents object
+            const firstPartPrologue = new FirstPartTableContents_1.default({
                 chapter: 0,
-                title: bookData.prologueTitle,
-                contents: bookData.prologueContents
+                title: bookData.title,
+                contents: bookData.contents
             });
-            yield tc.setFirstPartTableContents(ftc);
-            yield book.setTableContents(tc);
-            //save db
-            yield book.save();
-            return responseMessage.SUCCESS_POST_PROLOGUE;
+            yield firstPartPrologue.save();
+            console.log(tableContents);
+            yield tableContents.firstPartTableContents.push(firstPartPrologue);
+            const season = ["봄", "여름", "가을", "겨울"];
+            for (let i = 0; i < 4; i++) {
+                let chapter = 1;
+                const dummyFirstPartTableContents = new FirstPartTableContents_1.default({
+                    chapter,
+                    title: `${user.book.author}의 ${season[i]}`
+                });
+                dummyFirstPartTableContents.save();
+                yield tableContents.firstPartTableContents.push(dummyFirstPartTableContents);
+                chapter = chapter + 1;
+            }
+            yield tableContents.save();
+            return user.book._id;
             //error handling
         }
         catch (err) {
             console.log(err);
-            throw { statusCode: statusCode.BAD_REQUEST, responseMessage: responseMessage.NO_BOOK };
+            throw { statusCode: statusCode.BAD_REQUEST, responseMessage: responseMessage.NO_USER };
         }
     }),
-    postPetDiary: (diaryData) => __awaiter(void 0, void 0, void 0, function* () {
+    postPetDiary: (diaryData, diaryImages) => __awaiter(void 0, void 0, void 0, function* () {
         const writeDate = yield new Date(diaryData.date);
         writeDate.setDate(writeDate.getDate() + 1);
         // console.log(FirstPartTableContents.findById(diaryData._id))
@@ -66,7 +89,7 @@ module.exports = {
             tableContents: diaryData._id,
             episode: temp.petDiary.length,
             date: writeDate,
-            imgs: diaryData.diaryImages,
+            imgs: diaryImages,
             title: diaryData.title,
             contents: diaryData.contents
         });
@@ -74,14 +97,15 @@ module.exports = {
             //save petinfo
             let petN = diaryData.character.length;
             for (let i = 0; i < petN; i++) {
-                const petData = yield Pet_1.default.findById(diaryData.character[0]._id).populate('_id');
+                const petData = yield Pet_1.default.findById(diaryData.character[i]._id).populate('_id');
                 newPetDiary.setPet(petData);
                 //save emotions
                 const petEmotion = new PetEmotions_1.default({
-                    pet: diaryData.character[0]._id,
-                    feeling: diaryData.character[0].feeling
+                    pet: diaryData.character[i]._id,
+                    feeling: diaryData.character[i].feeling
                 });
                 newPetDiary.setPetEmotions(petEmotion);
+                yield petEmotion.save();
             }
             console.log(newPetDiary);
             yield newPetDiary.save();
@@ -99,8 +123,11 @@ module.exports = {
         try {
             const findPetDiary = yield PetDiary_1.default.findById(petDiaryId).populate('pets').populate('tableContents').populate('petEmotions');
             let petDiaryPageResDto = yield new PetDiaryPageResDto_1.PetDiaryPageResDto(findPetDiary); //이부분
+            // console.log("feelingList",findPetDiary.pets[0],";",findPetDiary.petEmotions[0].feeling)
             for (let i = 0; i < findPetDiary.petEmotions.length; i++) {
-                petDiaryPageResDto.setFeelingList(findPetDiary.petEmotions[i]);
+                let feelingList = new PetDiaryPageResDto_1.FeelingListDto(findPetDiary.pets[i]);
+                feelingList.setFeeling(findPetDiary.petEmotions[i]);
+                petDiaryPageResDto.setFeelingList(feelingList);
             }
             return petDiaryPageResDto;
         }
@@ -140,11 +167,17 @@ module.exports = {
     }),
     deletePetDiary: (petDiaryId) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            let findPetDiary = yield PetDiary_1.default.findById(petDiaryId).populate('tableContents');
-            console.log(findPetDiary);
+            let findPetDiary = yield PetDiary_1.default.findById(petDiaryId).populate('tableContents').populate('petEmotions');
+            console.log('!!!!! : ' + findPetDiary);
             //화 정렬 순서 맞추기
             //해당 목차인것들 모두 가져오기. findPetDiary의 idx 뒤로 다 -1
             // let allDiaries=await (PetDiary.find({}).populate('tableContents'))
+            let thisDiariesTableContent = findPetDiary.tableContents;
+            for (let j = 0; j < thisDiariesTableContent.petDiary.length; j++) {
+                if (thisDiariesTableContent.petDiary[j]._id == petDiaryId) {
+                    thisDiariesTableContent.petDiary.splice(j, 1);
+                }
+            }
             let petDiaries = (yield FirstPartTableContents_1.default.findOne({ chapter: { $eq: findPetDiary.tableContents.chapter } })).petDiary;
             for (let i = 0; i < petDiaries.length; i++) {
                 let temp = yield PetDiary_1.default.findById(petDiaries[i]);
@@ -153,7 +186,11 @@ module.exports = {
                     yield temp.save();
                 }
             }
+            findPetDiary.petEmotions.forEach((petEmotion) => __awaiter(void 0, void 0, void 0, function* () {
+                yield PetEmotions_1.default.deleteOne({ _id: petEmotion._id });
+            }));
             yield PetDiary_1.default.deleteOne({ _id: findPetDiary });
+            yield thisDiariesTableContent.save();
             console.log(findPetDiary);
             return responseMessage.SUCCESS_DELETE_PETDIARY;
         }

@@ -35,7 +35,7 @@ module.exports = {
         try {
             const result = yield userService.login(email, password);
             console.log('얘가나오면 안되는데 : ', result);
-            res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SIGH_IN_SUCCESS));
+            res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SIGH_IN_SUCCESS, result));
         }
         catch (err) {
             console.log('bbbbb : ' + err.statusCode);

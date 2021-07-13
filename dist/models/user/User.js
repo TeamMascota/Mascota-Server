@@ -19,12 +19,12 @@ const UserSchema = new mongoose_1.default.Schema({
     pets: [
         {
             type: mongoose_1.default.SchemaTypes.ObjectId,
-            ref: "Pet"
+            ref: "Pet",
         }
     ],
     book: {
         type: mongoose_1.default.SchemaTypes.ObjectId,
-        ref: "Book"
+        ref: "Book",
     },
     feelingCount: { type: Number }
 });

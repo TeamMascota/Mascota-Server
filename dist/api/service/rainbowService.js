@@ -37,6 +37,7 @@ require('../../models/diary/PetEmotions');
 require('../../models/tableContents/SecondPartTableContent');
 require('../../models/diary/UserDiary');
 require("../../models/etc/Help");
+require("../../models/etc/Comments");
 module.exports = {
     getMainPage: (userId, petId) => __awaiter(void 0, void 0, void 0, function* () {
         try {
@@ -125,7 +126,7 @@ module.exports = {
             const findUser = yield User_1.default.find().populate({
                 path: "pets"
             });
-            const rainbowPetResDto = findUser[0].pets.map(pet => new RainbowPetResDto_1.MyPetInfoResDto(pet));
+            const rainbowPetResDto = findUser[0].pets.filter(pet => !pet.rainbow).map(pet => new RainbowPetResDto_1.MyPetInfoResDto(pet));
             return rainbowPetResDto;
         }
         catch (err) {
@@ -149,6 +150,7 @@ module.exports = {
             findPet.rainbow = true;
             yield findPet.save();
             const user = findPet.user;
+            // for()
             let diaryCount = 0;
             user.book.tableContents.firstPartTableContents.forEach(tableContent => diaryCount += tableContent.petDiary.length);
             return new PartingRainbowResDto_1.PartingRainbowResDto(diaryCount, findPet.name);
@@ -199,7 +201,6 @@ module.exports = {
             const TheBestMomentPetInfo = new TheBestMomentResDto_1.TheBestMomentPetInformation(pet);
             const diaryPerFeeling = [];
             for (let i = 0; i < 6; i++) {
-                console.log(i);
                 const diaries = (yield PetEmotions_1.default.find({ "feeling": { $eq: i } }).select("petDiary").populate({ path: "petDiary", populate: ({ path: "tableContents" }) })).map(emotion => emotion.petDiary);
                 if (diaries.length < 1) {
                     diaryPerFeeling.push(null);
@@ -211,6 +212,7 @@ module.exports = {
             const theBestMomentsResDto = new TheBestMomentResDto_1.TheBestMomentsResDto();
             for (let j = 0; j < 6; j++) { //긍정3개, 부정3개
                 const commentPerFeeling = yield Comments_1.default.findOne({ feeling: j, classification: 2 });
+                const test = yield Comments_1.default.find();
                 let theBestMoment = null;
                 if (j < 3) {
                     theBestMoment = new TheBestMomentResDto_1.TheBestMoment(commentPerFeeling, getPositiveRadomDiary(diaryPerFeeling[j]));

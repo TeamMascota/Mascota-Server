@@ -81,7 +81,7 @@ module.exports = {
                     max = Number(findUserChapter.book.tableContents.firstPartTableContents[i].chapter);
                 }
             }
-            newFirstPartTable.chapter = max;
+            newFirstPartTable.chapter = max + 1;
             newFirstPartTable.title = chapterTitle;
             yield newFirstPartTable.save();
             findUserChapter.book.tableContents.firstPartTableContents.push(newFirstPartTable);
@@ -126,7 +126,14 @@ module.exports = {
             }
             console.log(allFirstTableContents);
             //해당 목차 삭제
-            findChapter = null;
+            yield FirstPartTableContents_1.default.deleteOne({ _id: chapterId });
+            const tableContents = (yield TableContents_1.default.find())[0];
+            for (let j = 0; j < tableContents.firstPartTableContents.length; j++) {
+                if (tableContents.firstPartTableContents[j] == chapterId) {
+                    tableContents.firstPartTableContents.splice(j, 1);
+                }
+            }
+            yield tableContents.save();
             return responseMessage.SUCCESS_DELETE_CHAPTERLIST;
         }
         catch (err) {
