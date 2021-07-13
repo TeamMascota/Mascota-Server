@@ -7,13 +7,15 @@ const TableContentsSchema: Schema<ITableContentsDocument> = new mongoose.Schema(
     firstPartTableContents: [
         {
             type: mongoose.SchemaTypes.ObjectId,
-            ref: "FirstPartTableContents"
+            ref: "FirstPartTableContents",
+            default:[]
         }
     ],
     secondPartTableContents: [
         {
             type: mongoose.SchemaTypes.ObjectId,
-            ref: "SecondPartTableContents"
+            ref: "SecondPartTableContents",
+            default:[]
         }
     ],
     secondPartStartDate : {
