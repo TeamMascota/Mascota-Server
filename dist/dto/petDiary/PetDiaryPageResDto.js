@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PetDiaryPageResDto = void 0;
+exports.FeelingListDto = exports.PetDiaryPageResDto = void 0;
 require("../../models/user/User");
 require("../../models/book/Book");
 require("../../models/pet/Pet");
@@ -27,8 +27,9 @@ class PetDiaryPageResDto {
             date: null,
             contents: null,
             timeTogether: null,
-            kind: null,
+            // kind: null,
             feelingList: []
+            //feeling,kind,img
         };
         this.init(petDiary);
     }
@@ -41,13 +42,26 @@ class PetDiaryPageResDto {
             this.petDiary.date = yield dateMethod.toKoreanByFormatting(petDiary.date);
             this.petDiary.episode = petDiary.episode;
             this.petDiary.contents = petDiary.contents;
-            this.petDiary.kind = petDiary.pets[0].kind;
+            // this.petDiary.kind = petDiary.pets[0].kind
             this.petDiary.timeTogether = yield dateMethod.getElapsedDay(petDiary.pets[0].startDate);
         });
     }
-    setFeelingList(emotion) {
-        this.petDiary.feelingList.push(emotion.feeling);
+    setFeelingList(feelingList) {
+        this.petDiary.feelingList.push(feelingList);
     }
 }
 exports.PetDiaryPageResDto = PetDiaryPageResDto;
+class FeelingListDto {
+    constructor(pet) {
+        this.feeling = null;
+        this.kind = null;
+        this.petImgs = null;
+        this.kind = pet.kind;
+        this.petImgs = pet.imgs;
+    }
+    setFeeling(emotion) {
+        this.feeling = emotion.feeling;
+    }
+}
+exports.FeelingListDto = FeelingListDto;
 //# sourceMappingURL=PetDiaryPageResDto.js.map

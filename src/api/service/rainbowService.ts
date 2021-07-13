@@ -27,6 +27,7 @@ require('../../models/diary/PetEmotions')
 require('../../models/tableContents/SecondPartTableContent')
 require('../../models/diary/UserDiary')
 require("../../models/etc/Help")
+require("../../models/etc/Comments")
 
 module.exports = {
     getMainPage: async (userId, petId) => {
@@ -126,7 +127,7 @@ module.exports = {
             const findUser = await User.find().populate({
                 path: "pets"
             })
-            const rainbowPetResDto = findUser[0].pets.map(pet =>
+            const rainbowPetResDto = findUser[0].pets.filter(pet=>!pet.rainbow).map(pet =>
                 new MyPetInfoResDto(pet))
 
             return rainbowPetResDto
@@ -152,6 +153,8 @@ module.exports = {
             findPet.rainbow = true
             await findPet.save()
             const user = findPet.user
+            // for()
+
             let diaryCount = 0
             user.book.tableContents.firstPartTableContents.forEach(tableContent =>
                 diaryCount += tableContent.petDiary.length)
@@ -209,7 +212,6 @@ module.exports = {
 
             const diaryPerFeeling = []
             for (let i = 0; i < 6; i++) {
-                console.log(i)
                 const diaries = (await PetEmotions.find({ "feeling": { $eq: i } }).select("petDiary").populate({ path: "petDiary", populate: ({ path: "tableContents" }) })).map(emotion => emotion.petDiary)
                 if (diaries.length < 1) {
                     diaryPerFeeling.push(null)
@@ -220,7 +222,8 @@ module.exports = {
 
             const theBestMomentsResDto = new TheBestMomentsResDto()
             for (let j = 0; j < 6; j++) {   //긍정3개, 부정3개
-                const commentPerFeeling = await Comments.findOne({ feeling: j, classification: 2 })
+                const commentPerFeeling = await Comments.findOne({ feeling: j , classification : 2})
+                const test = await Comments.find()
                 let theBestMoment = null
                 if (j < 3) {
                     theBestMoment = new TheBestMoment(commentPerFeeling, getPositiveRadomDiary(diaryPerFeeling[j]))

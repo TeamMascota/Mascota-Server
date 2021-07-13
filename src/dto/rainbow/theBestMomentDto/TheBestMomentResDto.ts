@@ -52,6 +52,7 @@ export class TheBestMomentDiary{
     }
 
     async init(diaryPerFeeling : IPetDiary){
+        console.log('!!!!!!!!!!!!!!!!!!!!!!!!! : '+diaryPerFeeling)
         this.chapter = diaryPerFeeling.tableContents.chapter
         this.episode = diaryPerFeeling.episode
         this.title = diaryPerFeeling.title

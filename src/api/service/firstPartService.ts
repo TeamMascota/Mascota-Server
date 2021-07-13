@@ -59,17 +59,6 @@ module.exports = {
             const firstPartMainPageResDto = new FirstPartMainPageResDto(findUser.book)
             let allPetDiaries = await PetDiary.find({}).populate('tableContents')
             let petDiaryNumber=(await allPetDiaries).length
-            // //prologue
-            // if(petDiaryNumber==0){
-            //     let prologue=findUser.book.tableContents.firstPartTableContents[0]
-            //     const prologueDiary=new Diary({
-            //     chapter=0,
-            //     episode=0,
-            //     _id="60ed4a6a1d5f293a94db7e3d",
-            //     title=prologue.title,
-            //     contents=prologue.contents
-            //     })  
-            // }
             //가장 마지막 일기
             const lastDiary = new DiaryResDto(allPetDiaries[petDiaryNumber-1])
             

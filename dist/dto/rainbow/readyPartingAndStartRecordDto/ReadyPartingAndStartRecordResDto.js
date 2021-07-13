@@ -16,8 +16,10 @@ class BookInfoResDto {
     constructor(book) {
         this.title = null;
         this.bookImg = null;
+        this.author = null;
         this.title = book.title;
         this.bookImg = book.imgs;
+        this.author = book.author;
     }
 }
 exports.BookInfoResDto = BookInfoResDto;
