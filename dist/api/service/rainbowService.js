@@ -63,8 +63,10 @@ module.exports = {
             const rainbowMainPageResDto = new RainbowMainPageResDto_1.RainbowMainPageResDto(findUser.book, isRainbowPet, rainbowButtonCheck);
             const firstPartTableContents = findUser.book.tableContents.firstPartTableContents;
             const validMemories = firstPartTableContents.filter(tableContents => tableContents.petDiary.length > 0).map(tableContents => tableContents.petDiary.filter(petDiary => petDiary.pets.includes(petId)));
+            console.log('validMemories : ' + validMemories);
             //validMemories : [tableContetns [petDiary]]
             let memoriesResDto = [null, null];
+            console.log('validMemoriesLength : ' + validMemories.length);
             if (validMemories.length == 2) {
                 memoriesResDto[0] = new RainbowMainPageResDto_1.MemoriesResDto(validMemories[0], petId);
                 memoriesResDto[1] = new RainbowMainPageResDto_1.MemoriesResDto(validMemories[1], petId);
