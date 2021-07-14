@@ -27,6 +27,7 @@ export class RainbowMainPageResDto{
 }
 
 export class MemoriesResDto{
+    private diaryId;
     private title;
     private contents;
     private date;
@@ -35,11 +36,12 @@ export class MemoriesResDto{
     constructor(petDiaries : IPetDiary[], petId : IPet){
         const diaryIndex = this.getRandomMemoryIndex(petDiaries.length)
         const randomDiary = petDiaries[diaryIndex]
-        console.log('aaaa :'+petDiaries)
+        console.log('aaaa :'+randomDiary)
         console.log('bbbb :'+diaryIndex)
         console.log("랜덤된 petEmotion "+randomDiary.petEmotions.filter(petEmotion =>
             petEmotion.pet == petId)[0])
 
+        this.diaryId = randomDiary._id
         this.title = randomDiary.title
         this.contents = randomDiary.contents
         this.date = randomDiary.date
