@@ -106,6 +106,8 @@ module.exports = {
             const tableContents = (yield TableContents_1.default.find())[0];
             yield tableContents.setSecondPartTableContents(newChapter);
             yield tableContents.save();
+            const chapterList = yield SecondPartTableContent_1.default.find();
+            return new SecondPartChapterListResDto_1.SecondPartChapterListResDto(chapterList);
         }
         catch (err) {
             throw err;
@@ -120,7 +122,9 @@ module.exports = {
     }),
     modifySecondPartChapterInfo: (chapterId, modifyChapterData) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            yield SecondPartTableContent_1.default.update({ _id: chapterId }, { $set: { title: modifyChapterData.chapterTitle } });
+            yield SecondPartTableContent_1.default.updateOne({ _id: chapterId }, { $set: { title: modifyChapterData.chapterTitle } });
+            const chapterList = yield SecondPartTableContent_1.default.find();
+            return new SecondPartChapterListResDto_1.SecondPartChapterListResDto(chapterList);
         }
         catch (err) {
             throw err;
@@ -155,6 +159,8 @@ module.exports = {
             const idx = tableContents.secondPartTableContents.findIndex(secondPartTable => secondPartTable._id == chapterId);
             tableContents.secondPartTableContents.splice(idx, 1);
             yield tableContents.save();
+            const chapterList = yield SecondPartTableContent_1.default.find();
+            return new SecondPartChapterListResDto_1.SecondPartChapterListResDto(chapterList);
         }
         catch (err) {
             throw err;

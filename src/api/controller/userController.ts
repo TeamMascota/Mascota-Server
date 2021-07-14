@@ -10,8 +10,8 @@ module.exports = {
     register: async (req, res) => {
         const { email, password } = req.body;
         try {
-            const result = await userService.register(email, password);
-            res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SIGH_UP_SUCCESS, result))
+            await userService.register(email, password);
+            res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SIGH_UP_SUCCESS))
         } catch (err) {
             if (err.statusCode == null) {
                 err.statusCode = statusCode.INTERNAL_SERVER_ERROR;

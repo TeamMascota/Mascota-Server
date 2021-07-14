@@ -56,7 +56,7 @@ module.exports = {
             });
             if (!user) {
                 //등록되지 않은 email
-                throw { statusCode: statusCode.NO_CONTENT, responseMessage: responseMessage.NO_USER };
+                throw { statusCode: statusCode.BAD_REQUEST, responseMessage: responseMessage.NO_USER };
             }
 
             const test = await bcrypt.compare(password, user.password)

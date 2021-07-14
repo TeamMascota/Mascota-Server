@@ -49,8 +49,8 @@ module.exports = {
     addSecondPartChapter: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const chapterData = req.body;
         try {
-            yield secondPartService.addSecondPartChapter(chapterData);
-            return res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_POST_SECOND_PART_ADD_CHAPTER));
+            const result = yield secondPartService.addSecondPartChapter(chapterData);
+            return res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_POST_SECOND_PART_ADD_CHAPTER, result));
         }
         catch (err) {
             console.error(err);
@@ -61,8 +61,8 @@ module.exports = {
         const { chapterId } = req.params;
         const modifyChapterData = req.body;
         try {
-            yield secondPartService.modifySecondPartChapterInfo(chapterId, modifyChapterData);
-            return res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_PUT_SECOND_PART_MODIFY_CHAPTER));
+            const result = yield secondPartService.modifySecondPartChapterInfo(chapterId, modifyChapterData);
+            return res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_PUT_SECOND_PART_MODIFY_CHAPTER, result));
         }
         catch (err) {
             console.error(err);
@@ -72,8 +72,8 @@ module.exports = {
     deleteSecondPartChapter: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const { chapterId } = req.params;
         try {
-            yield secondPartService.deleteSecondPartChapter(chapterId);
-            return res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_DELETE_SECOND_PART_DELETE_CHAPTER));
+            const result = yield secondPartService.deleteSecondPartChapter(chapterId);
+            return res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_DELETE_SECOND_PART_DELETE_CHAPTER, result));
         }
         catch (err) {
             console.error(err);

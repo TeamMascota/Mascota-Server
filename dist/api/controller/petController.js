@@ -14,8 +14,9 @@ const petService = require('../service/petService');
 module.exports = {
     registerPet: (req, res) => __awaiter(this, void 0, void 0, function* () {
         let reqData = req.body;
+        let images = req.files.map(file => file.location);
         try {
-            const result = yield petService.registerPet(reqData);
+            const result = yield petService.registerPet(reqData, images);
             res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_REGISTER_PET, result));
         }
         catch (err) {
@@ -27,18 +28,17 @@ module.exports = {
             res.status(err.statusCode).send(util.fail(err.statusCode, err.responseMessage));
         }
     }),
-    registerPetImg: (req, res) => __awaiter(this, void 0, void 0, function* () {
-        const image = req.files.map(file => file.location);
-        const petImageInfo = req.body;
-        console.log('petImageInfo : ' + petImageInfo);
-        try {
-            yield petService.registerPetImg(image, petImageInfo);
-            res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_REGISTER_PET_IMG));
-        }
-        catch (err) {
-            console.error(err);
-            res.status(err.statusCode).send(util.fail(err.statusCode, err.responseMessage));
-        }
-    })
+    // registerPetImg:async(req,res)=>{
+    //     const image = req.files.map(file=>file.location)
+    //     const petImageInfo = req.body
+    //     console.log('petImageInfo : '+petImageInfo)
+    //     try{
+    //         await petService.registerPetImg(image,petImageInfo)
+    //         res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_REGISTER_PET_IMG))
+    //     }catch(err){
+    //         console.error(err)
+    //         res.status(err.statusCode).send(util.fail(err.statusCode, err.responseMessage))
+    //     }
+    // }
 };
 //# sourceMappingURL=petController.js.map

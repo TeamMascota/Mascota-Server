@@ -60,8 +60,8 @@ exports.DiaryResDto = DiaryResDto;
 class TableContentsResDto {
     constructor(firstPartTableContents) {
         this.chapterId = firstPartTableContents._id; //목차 Id
-        this.chapterTitle = firstPartTableContents.chapter;
-        this.chapter = firstPartTableContents.title;
+        this.chapterTitle = firstPartTableContents.title;
+        this.chapter = firstPartTableContents.chapter;
         this.episodePerchapterCount = firstPartTableContents.petDiary.length;
     }
 }

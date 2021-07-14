@@ -18,8 +18,8 @@ module.exports = {
     register: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const { email, password } = req.body;
         try {
-            const result = yield userService.register(email, password);
-            res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SIGH_UP_SUCCESS, result));
+            yield userService.register(email, password);
+            res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SIGH_UP_SUCCESS));
         }
         catch (err) {
             if (err.statusCode == null) {

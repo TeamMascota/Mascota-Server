@@ -27,8 +27,8 @@ module.exports = {
             console.log('user : ' + user)
             const setBook = user.book
             setBook.title = bookData.title,
-                setBook.imgs = bookData.imgs,
-                setBook.author = bookData.userName
+            setBook.imgs = bookData.imgs,
+            setBook.author = bookData.userName
 
             //Create tableContents object
             const tableContents = new TableContents()
@@ -87,7 +87,7 @@ module.exports = {
             throw { statusCode: statusCode.BAD_REQUEST, responseMessage: responseMessage.NO_USER }
         }
     },
-    postPetDiary: async (diaryData,diaryImages) => {
+    postPetDiary: async (diaryData, diaryImages) => {
         const writeDate = await new Date(diaryData.date)
         writeDate.setDate(writeDate.getDate() + 1);
         // console.log(FirstPartTableContents.findById(diaryData._id))
@@ -131,64 +131,64 @@ module.exports = {
             throw { statusCode: statusCode.BAD_REQUEST, responseMessage: responseMessage.NO_DIARY }
         }
     },
-        getPetDiary: async (petDiaryId) => {
-            try {
-                const findPetDiary = await PetDiary.findById(petDiaryId).populate('pets').populate('tableContents').populate('petEmotions');
-                let petDiaryPageResDto = await new PetDiaryPageResDto(findPetDiary) //이부분
-                // console.log("feelingList",findPetDiary.pets[0],";",findPetDiary.petEmotions[0].feeling)
+    getPetDiary: async (petDiaryId) => {
+        try {
+            const findPetDiary = await PetDiary.findById(petDiaryId).populate('pets').populate('tableContents').populate('petEmotions');
+            let petDiaryPageResDto = await new PetDiaryPageResDto(findPetDiary) //이부분
+            // console.log("feelingList",findPetDiary.pets[0],";",findPetDiary.petEmotions[0].feeling)
 
-                for (let i = 0; i < findPetDiary.petEmotions.length; i++) {
-                    let feelingList = new FeelingListDto(findPetDiary.pets[i])
-                    feelingList.setFeeling(findPetDiary.petEmotions[i])
-                    petDiaryPageResDto.setFeelingList(feelingList)
-                }
-                return petDiaryPageResDto
+            for (let i = 0; i < findPetDiary.petEmotions.length; i++) {
+                let feelingList = new FeelingListDto(findPetDiary.pets[i])
+                feelingList.setFeeling(findPetDiary.petEmotions[i])
+                petDiaryPageResDto.setFeelingList(feelingList)
+            }
+            return petDiaryPageResDto
 
-            } catch (err) {
-                console.log(err)
-                throw { statusCode: statusCode.BAD_REQUEST, responseMessage: responseMessage.NO_DIARY }
-          }
-        },
-            putPetDiary: async (petDiaryId, diaryData) => {
-                try {
-                    let findPetDiary = await PetDiary.findById(petDiaryId);
-                    findPetDiary.tableContents = findPetDiary.tableContents
-                    findPetDiary.episode = findPetDiary.episode
-                    findPetDiary.date = findPetDiary.date
-                    findPetDiary.imgs = diaryData.diaryImages
-                    findPetDiary.title = diaryData.title
-                    findPetDiary.contents = diaryData.contents
-                    //save petinfo
-                    let petN = diaryData.character.length
-                    for (let i = 0; i < petN; i++) {
-                        const petData = await Pet.findById(diaryData.character[i]._id).populate('_id')
-                        findPetDiary.setPet(petData)
-                        //save emotions
-                        let emotion = new PetEmotions()
-                        emotion.pet = diaryData.character[i]._id
-                        emotion.feeling = diaryData.character[i].feeling
-                        emotion.setPetDiary(findPetDiary)
-                        await emotion.save()
-                    }
-                    await findPetDiary.save()
-                    return responseMessage.SUCCESS_EDIT_PETDIARY;
+        } catch (err) {
+            console.log(err)
+            throw { statusCode: statusCode.BAD_REQUEST, responseMessage: responseMessage.NO_DIARY }
+        }
+    },
+    putPetDiary: async (petDiaryId, diaryData) => {
+        try {
+            let findPetDiary = await PetDiary.findById(petDiaryId);
+            findPetDiary.tableContents = findPetDiary.tableContents
+            findPetDiary.episode = findPetDiary.episode
+            findPetDiary.date = findPetDiary.date
+            findPetDiary.imgs = diaryData.diaryImages
+            findPetDiary.title = diaryData.title
+            findPetDiary.contents = diaryData.contents
+            //save petinfo
+            let petN = diaryData.character.length
+            for (let i = 0; i < petN; i++) {
+                const petData = await Pet.findById(diaryData.character[i]._id).populate('_id')
+                findPetDiary.setPet(petData)
+                //save emotions
+                let emotion = new PetEmotions()
+                emotion.pet = diaryData.character[i]._id
+                emotion.feeling = diaryData.character[i].feeling
+                emotion.setPetDiary(findPetDiary)
+                await emotion.save()
+            }
+            await findPetDiary.save()
+            return responseMessage.SUCCESS_EDIT_PETDIARY;
 
-                } catch (err) {
-                    console.log(err)
-                    throw { statusCode: statusCode.BAD_REQUEST, responseMessage: responseMessage.NO_DIARY }
-                }
-            },
+        } catch (err) {
+            console.log(err)
+            throw { statusCode: statusCode.BAD_REQUEST, responseMessage: responseMessage.NO_DIARY }
+        }
+    },
     deletePetDiary: async (petDiaryId) => {
         try {
             let findPetDiary = await PetDiary.findById(petDiaryId).populate('tableContents').populate('petEmotions');
-            console.log('!!!!! : '+findPetDiary)
+            console.log('!!!!! : ' + findPetDiary)
             //화 정렬 순서 맞추기
             //해당 목차인것들 모두 가져오기. findPetDiary의 idx 뒤로 다 -1
             // let allDiaries=await (PetDiary.find({}).populate('tableContents'))
             let thisDiariesTableContent = findPetDiary.tableContents
-            for(let j = 0;j<thisDiariesTableContent.petDiary.length;j++){
-                if(thisDiariesTableContent.petDiary[j]._id == petDiaryId){
-                    thisDiariesTableContent.petDiary.splice(j,1)
+            for (let j = 0; j < thisDiariesTableContent.petDiary.length; j++) {
+                if (thisDiariesTableContent.petDiary[j]._id == petDiaryId) {
+                    thisDiariesTableContent.petDiary.splice(j, 1)
                 }
             }
             let petDiaries = (await FirstPartTableContents.findOne({ chapter: { $eq: findPetDiary.tableContents.chapter } })).petDiary
@@ -201,8 +201,8 @@ module.exports = {
                 }
             }
 
-            findPetDiary.petEmotions.forEach(async petEmotion=>{
-                await PetEmotions.deleteOne({_id:petEmotion._id})
+            findPetDiary.petEmotions.forEach(async petEmotion => {
+                await PetEmotions.deleteOne({ _id: petEmotion._id })
             })
 
             await PetDiary.deleteOne({ _id: findPetDiary })

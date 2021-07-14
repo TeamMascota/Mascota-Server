@@ -36,10 +36,6 @@ module.exports = {
             //Create user object
             const user = yield User_1.default.findById(userId).populate('book');
             console.log('user : ' + user);
-            // await Book.update(
-            //     {_id: user.book._id },
-            //     {$set: {title: bookData.title, imgs: bookData.image,author: bookData.userName}}
-            //     )
             const setBook = user.book;
             setBook.title = bookData.title,
                 setBook.imgs = bookData.imgs,
@@ -59,17 +55,36 @@ module.exports = {
             yield firstPartPrologue.save();
             console.log(tableContents);
             yield tableContents.firstPartTableContents.push(firstPartPrologue);
+            let chapter = 1;
             const season = ["봄", "여름", "가을", "겨울"];
             for (let i = 0; i < 4; i++) {
-                let chapter = 1;
                 const dummyFirstPartTableContents = new FirstPartTableContents_1.default({
                     chapter,
                     title: `${user.book.author}의 ${season[i]}`
                 });
-                dummyFirstPartTableContents.save();
-                yield tableContents.firstPartTableContents.push(dummyFirstPartTableContents);
+                yield dummyFirstPartTableContents.save();
+                tableContents.firstPartTableContents.push(dummyFirstPartTableContents);
                 chapter = chapter + 1;
             }
+            //add dummy Diary
+            let newPetDiary = new PetDiary_1.default({
+                tableContents: tableContents.firstPartTableContents[1],
+                episode: tableContents.firstPartTableContents[1].petDiary.length,
+                //date: Date(),
+                //imgs: diaryImages,
+                title: "행복한 나날들",
+                contents: "반려동물과의 일상을 생생하게 기록해보세요"
+            });
+            newPetDiary.setPet(user.pets[0]);
+            const petEmotion = new PetEmotions_1.default({
+                pet: user.pets[0]._id,
+                feeling: 3
+            });
+            newPetDiary.setPetEmotions(petEmotion);
+            tableContents.firstPartTableContents[1].petDiary.push(newPetDiary);
+            yield petEmotion.save();
+            yield newPetDiary.save();
+            yield tableContents.firstPartTableContents[1].save();
             yield tableContents.save();
             return user.book._id;
             //error handling

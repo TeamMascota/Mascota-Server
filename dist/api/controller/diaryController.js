@@ -16,7 +16,7 @@ module.exports = {
     postPrologue: (req, res) => __awaiter(this, void 0, void 0, function* () {
         const { userId } = req.params;
         const bookData = req.body;
-        const bookImage = req.file.location;
+        //const bookImage = req.file.location
         try {
             yield diaryService.postPrologue(userId, bookData);
             //const result=await firstPartService.getMainPage(userId)
