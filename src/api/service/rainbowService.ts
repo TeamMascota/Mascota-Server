@@ -49,7 +49,6 @@ module.exports = {
                     }
                 }
             })
-
             const isRainbowPet = await isRainbow(findUser.pets)
             const rainbowButtonCheck = await rainbowCheck(findUser.pets)
             const rainbowMainPageResDto = new RainbowMainPageResDto(findUser.book, isRainbowPet, rainbowButtonCheck)
@@ -60,10 +59,11 @@ module.exports = {
                     tableContents.petDiary.filter(petDiary =>
                         petDiary.pets.includes(petId))
                 )
+                console.log('validMemories : '+ validMemories)
             //validMemories : [tableContetns [petDiary]]
 
             let memoriesResDto = [null, null]
-
+                        console.log('validMemoriesLength : '+validMemories.length)
             if (validMemories.length == 2) {
                 memoriesResDto[0] = new MemoriesResDto(validMemories[0], petId)
                 memoriesResDto[1] = new MemoriesResDto(validMemories[1], petId)
