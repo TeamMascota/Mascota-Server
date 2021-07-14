@@ -61,6 +61,7 @@ module.exports = {
             let petDiaryNumber=(await allPetDiaries).length
             //가장 마지막 일기
             const lastDiary = new DiaryResDto(allPetDiaries[petDiaryNumber-1])
+            firstPartMainPageResDto.setNextEpisode(lastDiary)
             
             //tableContents
             let lastTableNumber=findUser.book.tableContents.firstPartTableContents.length

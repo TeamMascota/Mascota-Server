@@ -11,16 +11,19 @@ export class FirstPartMainPageResDto {
     public firstPartMainPage = {
         title: null,
         bookImg: null,
-        diary: {},
+        diary: null,
         tableContents: [],
-        secondPartBook: null
+        secondPartBook: null,
+        nextEpisode:null
     }
 
     constructor(book: IBook) {
         this.firstPartMainPage.title = book.title
         this.firstPartMainPage.bookImg = book.imgs
     }
-
+    setNextEpisode(diaryResDto:DiaryResDto){
+        this.firstPartMainPage.nextEpisode=diaryResDto.episode+1
+    }
     //가장 최근 일기 작성(기분X)
     setDiary(diary: DiaryResDto) {
         this.firstPartMainPage.diary = diary
@@ -36,7 +39,7 @@ export class FirstPartMainPageResDto {
 export class DiaryResDto {
     private _id;
     private chapter;
-    private episode;
+    public episode;
     private title;
     private contents;
     private date;
@@ -76,10 +79,10 @@ export class TableContentsResDto {
 }
 
 export class SecondPartBookResDto {
-    private userId
-    private imgs
-    private author
-    private date
+    private userId=null
+    private bookImg=null
+    private author=null
+    private date=null
 
     constructor(user: IUser) {
         this.init(user)
@@ -87,7 +90,7 @@ export class SecondPartBookResDto {
 
     async init(user: IUser) {
         this.userId = user._id
-        this.imgs = user.book.imgs
+        this.bookImg = user.book.imgs
         this.author = user.book.author
         this.date = await dateMethod.toStringByFormatting(user.book.date)
     }
