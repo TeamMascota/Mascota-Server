@@ -109,6 +109,9 @@ module.exports = {
             await tableContents.setSecondPartTableContents(newChapter)
             await tableContents.save()
 
+            const chapterList = await SecondPartTableContent.find()
+            return new SecondPartChapterListResDto(chapterList)
+
         } catch (err) {
             throw err
         }
@@ -123,10 +126,12 @@ module.exports = {
 
     modifySecondPartChapterInfo: async (chapterId, modifyChapterData) => {
         try {
-            await SecondPartTableContent.update(
+            await SecondPartTableContent.updateOne(
                 { _id: chapterId },
                 { $set: { title: modifyChapterData.chapterTitle } }
             )
+            const chapterList = await SecondPartTableContent.find()
+            return new SecondPartChapterListResDto(chapterList)
         } catch (err) {
             throw err
         }
@@ -168,6 +173,9 @@ module.exports = {
             const idx = tableContents.secondPartTableContents.findIndex(secondPartTable => secondPartTable._id == chapterId)
             tableContents.secondPartTableContents.splice(idx, 1)
             await tableContents.save()
+
+            const chapterList = await SecondPartTableContent.find()
+            return new SecondPartChapterListResDto(chapterList)
         } catch (err) {
             throw err
         }

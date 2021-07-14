@@ -41,8 +41,8 @@ module.exports = {
     addSecondPartChapter: async (req, res) => {
         const chapterData = req.body
         try {
-            await secondPartService.addSecondPartChapter(chapterData)
-            return res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_POST_SECOND_PART_ADD_CHAPTER))
+            const result =await secondPartService.addSecondPartChapter(chapterData)
+            return res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_POST_SECOND_PART_ADD_CHAPTER,result))
         } catch (err) {
             console.error(err)
             return res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, responseMessage.INTERNAL_SERVER_ERROR))
@@ -53,8 +53,8 @@ module.exports = {
         const { chapterId } = req.params
         const modifyChapterData = req.body
         try {
-            await secondPartService.modifySecondPartChapterInfo(chapterId, modifyChapterData)
-            return res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_PUT_SECOND_PART_MODIFY_CHAPTER))
+            const result = await secondPartService.modifySecondPartChapterInfo(chapterId, modifyChapterData)
+            return res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_PUT_SECOND_PART_MODIFY_CHAPTER,result))
         } catch (err) {
             console.error(err)
             return res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR, responseMessage.INTERNAL_SERVER_ERROR))
@@ -64,8 +64,8 @@ module.exports = {
     deleteSecondPartChapter: async (req, res) => {
         const { chapterId } = req.params
         try {
-            await secondPartService.deleteSecondPartChapter(chapterId)
-            return res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_DELETE_SECOND_PART_DELETE_CHAPTER))
+            const result=await secondPartService.deleteSecondPartChapter(chapterId)
+            return res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_DELETE_SECOND_PART_DELETE_CHAPTER,result))
         } catch (err) {
             console.error(err)
             if (err.statusCode === 400) {
