@@ -1,0 +1,1 @@
+{"version":3,"file":"index.js","sourceRoot":"","sources":["../../../../src/api/router/calendar/index.ts"],"names":[],"mappings":"AAAA,IAAI,OAAO,GAAG,OAAO,CAAC,SAAS,CAAC,CAAA;AAChC,IAAI,MAAM,GAAG,OAAO,CAAC,MAAM,EAAE,CAAA;AAC7B,MAAM,kBAAkB,GAAG,OAAO,CAAC,qCAAqC,CAAC,CAAA;AAEzE,MAAM,CAAC,GAAG,CAAC,qBAAqB,EAAC,kBAAkB,CAAC,WAAW,CAAC,CAAA,CAAA,KAAK;AAErE,MAAM,CAAC,OAAO,GAAG,MAAM,CAAA"}

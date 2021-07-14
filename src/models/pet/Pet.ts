@@ -17,7 +17,10 @@ const PetSchema: Schema<IPetDocument> = new mongoose.Schema({
         type: mongoose.SchemaTypes.ObjectId,
         ref: "Book:"
     },
-    rainbow: { type: Boolean },
+    rainbow: {
+        type: Boolean,
+        default: false
+    },
     startDate: {
         type: Date,
         default: Date.now()

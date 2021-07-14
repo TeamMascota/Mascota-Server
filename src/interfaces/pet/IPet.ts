@@ -3,7 +3,7 @@ import { IUser } from "../user/IUser"
 import { IBook } from "../book/IBook"
 
 export interface IPet extends Document {
-    _id: mongoose.Types.ObjectId;
+    _id?: mongoose.Types.ObjectId;
     name: String;
     kind: Number;
     gender: Number;
