@@ -24,8 +24,8 @@ module.exports = {
     login: async (req, res) => {
         const { email, password } = req.body;
         try {
-            const result = await userService.login(email, password);
-            console.log('얘가나오면 안되는데 : ', result)
+            const result = await userService.login(email, password);   
+              console.log('얘가나오면 안되는데 : ', result)
             res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SIGH_IN_SUCCESS,result))
 
         } catch (err) {

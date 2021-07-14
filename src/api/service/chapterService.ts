@@ -26,7 +26,6 @@ module.exports = {
 
             const findFirstTableContents = await FirstPartTableContents.findById(chapterId).populate({ path: "petDiary", populate: ({ path: "petEmotions pets" }) });
             //.populate({path:"petDiary",populate:({path:"petEmotions"})})
-
             let newChapterDiary = new PetChapterDiaryResDto(findFirstTableContents)
 
             //월별로 자르기
@@ -43,7 +42,6 @@ module.exports = {
                         monthly.setDiaries(newDiary)
                         //console.log(findFirstTableContents.petDiary[i].petEmotions[0].feeling)
                     }
-
                 }
                 if (cnt == 0) continue
                 monthly.setMonthCount(cnt)
@@ -90,8 +88,14 @@ module.exports = {
             await newTableContents.save()
 
             console.log(newTableContents)
+            let chapterList = new ChapterListResDto()
+            for (let i = 0; i < findUserChapter.book.tableContents.firstPartTableContents.length; i++) {
+                let newChapter = new ChapterResDto(new FirstPartTableContents(findUserChapter.book.tableContents.firstPartTableContents[i]))
+                chapterList.setChapterList(newChapter)
+            }
+            console.log(chapterList)
 
-            return responseMessage.SUCCESS_POST_CHAPTERLIST;
+            return chapterList;
         } catch (err) {
             console.log(err)
             throw { statusCode: statusCode.BAD_REQUEST, responseMessage: responseMessage.NO_CONTENTS }
@@ -105,7 +109,16 @@ module.exports = {
             await editFirstPartTableContents.save()
             console.log(editFirstPartTableContents)
 
-            return responseMessage.SUCCESS_PUT_CHAPTERLIST;
+            let chapterList = new ChapterListResDto()
+            let tableContents=await TableContents.find({}).populate('firstPartTableContents')
+            for (let i = 0; i < tableContents[0].firstPartTableContents.length; i++) {
+                let newChapter = new ChapterResDto(new FirstPartTableContents(tableContents[0].firstPartTableContents[i]))
+                chapterList.setChapterList(newChapter)
+            }
+
+         //   console.log(chapterList)
+
+            return chapterList;
         }
         catch (err) {
             console.log(err)
@@ -140,7 +153,16 @@ module.exports = {
             }
             await tableContents.save()
 
-            return responseMessage.SUCCESS_DELETE_CHAPTERLIST;
+
+            let chapterList = new ChapterListResDto()
+            let allTableContents=await TableContents.find({}).populate('firstPartTableContents')
+            for (let i = 0; i < allTableContents[0].firstPartTableContents.length; i++) {
+                let newChapter = new ChapterResDto(new FirstPartTableContents(allTableContents[0].firstPartTableContents[i]))
+                chapterList.setChapterList(newChapter)
+            }
+            console.log(chapterList)
+
+            return chapterList;
         }
         catch (err) {
             console.log(err)

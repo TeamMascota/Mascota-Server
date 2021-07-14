@@ -20,11 +20,14 @@ export class ChapterResDto{
         public chapterId=null
         public chapter=null
         public chapterTitle=null
+        public episodePerchapterCount=null
+
 
     constructor(firstPartTableContents:IFirstPartTableContents){
         this.chapterId=firstPartTableContents._id
         this.chapter=firstPartTableContents.chapter
         this.chapterTitle=firstPartTableContents.title
+        this.episodePerchapterCount
     }
 } 
 

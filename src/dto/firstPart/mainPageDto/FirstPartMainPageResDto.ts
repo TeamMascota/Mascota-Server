@@ -64,13 +64,13 @@ export class DiaryResDto {
 export class TableContentsResDto {
     private chapterId;
     private chapter;
-    private chapterName;
+    private chapterTitle;
     private episodePerchapterCount;
 
     constructor(firstPartTableContents: IFirstPartTableContents) {
         this.chapterId = firstPartTableContents._id //목차 Id
-        this.chapter = firstPartTableContents.chapter;
-        this.chapterName = firstPartTableContents.title;
+        this.chapterTitle = firstPartTableContents.chapter;
+        this.chapter = firstPartTableContents.title;
         this.episodePerchapterCount = firstPartTableContents.petDiary.length;
     }
 }
