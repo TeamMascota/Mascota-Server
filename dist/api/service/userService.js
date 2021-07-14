@@ -47,7 +47,7 @@ module.exports = {
         //Encrpyt password
         const salt = yield bcryptjs_1.default.genSalt(10);
         user.password = yield bcryptjs_1.default.hash(password, salt);
-        user.save();
+        yield user.save();
     }),
     login: (email, password) => __awaiter(void 0, void 0, void 0, function* () {
         try {
@@ -67,7 +67,10 @@ module.exports = {
             if (!test) {
                 throw { statusCode: statusCode.BAD_REQUEST, responseMessage: responseMessage.SIGN_IN_FAIL };
             }
-            const petId = user.pets[0]._id;
+            let petId = null;
+            if (user.pets[0] != undefined) {
+                petId = user.pets[0]._id;
+            }
             return { userId: user._id, petId: petId };
         }
         catch (err) {

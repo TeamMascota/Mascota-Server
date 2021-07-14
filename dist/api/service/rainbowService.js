@@ -301,6 +301,9 @@ module.exports = {
     }),
     postEpilogue: (userId, data) => __awaiter(void 0, void 0, void 0, function* () {
         try {
+            console.log('id : ' + userId);
+            const test = yield User_1.default.findById(userId);
+            console.log('test!!! : ' + test);
             const user = yield User_1.default.findById(userId).populate({
                 path: "book",
                 populate: ({
@@ -310,6 +313,7 @@ module.exports = {
                     })
                 })
             });
+            console.log('user : ' + user);
             const tableContents = user.book.tableContents;
             //1부 목차 마지막에 에필로그
             const firstPartEpilogue = new FirstPartTableContents_1.default({

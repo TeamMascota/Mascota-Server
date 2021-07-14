@@ -26,6 +26,8 @@ class MemoriesResDto {
     constructor(petDiaries, petId) {
         const diaryIndex = this.getRandomMemoryIndex(petDiaries.length);
         const randomDiary = petDiaries[diaryIndex];
+        console.log('aaaa :' + petDiaries);
+        console.log('bbbb :' + diaryIndex);
         console.log("랜덤된 petEmotion " + randomDiary.petEmotions.filter(petEmotion => petEmotion.pet == petId)[0]);
         this.title = randomDiary.title;
         this.contents = randomDiary.contents;
