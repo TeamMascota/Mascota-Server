@@ -311,6 +311,9 @@ module.exports = {
 
     postEpilogue: async (userId, data) => {
         try {
+            console.log('id : '+userId)
+            const test = await User.findById(userId)
+            console.log('test!!! : '+test)
             const user = await User.findById(userId).populate({
                 path: "book",
                 populate: ({
@@ -320,6 +323,7 @@ module.exports = {
                     })
                 })
             })
+            console.log('user : '+user)
             const tableContents = user.book.tableContents
 
             //1부 목차 마지막에 에필로그

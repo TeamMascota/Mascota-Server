@@ -64,7 +64,10 @@ module.exports = {
             if (!test) {
                 throw { statusCode: statusCode.BAD_REQUEST, responseMessage: responseMessage.SIGN_IN_FAIL };
             }
-            const petId = user.pets[0]._id
+            let petId = null
+            if(user.pets[0] != undefined){
+                petId = user.pets[0]._id
+            }
             return { userId : user._id, petId : petId}
         } catch (err) {
             throw err

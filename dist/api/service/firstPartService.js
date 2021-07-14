@@ -21,6 +21,7 @@ const statusCode = require('../../modules/statusCode');
 const Book_1 = __importDefault(require("../../models/book/Book"));
 const TableContents_1 = __importDefault(require("../../models/tableContents/TableContents"));
 const FirstPartTableContents_1 = __importDefault(require("../../models/tableContents/FirstPartTableContents"));
+const PetDiary_1 = __importDefault(require("../../models/diary/PetDiary"));
 require("../../models/user/User");
 require("../../models/pet/Pet");
 require("../../models/book/Book");
@@ -50,6 +51,7 @@ module.exports = {
                     })
                 })
             });
+            console.log("user", findUser);
             let newBook = new Book_1.default();
             let newTableContents = new TableContents_1.default();
             let newFirstPartTableContents = new FirstPartTableContents_1.default();
@@ -65,11 +67,13 @@ module.exports = {
                 findUser.book.tableContents.firstPartTableContents.push(new FirstPartTableContents_1.default());
             }
             const firstPartMainPageResDto = new FirstPartMainPageResDto_1.FirstPartMainPageResDto(findUser.book);
-            let lastTableNumber = findUser.book.tableContents.firstPartTableContents.length - 1;
-            console.log('11111 : ' + lastTableNumber);
-            //console.log("#:",lastTableNumber)
-            const lastDiary = new FirstPartMainPageResDto_1.DiaryResDto(findUser.book.tableContents.firstPartTableContents[lastTableNumber]);
+            let allPetDiaries = yield PetDiary_1.default.find({}).populate('tableContents');
+            let petDiaryNumber = (yield allPetDiaries).length;
+            //가장 마지막 일기
+            const lastDiary = new FirstPartMainPageResDto_1.DiaryResDto(allPetDiaries[petDiaryNumber - 1]);
             //tableContents
+            let lastTableNumber = findUser.book.tableContents.firstPartTableContents.length;
+            console.log("lastTable", TableContents_1.default);
             for (let i = 0; i < lastTableNumber; i++) {
                 let tableContentsResDto = new FirstPartMainPageResDto_1.TableContentsResDto(findUser.book.tableContents.firstPartTableContents[i]);
                 firstPartMainPageResDto.setTableContents(tableContentsResDto);

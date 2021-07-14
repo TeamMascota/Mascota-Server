@@ -37,21 +37,22 @@ class FirstPartMainPageResDto {
 exports.FirstPartMainPageResDto = FirstPartMainPageResDto;
 class DiaryResDto {
     //가장 마지막 화 들어감
-    constructor(firstPartTableContents) {
-        console.log('bbbbbb : ' + firstPartTableContents);
-        this.init(firstPartTableContents);
+    constructor(petDiary) {
+        this.init(petDiary);
     }
-    init(firstPartTableContents) {
+    init(petDiary) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log('!!!!!!!!!!!!!!! : ' + firstPartTableContents);
+            const firstPartTableContents = petDiary.tableContents;
             this.chapter = firstPartTableContents.chapter;
             this.episode = firstPartTableContents.petDiary.length;
-            console.log('@@@@@@@ : ' + this.episode);
-            console.log('######## : ' + firstPartTableContents.petDiary[this.episode - 1]);
-            this._id = firstPartTableContents.petDiary[this.episode - 1]._id;
-            this.title = firstPartTableContents.petDiary[this.episode - 1].title;
-            this.contents = firstPartTableContents.petDiary[this.episode - 1].contents;
-            this.date = yield dateMethod.toStringByFormatting(firstPartTableContents.petDiary[this.episode - 1].date);
+            //if(this.chapter==0){
+            //    this._id="60ed3acde5003a744892ce27"
+            //}else{
+            this._id = petDiary._id;
+            //}
+            this.title = petDiary.title;
+            this.contents = petDiary.contents;
+            this.date = yield dateMethod.toStringByFormatting(petDiary.date);
         });
     }
 }
@@ -59,9 +60,9 @@ exports.DiaryResDto = DiaryResDto;
 class TableContentsResDto {
     constructor(firstPartTableContents) {
         this.chapterId = firstPartTableContents._id; //목차 Id
-        this.chapter = firstPartTableContents.chapter;
-        this.chapterName = firstPartTableContents.title;
-        this.episodePerchapterCount = firstPartTableContents.petDiary.length < 1 ? 0 : firstPartTableContents.petDiary.length;
+        this.chapterTitle = firstPartTableContents.chapter;
+        this.chapter = firstPartTableContents.title;
+        this.episodePerchapterCount = firstPartTableContents.petDiary.length;
     }
 }
 exports.TableContentsResDto = TableContentsResDto;

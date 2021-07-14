@@ -35,7 +35,7 @@ module.exports = {
             //.populate({path:"petDiary",populate:({path:"petEmotions"})})
             let newChapterDiary = new PetChapterDiary_1.PetChapterDiaryResDto(findFirstTableContents);
             //월별로 자르기
-            for (let m = 1; m <= 12; m++) {
+            for (let m = 12; m >= 1; m--) {
                 let cnt = 0;
                 //1화부터
                 let monthly = new PetChapterDiary_1.MonthlyDiaryResDto();
@@ -47,6 +47,8 @@ module.exports = {
                         //console.log(findFirstTableContents.petDiary[i].petEmotions[0].feeling)
                     }
                 }
+                if (cnt == 0)
+                    continue;
                 monthly.setMonthCount(cnt);
                 monthly.setMonth(m);
                 newChapterDiary.setMonthly(monthly);
@@ -88,7 +90,13 @@ module.exports = {
             let newTableContents = new TableContents_1.default(findUserChapter.book.tableContents);
             yield newTableContents.save();
             console.log(newTableContents);
-            return responseMessage.SUCCESS_POST_CHAPTERLIST;
+            let chapterList = new ChapterList_1.ChapterListResDto();
+            for (let i = 0; i < findUserChapter.book.tableContents.firstPartTableContents.length; i++) {
+                let newChapter = new ChapterList_1.ChapterResDto(new FirstPartTableContents_1.default(findUserChapter.book.tableContents.firstPartTableContents[i]));
+                chapterList.setChapterList(newChapter);
+            }
+            console.log(chapterList);
+            return chapterList;
         }
         catch (err) {
             console.log(err);
@@ -102,7 +110,14 @@ module.exports = {
             const editFirstPartTableContents = new FirstPartTableContents_1.default(findChapter);
             yield editFirstPartTableContents.save();
             console.log(editFirstPartTableContents);
-            return responseMessage.SUCCESS_PUT_CHAPTERLIST;
+            let chapterList = new ChapterList_1.ChapterListResDto();
+            let tableContents = yield TableContents_1.default.find({}).populate('firstPartTableContents');
+            for (let i = 0; i < tableContents[0].firstPartTableContents.length; i++) {
+                let newChapter = new ChapterList_1.ChapterResDto(new FirstPartTableContents_1.default(tableContents[0].firstPartTableContents[i]));
+                chapterList.setChapterList(newChapter);
+            }
+            //   console.log(chapterList)
+            return chapterList;
         }
         catch (err) {
             console.log(err);
@@ -134,7 +149,14 @@ module.exports = {
                 }
             }
             yield tableContents.save();
-            return responseMessage.SUCCESS_DELETE_CHAPTERLIST;
+            let chapterList = new ChapterList_1.ChapterListResDto();
+            let allTableContents = yield TableContents_1.default.find({}).populate('firstPartTableContents');
+            for (let i = 0; i < allTableContents[0].firstPartTableContents.length; i++) {
+                let newChapter = new ChapterList_1.ChapterResDto(new FirstPartTableContents_1.default(allTableContents[0].firstPartTableContents[i]));
+                chapterList.setChapterList(newChapter);
+            }
+            console.log(chapterList);
+            return chapterList;
         }
         catch (err) {
             console.log(err);

@@ -21,9 +21,11 @@ class ChapterResDto {
         this.chapterId = null;
         this.chapter = null;
         this.chapterTitle = null;
+        this.episodePerchapterCount = null;
         this.chapterId = firstPartTableContents._id;
         this.chapter = firstPartTableContents.chapter;
         this.chapterTitle = firstPartTableContents.title;
+        this.episodePerchapterCount;
     }
 }
 exports.ChapterResDto = ChapterResDto;

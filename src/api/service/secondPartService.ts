@@ -236,6 +236,13 @@ module.exports = {
                 }
             }
             await UserDiary.deleteOne({ _id: findDiary })
+
+            for(let j = 0 ;j<findDiary.tableContents.userDiary.length;j++){
+                if(findDiary.tableContents.userDiary[j]._id == diaryId){
+                    findDiary.tableContents.userDiary.splice(j,1)
+                }
+            }
+            await findDiary.tableContents
         } catch (err) {
             throw err
         }
