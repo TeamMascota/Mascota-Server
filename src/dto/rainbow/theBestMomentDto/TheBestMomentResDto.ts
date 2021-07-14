@@ -33,7 +33,7 @@ export class TheBestMoment{ //[사랑],[기쁨],[보통]
     private feeling = null
     private diaries = []
 
-    constructor(commentPerFeeling : IComments, theBestMomentDiary : TheBestMomentDiary[]){
+    constructor(commentPerFeeling , theBestMomentDiary : TheBestMomentDiary[]){
         this.comment = commentPerFeeling.comments
         this.feeling = commentPerFeeling.feeling
         this.diaries = theBestMomentDiary

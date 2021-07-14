@@ -15,7 +15,8 @@ import { PetNameResDto } from "../../dto/rainbow/petDto/PetNameResDto"
 import { IPetDiary } from "../../interfaces/diary/IPetDiary"
 import Comments from "../../models/etc/Comments"
 import { TheBestMomentSubResDto } from "../../dto/rainbow/theBestMomentDto/TheBestMomentSubResDto"
-const dateMethod = require("../../modules/dateMethod")
+var dateMethod = require("../../modules/dateMethod")
+var theBestMomentComments = require("../../modules/comment")
 
 require("../../models/user/User")
 require("../../models/pet/Pet")
@@ -222,12 +223,31 @@ module.exports = {
 
             const theBestMomentsResDto = new TheBestMomentsResDto()
             for (let j = 0; j < 6; j++) {   //긍정3개, 부정3개
-                const commentPerFeeling = await Comments.findOne({ feeling: j , classification : 2})
-                const test = await Comments.find()
+                //const commentPerFeeling = await Comments.findOne({ feeling: j , classification : 2})
+                let  commentPerFeeling = {
+                    comments : "",
+                    feeling : null,
+                    tableContents : null
+                }
+                if(j==0){
+                    commentPerFeeling.comments = await theBestMomentComments.loveFeeling(pet.name)
+                }else if(j==1){
+                    commentPerFeeling.comments = await theBestMomentComments.happyFeeling(pet.name)
+                }else if(j==2){
+                    commentPerFeeling.comments = await theBestMomentComments.normalFeeling()
+                }else if(j==3){
+                    commentPerFeeling.comments = await theBestMomentComments.angryFeeling(pet.name)
+                }else if(j==4){
+                    commentPerFeeling.comments = await theBestMomentComments.gloomyFeeling()
+                }else if(j==5){
+                    commentPerFeeling.comments = await theBestMomentComments.boringFeeling()
+                }
                 let theBestMoment = null
                 if (j < 3) {
+                    console.log('positive')
                     theBestMoment = new TheBestMoment(commentPerFeeling, getPositiveRadomDiary(diaryPerFeeling[j]))
                 } else {
+                    console.log('negative')
                     theBestMoment = new TheBestMoment(commentPerFeeling, getNegativeRandomDiary(diaryPerFeeling[j]))
                 }
                 theBestMomentsResDto.setTheBestMoment(theBestMoment)
@@ -243,6 +263,7 @@ module.exports = {
         function getPositiveRadomDiary(diaries: IPetDiary[]) {
             if (diaries === null) return null
             const diaryLength = diaries.length
+            console.log('diaryLength : '+diaryLength)
             const theBestMomentDiaries = []
             if (diaryLength < 8) {
                 for (let i = 0; i < diaryLength; i++) { //가지고 있는 일기 갯수만큼만 넣는다
@@ -271,6 +292,7 @@ module.exports = {
         function getNegativeRandomDiary(diaries: IPetDiary[]) {
             if (diaries === null) return null
             const diaryLength = diaries.length
+            console.log('diaryLength : '+diaryLength)
             const theBestMomentDiaries = []
             if (diaryLength < 2) {
                 for (let i = 0; i < diaryLength; i++) {
