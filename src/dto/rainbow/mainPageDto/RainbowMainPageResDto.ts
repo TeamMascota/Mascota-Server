@@ -35,6 +35,8 @@ export class MemoriesResDto{
     constructor(petDiaries : IPetDiary[], petId : IPet){
         const diaryIndex = this.getRandomMemoryIndex(petDiaries.length)
         const randomDiary = petDiaries[diaryIndex]
+        console.log('aaaa :'+petDiaries)
+        console.log('bbbb :'+diaryIndex)
         console.log("랜덤된 petEmotion "+randomDiary.petEmotions.filter(petEmotion =>
             petEmotion.pet == petId)[0])
 
