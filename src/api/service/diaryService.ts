@@ -24,51 +24,68 @@ module.exports = {
             console.log(userId)
             //Create user object
             const user = await User.findById(userId).populate('book')
-            console.log('user : '+user)
-            // await Book.update(
-            //     {_id: user.book._id },
-            //     {$set: {title: bookData.title, imgs: bookData.image,author: bookData.userName}}
-            //     )
+            console.log('user : ' + user)
             const setBook = user.book
             setBook.title = bookData.title,
-            setBook.imgs = bookData.imgs,
-            setBook.author = bookData.userName
+                setBook.imgs = bookData.imgs,
+                setBook.author = bookData.userName
 
-        //Create tableContents object
-        const tableContents = new TableContents()
-        setBook.tableContents = tableContents
-        await tableContents.save()
-        await user.save()
-        await setBook.save()
-        //Create firstPartTableContents object
-        const firstPartPrologue = new FirstPartTableContents({
-            chapter: 0,
-            title: bookData.title,
-            contents: bookData.contents
-        })
-        await firstPartPrologue.save()
-        console.log(tableContents)
-        await tableContents.firstPartTableContents.push(firstPartPrologue)
-
-        const season = ["봄", "여름", "가을", "겨울"]
-        for (let i = 0; i < 4; i++) {
-            let chapter = 1
-            const dummyFirstPartTableContents = new FirstPartTableContents({
-                chapter,
-                title: `${user.book.author}의 ${season[i]}`
+            //Create tableContents object
+            const tableContents = new TableContents()
+            setBook.tableContents = tableContents
+            await tableContents.save()
+            await user.save()
+            await setBook.save()
+            //Create firstPartTableContents object
+            const firstPartPrologue = new FirstPartTableContents({
+                chapter: 0,
+                title: bookData.title,
+                contents: bookData.contents
             })
-            dummyFirstPartTableContents.save()
-            await tableContents.firstPartTableContents.push(dummyFirstPartTableContents)
-            chapter = chapter + 1
-        }
-        await tableContents.save()
+            await firstPartPrologue.save()
+            console.log(tableContents)
+            await tableContents.firstPartTableContents.push(firstPartPrologue)
 
-        return user.book._id
-        //error handling
-    } catch(err) {
-        console.log(err)
-        throw { statusCode: statusCode.BAD_REQUEST, responseMessage: responseMessage.NO_USER }
-    }
+            let chapter = 1
+            const season = ["봄", "여름", "가을", "겨울"]
+            for (let i = 0; i < 4; i++) {
+                const dummyFirstPartTableContents = new FirstPartTableContents({
+                    chapter,
+                    title: `${user.book.author}의 ${season[i]}`
+                })
+                await dummyFirstPartTableContents.save()
+                tableContents.firstPartTableContents.push(dummyFirstPartTableContents)
+                chapter = chapter + 1
+            }
+
+            //add dummy Diary
+            let newPetDiary = new PetDiary({
+                tableContents: tableContents.firstPartTableContents[1],
+                episode: tableContents.firstPartTableContents[1].petDiary.length,
+                //date: Date(),
+                //imgs: diaryImages,
+                title: "행복한 나날들",
+                contents: "반려동물과의 일상을 생생하게 기록해보세요"
+            })
+            newPetDiary.setPet(user.pets[0])
+            const petEmotion = new PetEmotions({
+                pet: user.pets[0]._id,
+                feeling: 3
+            })
+            newPetDiary.setPetEmotions(petEmotion)
+
+            tableContents.firstPartTableContents[1].petDiary.push(newPetDiary)
+            await petEmotion.save()
+            await newPetDiary.save()
+            await tableContents.firstPartTableContents[1].save()
+            await tableContents.save()
+
+            return user.book._id
+            //error handling
+        } catch (err) {
+            console.log(err)
+            throw { statusCode: statusCode.BAD_REQUEST, responseMessage: responseMessage.NO_USER }
+        }
     },
     postPetDiary: async (diaryData,diaryImages) => {
         const writeDate = await new Date(diaryData.date)
