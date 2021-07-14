@@ -12,6 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const User_1 = __importDefault(require("../../models/user/User"));
 const Pet_1 = __importDefault(require("../../models/pet/Pet"));
 const responseMessage = require('../../modules/responseMessage');
 const statusCode = require('../../modules/statusCode');
@@ -24,6 +25,7 @@ module.exports = {
     registerPet: (reqData, images) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             //error handling
+            const findUser = yield User_1.default.findById(reqData.userId);
             let pets = [];
             const startDate = new Date(reqData.pets[0].startDate);
             startDate.setDate(startDate.getDate() + 1);
@@ -33,25 +35,37 @@ module.exports = {
                     kind: reqData.pets[i].kind,
                     gender: reqData.pets[i].gender,
                     imgs: images[i],
-                    user: mongoose.Types.ObjectId(reqData._id),
+                    user: mongoose.Types.ObjectId(reqData.userId),
                     rainbow: false,
                     startDate: new Date(startDate)
                     // findUser, UserId만 해서 되면 가능
                     //book://나중에 책을 등록할때, pet에 book을 등록. 연관관계 확인. 안들어가있는게 있으면 나중에 같이 넣어야됨.
                     //SETTER사용. pet 찾아서 setter로 넣기.
                 });
+                yield pet.save();
+                findUser.pets.push(pet);
                 pets[i] = pet;
             }
+            yield findUser.save();
             console.log(reqData);
             //db save
-            for (let i = 0; i < pets.length; i++) {
-                yield pets[i].save();
-            }
+            const saveInfo = pets.map(pet => pet._id);
+            return saveInfo;
         }
         catch (err) {
             console.log(err);
             throw { statusCode: statusCode.INTERNAL_SERVER_ERROR, responseMessage: responseMessage.INTERNAL_SERVER_ERROR };
         }
-    })
+    }),
+    // registerPetImg:async(image,petImageInfo)=>{
+    //     try{
+    //         for(let i=0;i<petImageInfo.length;i++){
+    //             await Pet.update({_id:petImageInfo[i]},{$set : {imgs:image[i]}})
+    //         }
+    //         console.log('!!!! : '+image)
+    //     }catch(err){
+    //         throw err
+    //     }
+    // }
 };
 //# sourceMappingURL=petService.js.map

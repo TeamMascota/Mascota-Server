@@ -14,10 +14,9 @@ const petService = require('../service/petService');
 module.exports = {
     registerPet: (req, res) => __awaiter(this, void 0, void 0, function* () {
         let reqData = req.body;
-        const images = req.files.map(img => img.location);
         try {
-            yield petService.registerPet(reqData, images);
-            res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_REGISTER_PET, ""));
+            const result = yield petService.registerPet(reqData);
+            res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_REGISTER_PET, result));
         }
         catch (err) {
             if (err.statusCode == null) {
@@ -28,5 +27,18 @@ module.exports = {
             res.status(err.statusCode).send(util.fail(err.statusCode, err.responseMessage));
         }
     }),
+    registerPetImg: (req, res) => __awaiter(this, void 0, void 0, function* () {
+        const image = req.files.map(file => file.location);
+        const petImageInfo = req.body;
+        console.log('petImageInfo : ' + petImageInfo);
+        try {
+            yield petService.registerPetImg(image, petImageInfo);
+            res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_REGISTER_PET_IMG));
+        }
+        catch (err) {
+            console.error(err);
+            res.status(err.statusCode).send(util.fail(err.statusCode, err.responseMessage));
+        }
+    })
 };
 //# sourceMappingURL=petController.js.map
