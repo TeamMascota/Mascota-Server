@@ -10,7 +10,7 @@ var mongoose = require('mongoose')
 require("../../models/user/User")
 require("../../models/pet/Pet")
 module.exports = {
-    registerPet: async (reqData) => {
+    registerPet: async (reqData, images) => {
         try{
         //error handling
             const findUser = await User.findById(reqData.userId)
@@ -23,6 +23,7 @@ module.exports = {
                     name: reqData.pets[i].name,
                     kind: reqData.pets[i].kind,
                     gender: reqData.pets[i].gender,
+                    imgs : images[i],
                     user: mongoose.Types.ObjectId(reqData.userId),
                     rainbow: false,
                     startDate: new Date(startDate)
@@ -46,14 +47,14 @@ module.exports = {
         }
     },
 
-    registerPetImg:async(image,petImageInfo)=>{
-        try{
-            for(let i=0;i<petImageInfo.length;i++){
-                await Pet.update({_id:petImageInfo[i]},{$set : {imgs:image[i]}})
-            }
-            console.log('!!!! : '+image)
-        }catch(err){
-            throw err
-        }
-    }
+    // registerPetImg:async(image,petImageInfo)=>{
+    //     try{
+    //         for(let i=0;i<petImageInfo.length;i++){
+    //             await Pet.update({_id:petImageInfo[i]},{$set : {imgs:image[i]}})
+    //         }
+    //         console.log('!!!! : '+image)
+    //     }catch(err){
+    //         throw err
+    //     }
+    // }
 }
