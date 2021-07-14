@@ -234,7 +234,7 @@ module.exports = {
                     findDiary.tableContents.userDiary.splice(j,1)
                 }
             }
-            await findDiary.tableContents
+            await findDiary.tableContents.save()
         } catch (err) {
             throw err
         }
