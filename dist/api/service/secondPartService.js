@@ -218,7 +218,7 @@ module.exports = {
                     findDiary.tableContents.userDiary.splice(j, 1);
                 }
             }
-            yield findDiary.tableContents;
+            yield findDiary.tableContents.save();
         }
         catch (err) {
             throw err;
