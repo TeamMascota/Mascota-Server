@@ -3,7 +3,7 @@ import PetDiary from "../../models/diary/PetDiary"
 import UserDiary from "../../models/diary/UserDiary"
 import User from "../../models/user/User"
 import Book from "../../models/book/Book"
-import { SecondPartMainPageResDto, SecondPartMainPageTableContents } from "../../dto/secondPart/SecondPartMainPageResDto"
+import { SecondPartMainPageResDto,SecondPartMainPageDiary ,SecondPartMainPageTableContents } from "../../dto/secondPart/SecondPartMainPageResDto"
 import { SecondPartDiariesOfMonth, SecondPartDiariesOfMonthResDto } from "../../dto/secondPart/SecondPartDiariesOfMonthResDto"
 import { SecondPartChapterListResDto } from "../../dto/secondPart/SecondPartChapterListResDto"
 import { SecondPartDiaryResDto } from "../../dto/secondPart/SecondPartDiaryResDto"
@@ -32,6 +32,7 @@ module.exports = {
                     })
                 })
             })
+            //console.log('mmmm : ',user)
 
             const epilogue = user.book.tableContents.secondPartTableContents[0]
             const checkFirst = user.book.tableContents.secondPartTableContents.map(tableContents => tableContents.userDiary)
@@ -57,8 +58,12 @@ module.exports = {
                     date: user.book.tableContents.secondPartStartDate
                 })
             }
-
-            return new SecondPartMainPageResDto(user, sortSecondPartTableContents[0])
+            //console.log("sort",sortSecondPartTableContents)
+            const curSecondPartTableContents=await SecondPartTableContent.findById(sortSecondPartTableContents[0].tableContents)
+            let mainPageDto=new SecondPartMainPageResDto(user, sortSecondPartTableContents[0])
+            console.log("말도안돼...",curSecondPartTableContents)
+            mainPageDto.setDiary(await new SecondPartMainPageDiary(curSecondPartTableContents.chapter,sortSecondPartTableContents[0]))
+            return mainPageDto
         } catch (err) {
             throw err
         }
