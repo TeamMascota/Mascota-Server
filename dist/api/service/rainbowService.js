@@ -63,14 +63,16 @@ module.exports = {
             const rainbowButtonCheck = yield rainbowCheck(findUser.pets);
             const rainbowMainPageResDto = new RainbowMainPageResDto_1.RainbowMainPageResDto(findUser.book, isRainbowPet, rainbowButtonCheck);
             const firstPartTableContents = findUser.book.tableContents.firstPartTableContents;
-            const validMemories = firstPartTableContents.filter(tableContents => tableContents.petDiary.length > 0).map(tableContents => tableContents.petDiary.filter(petDiary => petDiary.pets.includes(petId)));
+            const validMemories = firstPartTableContents.filter(tableContents => tableContents.petDiary.length > 0).map(tableContents => tableContents.petDiary.filter(petDiary => petDiary.pets.includes(petId)))[0];
             console.log('validMemories : ' + validMemories);
+            console.log('!!!!!!!!!!!!!!!!!!!!! : ' + validMemories[0]);
+            console.log('@@@@@@@@@@@@@@@@@@ : ' + validMemories[1]);
             //validMemories : [tableContetns [petDiary]]
             let memoriesResDto = [null, null];
             console.log('validMemoriesLength : ' + validMemories.length);
             if (validMemories.length == 2) {
-                memoriesResDto[0] = new RainbowMainPageResDto_1.MemoriesResDto(validMemories[0], petId);
-                memoriesResDto[1] = new RainbowMainPageResDto_1.MemoriesResDto(validMemories[1], petId);
+                memoriesResDto[0] = new RainbowMainPageResDto_1.MemoriesResDto(validMemories, petId);
+                memoriesResDto[1] = new RainbowMainPageResDto_1.MemoriesResDto(validMemories, petId);
             }
             else if (validMemories.length > 2) {
                 let firstTableContentsIndex = yield getRandomNumber(validMemories.length);
@@ -85,11 +87,15 @@ module.exports = {
                         }
                     }
                 }
-                memoriesResDto[0] = new RainbowMainPageResDto_1.MemoriesResDto(validMemories[firstTableContentsIndex], petId);
-                memoriesResDto[1] = new RainbowMainPageResDto_1.MemoriesResDto(validMemories[secondTableContentsIndex], petId);
+                console.log('firstTableContentsIndex : ' + firstTableContentsIndex);
+                console.log('secondTableCOntetnsIndex : ' + secondTableContentsIndex);
+                console.log('fisrt : ' + validMemories[firstTableContentsIndex]);
+                console.log('second : ' + validMemories[secondTableContentsIndex]);
+                memoriesResDto[0] = new RainbowMainPageResDto_1.MemoriesResDto2(validMemories[firstTableContentsIndex], petId);
+                memoriesResDto[1] = new RainbowMainPageResDto_1.MemoriesResDto2(validMemories[secondTableContentsIndex], petId);
             }
             else if (validMemories.length == 1) {
-                memoriesResDto[0] = new RainbowMainPageResDto_1.MemoriesResDto(validMemories[0], petId);
+                memoriesResDto[0] = new RainbowMainPageResDto_1.MemoriesResDto(validMemories[0][0], petId);
             }
             rainbowMainPageResDto.setMemories(memoriesResDto);
             //helpResDto

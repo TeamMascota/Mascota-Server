@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.HelpResDto = exports.MemoriesResDto = exports.RainbowMainPageResDto = void 0;
+exports.HelpResDto = exports.MemoriesResDto2 = exports.MemoriesResDto = exports.RainbowMainPageResDto = void 0;
 class RainbowMainPageResDto {
     constructor(book, isRainbowPet, rainbowButtonCheck) {
         this.rainbowMainPage = {
@@ -26,6 +26,7 @@ class MemoriesResDto {
     constructor(petDiaries, petId) {
         const diaryIndex = this.getRandomMemoryIndex(petDiaries.length);
         const randomDiary = petDiaries[diaryIndex];
+        console.log('ccc : ' + petDiaries);
         console.log('aaaa :' + randomDiary);
         console.log('bbbb :' + diaryIndex);
         console.log("랜덤된 petEmotion " + randomDiary.petEmotions.filter(petEmotion => petEmotion.pet == petId)[0]);
@@ -42,6 +43,16 @@ class MemoriesResDto {
     }
 }
 exports.MemoriesResDto = MemoriesResDto;
+class MemoriesResDto2 {
+    constructor(petDiary, petId) {
+        this.diaryId = petDiary._id;
+        this.title = petDiary.title;
+        this.contents = petDiary.contents;
+        this.date = petDiary.date;
+        this.feeling = petDiary.petEmotions.filter(petEmotions => petEmotions.pet == petId)[0].feeling;
+    }
+}
+exports.MemoriesResDto2 = MemoriesResDto2;
 class HelpResDto {
     constructor(help) {
         this.classification = help.classification;
