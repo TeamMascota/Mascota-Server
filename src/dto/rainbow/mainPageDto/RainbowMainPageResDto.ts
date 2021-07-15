@@ -18,7 +18,7 @@ export class RainbowMainPageResDto{
         this.rainbowMainPage.rainbowCheck = rainbowButtonCheck
     }
 
-    setMemories(memories : MemoriesResDto[]){
+    setMemories(memories : MemoriesResDto[] | MemoriesResDto2[]){
         this.rainbowMainPage.memories = memories
     }
     setHelp(helps : HelpResDto[]){
@@ -36,6 +36,7 @@ export class MemoriesResDto{
     constructor(petDiaries : IPetDiary[], petId : IPet){
         const diaryIndex = this.getRandomMemoryIndex(petDiaries.length)
         const randomDiary = petDiaries[diaryIndex]
+        console.log('ccc : '+petDiaries)
         console.log('aaaa :'+randomDiary)
         console.log('bbbb :'+diaryIndex)
         console.log("랜덤된 petEmotion "+randomDiary.petEmotions.filter(petEmotion =>
@@ -53,6 +54,23 @@ export class MemoriesResDto{
         let min = Math.ceil(0);
         max = Math.floor(max);
         return Math.floor(Math.random()*(max-min))+min;
+    }
+}
+
+export class MemoriesResDto2{
+    private diaryId;
+    private title;
+    private contents;
+    private date;
+    private feeling;
+
+    constructor(petDiary : IPetDiary, petId : IPet){
+        this.diaryId = petDiary._id
+        this.title = petDiary.title
+        this.contents = petDiary.contents
+        this.date = petDiary.date
+        this.feeling = petDiary.petEmotions.filter(petEmotions => 
+            petEmotions.pet == petId)[0].feeling
     }
 }
 

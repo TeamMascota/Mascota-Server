@@ -1,5 +1,5 @@
 import User from "../../models/user/User"
-import { RainbowMainPageResDto, MemoriesResDto, HelpResDto } from "../../dto/rainbow/mainPageDto/RainbowMainPageResDto"
+import { RainbowMainPageResDto, MemoriesResDto, HelpResDto, MemoriesResDto2 } from "../../dto/rainbow/mainPageDto/RainbowMainPageResDto"
 import Help from "../../models/etc/Help"
 import { MyPetInfoResDto, RainbowPetResDto } from "../../dto/rainbow/petDto/RainbowPetResDto"
 import Pet from "../../models/pet/Pet"
@@ -59,19 +59,20 @@ module.exports = {
                 tableContents.petDiary.length > 0).map(tableContents =>
                     tableContents.petDiary.filter(petDiary =>
                         petDiary.pets.includes(petId))
-                )
-                console.log('validMemories : '+ validMemories)
+                )[0]
+            console.log('validMemories : '+ validMemories)
+            console.log('!!!!!!!!!!!!!!!!!!!!! : '+validMemories[0])
+            console.log('@@@@@@@@@@@@@@@@@@ : '+validMemories[1])
             //validMemories : [tableContetns [petDiary]]
 
             let memoriesResDto = [null, null]
-                        console.log('validMemoriesLength : '+validMemories.length)
+                console.log('validMemoriesLength : '+validMemories.length)
             if (validMemories.length == 2) {
-                memoriesResDto[0] = new MemoriesResDto(validMemories[0], petId)
-                memoriesResDto[1] = new MemoriesResDto(validMemories[1], petId)
+                memoriesResDto[0] = new MemoriesResDto(validMemories, petId)
+                memoriesResDto[1] = new MemoriesResDto(validMemories, petId)
             } else if (validMemories.length > 2) {
                 let firstTableContentsIndex = await getRandomNumber(validMemories.length)
                 let secondTableContentsIndex = await getRandomNumber(validMemories.length)
-
                 if (firstTableContentsIndex == secondTableContentsIndex) {
                     while (firstTableContentsIndex == secondTableContentsIndex) {
                         if (secondTableContentsIndex == firstTableContentsIndex) {
@@ -81,10 +82,14 @@ module.exports = {
                         }
                     }
                 }
-                memoriesResDto[0] = new MemoriesResDto(validMemories[firstTableContentsIndex], petId)
-                memoriesResDto[1] = new MemoriesResDto(validMemories[secondTableContentsIndex], petId)
+                console.log('firstTableContentsIndex : '+firstTableContentsIndex)
+                console.log('secondTableCOntetnsIndex : '+secondTableContentsIndex)
+                console.log('fisrt : '+validMemories[firstTableContentsIndex])
+                console.log('second : '+validMemories[secondTableContentsIndex])
+                memoriesResDto[0] = new MemoriesResDto2(validMemories[firstTableContentsIndex], petId)
+                memoriesResDto[1] = new MemoriesResDto2(validMemories[secondTableContentsIndex], petId)
             } else if (validMemories.length == 1) {
-                memoriesResDto[0] = new MemoriesResDto(validMemories[0], petId)
+                memoriesResDto[0] = new MemoriesResDto(validMemories[0][0], petId)
             }
             rainbowMainPageResDto.setMemories(memoriesResDto)
 
