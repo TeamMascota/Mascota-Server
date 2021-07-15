@@ -71,6 +71,7 @@ module.exports = {
             let petDiaryNumber = (yield allPetDiaries).length;
             //가장 마지막 일기
             const lastDiary = new FirstPartMainPageResDto_1.DiaryResDto(allPetDiaries[petDiaryNumber - 1]);
+            firstPartMainPageResDto.setNextEpisode(lastDiary);
             //tableContents
             let lastTableNumber = findUser.book.tableContents.firstPartTableContents.length;
             console.log("lastTable", TableContents_1.default);

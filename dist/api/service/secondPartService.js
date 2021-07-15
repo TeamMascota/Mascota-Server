@@ -42,6 +42,7 @@ module.exports = {
                     })
                 })
             });
+            //console.log('mmmm : ',user)
             const epilogue = user.book.tableContents.secondPartTableContents[0];
             const checkFirst = user.book.tableContents.secondPartTableContents.map(tableContents => tableContents.userDiary);
             let check = false;
@@ -62,7 +63,12 @@ module.exports = {
                     date: user.book.tableContents.secondPartStartDate
                 });
             }
-            return new SecondPartMainPageResDto_1.SecondPartMainPageResDto(user, sortSecondPartTableContents[0]);
+            //console.log("sort",sortSecondPartTableContents)
+            const curSecondPartTableContents = yield SecondPartTableContent_1.default.findById(sortSecondPartTableContents[0].tableContents);
+            let mainPageDto = new SecondPartMainPageResDto_1.SecondPartMainPageResDto(user, sortSecondPartTableContents[0]);
+            console.log("말도안돼...", curSecondPartTableContents);
+            mainPageDto.setDiary(yield new SecondPartMainPageResDto_1.SecondPartMainPageDiary(curSecondPartTableContents.chapter, sortSecondPartTableContents[0]));
+            return mainPageDto;
         }
         catch (err) {
             throw err;

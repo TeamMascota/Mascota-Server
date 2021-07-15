@@ -16,12 +16,16 @@ class FirstPartMainPageResDto {
         this.firstPartMainPage = {
             title: null,
             bookImg: null,
-            diary: {},
+            diary: null,
             tableContents: [],
-            secondPartBook: null
+            secondPartBook: null,
+            nextEpisode: null
         };
         this.firstPartMainPage.title = book.title;
         this.firstPartMainPage.bookImg = book.imgs;
+    }
+    setNextEpisode(diaryResDto) {
+        this.firstPartMainPage.nextEpisode = diaryResDto.episode + 1;
     }
     //가장 최근 일기 작성(기분X)
     setDiary(diary) {
@@ -68,12 +72,16 @@ class TableContentsResDto {
 exports.TableContentsResDto = TableContentsResDto;
 class SecondPartBookResDto {
     constructor(user) {
+        this.userId = null;
+        this.bookImg = null;
+        this.author = null;
+        this.date = null;
         this.init(user);
     }
     init(user) {
         return __awaiter(this, void 0, void 0, function* () {
             this.userId = user._id;
-            this.imgs = user.book.imgs;
+            this.bookImg = user.book.imgs;
             this.author = user.book.author;
             this.date = yield dateMethod.toStringByFormatting(user.book.date);
         });

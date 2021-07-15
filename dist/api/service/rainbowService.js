@@ -128,7 +128,7 @@ module.exports = {
             const findUser = yield User_1.default.find().populate({
                 path: "pets"
             });
-            const rainbowPetResDto = findUser[0].pets.filter(pet => !pet.rainbow).map(pet => new RainbowPetResDto_1.MyPetInfoResDto(pet));
+            const rainbowPetResDto = new RainbowPetResDto_1.RainbowPetResDto(findUser[0].pets.filter(pet => !pet.rainbow).map(pet => new RainbowPetResDto_1.MyPetInfoResDto(pet)));
             return rainbowPetResDto;
         }
         catch (err) {

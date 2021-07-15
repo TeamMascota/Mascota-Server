@@ -18,7 +18,7 @@ module.exports = {
         const { userId } = req.params;
         try {
             const result = yield firstPartService.getMainPage(userId);
-            res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_GET_RAINBOW_MAIN_PAGE, result));
+            res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_GET_FIRSTPART_MAINPAGE, result));
         }
         catch (err) {
             console.error(err);

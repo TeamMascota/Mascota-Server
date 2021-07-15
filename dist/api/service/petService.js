@@ -23,11 +23,19 @@ require("../../models/user/User");
 require("../../models/pet/Pet");
 module.exports = {
     registerPet: (reqData, images) => __awaiter(void 0, void 0, void 0, function* () {
+        // const userId = JSON.parse(reqData.userId)
+        // const reqPets = JSON.parse(reqData.pets)
+        //console.log('!!!!!!!!!!!!!!! : '+JSON.stringify(reqPets[0]))
+        console.log('@@@@@@@@@@@@ : ' + reqData[0].name);
+        //console.log('############# : '+reqData[1].name)
+        console.log('$$$$$$$$$$$$ : ' + reqData.pets.length);
         try {
             //error handling
             const findUser = yield User_1.default.findById(reqData.userId);
+            console.log('findUser : ' + findUser);
+            console.log('image : ' + images[0]);
             let pets = [];
-            const startDate = new Date(reqData.pets[0].startDate);
+            const startDate = new Date(reqData[0].startDate);
             startDate.setDate(startDate.getDate() + 1);
             for (let i = 0; i < reqData.pets.length; i++) {
                 let pet = new Pet_1.default({
