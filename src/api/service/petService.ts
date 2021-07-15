@@ -20,7 +20,7 @@ module.exports = {
         console.log('petsLength : '+pets.length)
         console.log('petsName : '+pets[0].name)
         console.log('petsKind : '+pets[0].kind)
-        console.log()
+        console.log('userId : '+userId)
         try{
         //error handling
             const findUser = await User.findById(reqData.userId)
