@@ -22,6 +22,7 @@ module.exports = {
         let images = req.files.map(file => file.location);
         //console.log('reqData : '+ reqData.pets[0])
         //const test = JSON.parse(reqData.pets)
+        console.log('11111111111111 : ' + typeof (req.Data.pets[0]));
         console.log('reqData : ' + reqData.pets);
         console.log('userId : ' + reqData.userId);
         console.log('pets : ' + reqData.pets[0]);
@@ -29,7 +30,6 @@ module.exports = {
         console.log('kind : ' + reqData.pets[0].kind);
         console.log('title : ' + reqData.pets[0].title);
         console.log('startDate : ' + reqData.pets[0].startDate);
-        console.log('11111111111111 : ' + typeof (req.Data.pets[0]));
         //console.log('reqData index : '+reqData.pets[0].name) //undifned
         //console.log('reqData2 : '+typeof(test))
         console.log('images : ' + images);
