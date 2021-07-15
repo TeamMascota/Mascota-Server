@@ -8,10 +8,11 @@ const petService = require('../service/petService')
 
 module.exports = {
     registerPet: async (req, res) => {
-        let reqData=JSON.parse(JSON.stringify(req.body))
+        //let reqData=JSON.parse(JSON.stringify(req.body))
         // console.log('type : '+typeof(reqData))
         // console.log('toObject : '+reqData)
         //const reqData = req.body
+        let reqData = req.body
         let images = req.files.map(file=>file.location)
         //console.log('reqData : '+ reqData.pets[0])
         //const test = JSON.parse(reqData.pets)
