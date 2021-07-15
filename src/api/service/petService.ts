@@ -11,12 +11,16 @@ require("../../models/user/User")
 require("../../models/pet/Pet")
 module.exports = {
     registerPet: async (reqData, images) => {
-        // const userId = JSON.parse(reqData.userId)
-        // const reqPets = JSON.parse(reqData.pets)
-        //console.log('!!!!!!!!!!!!!!! : '+JSON.stringify(reqPets[0]))
-        console.log('@@@@@@@@@@@@ : '+reqData.pets[0].name)
+        const {pets, userId} = reqData
+
+        console.log('petstype : '+typeof(pets))
+        console.log('pets[0]type : '+typeof(pets[0]))
+        console.log('pets[0] : '+pets[0])
         //console.log('############# : '+reqData[1].name)
-        console.log('$$$$$$$$$$$$ : '+reqData.pets.length)
+        console.log('petsLength : '+pets.length)
+        console.log('petsName : '+pets[0].name)
+        console.log('petsKind : '+pets[0].kind)
+        console.log()
         try{
         //error handling
             const findUser = await User.findById(reqData.userId)
