@@ -56,11 +56,13 @@ class TheBestMomentDiary {
     init(diaryPerFeeling) {
         return __awaiter(this, void 0, void 0, function* () {
             console.log('!!!!!!!!!!!!!!!!!!!!!!!!! : ' + diaryPerFeeling);
-            this.chapter = diaryPerFeeling.tableContents.chapter;
-            this.episode = diaryPerFeeling.episode;
-            this.title = diaryPerFeeling.title;
-            this.contents = diaryPerFeeling.contents;
-            this.date = yield dateMethod.toStringByFormatting(diaryPerFeeling.date);
+            if (diaryPerFeeling != undefined) {
+                this.chapter = diaryPerFeeling.tableContents.chapter;
+                this.episode = diaryPerFeeling.episode;
+                this.title = diaryPerFeeling.title;
+                this.contents = diaryPerFeeling.contents;
+                this.date = yield dateMethod.toStringByFormatting(diaryPerFeeling.date);
+            }
         });
     }
 }

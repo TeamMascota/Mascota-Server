@@ -15,17 +15,22 @@ var statusCode = require('../../modules/statusCode');
 const petService = require('../service/petService');
 module.exports = {
     registerPet: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        // let reqData=JSON.parse(JSON.stringify(req.body))
+        let reqData = JSON.parse(JSON.stringify(req.body));
         // console.log('type : '+typeof(reqData))
         // console.log('toObject : '+reqData)
-        const reqData = req.body;
+        //const reqData = req.body
         let images = req.files.map(file => file.location);
         //console.log('reqData : '+ reqData.pets[0])
         //const test = JSON.parse(reqData.pets)
         console.log('reqData : ' + reqData.pets);
         console.log('userId : ' + reqData.userId);
         console.log('pets : ' + reqData.pets[0]);
-        console.log('reqData index : ' + reqData.pets[0].name);
+        console.log('gender : ' + reqData.pets[0].gender);
+        console.log('kind : ' + reqData.pets[0].kind);
+        console.log('title : ' + reqData.pets[0].title);
+        console.log('startDate : ' + reqData.pets[0].startDate);
+        console.log('11111111111111 : ' + typeof (req.Data.pets[0]));
+        //console.log('reqData index : '+reqData.pets[0].name) //undifned
         //console.log('reqData2 : '+typeof(test))
         console.log('images : ' + images);
         try {

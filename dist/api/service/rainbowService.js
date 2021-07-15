@@ -24,6 +24,7 @@ const SecondPartTableContent_1 = __importDefault(require("../../models/tableCont
 const PetEmotions_1 = __importDefault(require("../../models/diary/PetEmotions"));
 const TheBestMomentResDto_1 = require("../../dto/rainbow/theBestMomentDto/TheBestMomentResDto");
 const PetNameResDto_1 = require("../../dto/rainbow/petDto/PetNameResDto");
+const Comments_1 = __importDefault(require("../../models/etc/Comments"));
 const TheBestMomentSubResDto_1 = require("../../dto/rainbow/theBestMomentDto/TheBestMomentSubResDto");
 var dateMethod = require("../../modules/dateMethod");
 var theBestMomentComments = require("../../modules/comment");
@@ -128,7 +129,7 @@ module.exports = {
             const findUser = yield User_1.default.find().populate({
                 path: "pets"
             });
-            const rainbowPetResDto = new RainbowPetResDto_1.RainbowPetResDto(findUser[0].pets.filter(pet => !pet.rainbow).map(pet => new RainbowPetResDto_1.MyPetInfoResDto(pet)));
+            const rainbowPetResDto = findUser[0].pets.filter(pet => !pet.rainbow).map(pet => new RainbowPetResDto_1.MyPetInfoResDto(pet));
             return rainbowPetResDto;
         }
         catch (err) {
@@ -213,37 +214,29 @@ module.exports = {
             }
             const theBestMomentsResDto = new TheBestMomentResDto_1.TheBestMomentsResDto();
             for (let j = 0; j < 6; j++) { //긍정3개, 부정3개
-                //const commentPerFeeling = await Comments.findOne({ feeling: j , classification : 2})
-                let commentPerFeeling = {
-                    comments: "",
-                    feeling: null,
-                    tableContents: null
-                };
-                if (j == 0) {
-                    commentPerFeeling.comments = yield theBestMomentComments.loveFeeling(pet.name);
-                }
-                else if (j == 1) {
-                    commentPerFeeling.comments = yield theBestMomentComments.happyFeeling(pet.name);
-                }
-                else if (j == 2) {
-                    commentPerFeeling.comments = yield theBestMomentComments.normalFeeling();
-                }
-                else if (j == 3) {
-                    commentPerFeeling.comments = yield theBestMomentComments.angryFeeling(pet.name);
-                }
-                else if (j == 4) {
-                    commentPerFeeling.comments = yield theBestMomentComments.gloomyFeeling();
-                }
-                else if (j == 5) {
-                    commentPerFeeling.comments = yield theBestMomentComments.boringFeeling();
-                }
+                const commentPerFeeling = yield Comments_1.default.findOne({ feeling: j, classification: 2 });
+                // let commentPerFeeling ={
+                //     comments : "",
+                //     feeling : j
+                // }
+                // if(j==0){
+                //     commentPerFeeling.comments = await theBestMomentComments.loveFeeling(pet.name)
+                // }else if(j==1){
+                //     commentPerFeeling = await theBestMomentComments.happyFeeling(pet.name)
+                // }else if(j==2){
+                //     commentPerFeeling = await theBestMomentComments.normalFeeling()
+                // }else if(j==3){
+                //     commentPerFeeling = await theBestMomentComments.angryFeeling(pet.name)
+                // }else if(j==4){
+                //     commentPerFeeling = await theBestMomentComments.gloomyFeeling()
+                // }else if(j==5){
+                //     commentPerFeeling = await theBestMomentComments.boringFeeling()
+                // }
                 let theBestMoment = null;
                 if (j < 3) {
-                    console.log('positive');
                     theBestMoment = new TheBestMomentResDto_1.TheBestMoment(commentPerFeeling, getPositiveRadomDiary(diaryPerFeeling[j]));
                 }
                 else {
-                    console.log('negative');
                     theBestMoment = new TheBestMomentResDto_1.TheBestMoment(commentPerFeeling, getNegativeRandomDiary(diaryPerFeeling[j]));
                 }
                 theBestMomentsResDto.setTheBestMoment(theBestMoment);
@@ -259,7 +252,6 @@ module.exports = {
             if (diaries === null)
                 return null;
             const diaryLength = diaries.length;
-            console.log('diaryLength : ' + diaryLength);
             const theBestMomentDiaries = [];
             if (diaryLength < 8) {
                 for (let i = 0; i < diaryLength; i++) { //가지고 있는 일기 갯수만큼만 넣는다
@@ -289,7 +281,6 @@ module.exports = {
             if (diaries === null)
                 return null;
             const diaryLength = diaries.length;
-            console.log('diaryLength : ' + diaryLength);
             const theBestMomentDiaries = [];
             if (diaryLength < 2) {
                 for (let i = 0; i < diaryLength; i++) {
