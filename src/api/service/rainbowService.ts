@@ -1,7 +1,7 @@
 import User from "../../models/user/User"
 import { RainbowMainPageResDto, MemoriesResDto, HelpResDto } from "../../dto/rainbow/mainPageDto/RainbowMainPageResDto"
 import Help from "../../models/etc/Help"
-import { MyPetInfoResDto } from "../../dto/rainbow/petDto/RainbowPetResDto"
+import { MyPetInfoResDto, RainbowPetResDto } from "../../dto/rainbow/petDto/RainbowPetResDto"
 import Pet from "../../models/pet/Pet"
 import { IPet } from "../../interfaces/pet/IPet"
 import { PartingRainbowResDto } from "../../dto/rainbow/partingDto/PartingRainbowResDto"
@@ -128,8 +128,8 @@ module.exports = {
             const findUser = await User.find().populate({
                 path: "pets"
             })
-            const rainbowPetResDto = findUser[0].pets.filter(pet=>!pet.rainbow).map(pet =>
-                new MyPetInfoResDto(pet))
+            const rainbowPetResDto = new RainbowPetResDto(findUser[0].pets.filter(pet=>!pet.rainbow).map(pet =>
+                new MyPetInfoResDto(pet)))
 
             return rainbowPetResDto
         } catch (err) {
