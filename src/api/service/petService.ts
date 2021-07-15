@@ -16,7 +16,7 @@ module.exports = {
             const findUser = await User.find().populate({
                 path : "pets"
             })
-
+            console.log('getPetInfo List')
             const findPets = findUser[0].pets
 
             return new PetsInfoDto(findPets.map( pet => new PetInfoDto(pet)))

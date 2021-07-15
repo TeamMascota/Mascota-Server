@@ -21,11 +21,12 @@ class ChapterResDto {
         this.chapterId = null;
         this.chapter = null;
         this.chapterTitle = null;
-        this.episodePerchapterCount = null;
+        this.episodePerchapterCount = 0;
         this.chapterId = firstPartTableContents._id;
         this.chapter = firstPartTableContents.chapter;
         this.chapterTitle = firstPartTableContents.title;
-        this.episodePerchapterCount;
+        console.log('!!!! : ' + firstPartTableContents.petDiary.length);
+        this.episodePerchapterCount = firstPartTableContents.petDiary.length;
     }
 }
 exports.ChapterResDto = ChapterResDto;

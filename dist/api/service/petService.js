@@ -28,6 +28,7 @@ module.exports = {
             const findUser = yield User_1.default.find().populate({
                 path: "pets"
             });
+            console.log('getPetInfo List');
             const findPets = findUser[0].pets;
             return new PetInfoDto_1.PetsInfoDto(findPets.map(pet => new PetInfoDto_1.PetInfoDto(pet)));
         }
