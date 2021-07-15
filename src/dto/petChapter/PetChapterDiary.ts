@@ -63,7 +63,8 @@ export class DiariesResDto{
         this.feelingCount=diary.petEmotions.length
         this.feeling=diary.petEmotions[0].feeling
         this.date=diary.date.getDate()+"일"
-        this.weekday= week[diary.date.getDate()]
+        console.log('요일 : '+diary.date.getDay())
+        this.weekday= week[diary.date.getDay()]
         this.kind=diary.pets[0].kind
     }
     setFeeling(petEmotion:Number){
