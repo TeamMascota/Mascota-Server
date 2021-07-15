@@ -1,3 +1,5 @@
+import { json } from "body-parser"
+
 var util = require('../../modules/util')
 var responseMessage = require('../../modules/responseMessage')
 var statusCode = require('../../modules/statusCode')
@@ -6,9 +8,14 @@ const petService = require('../service/petService')
 
 module.exports = {
     registerPet: async (req, res) => {
-        let reqData=req.body
+        let reqData=JSON.parse(JSON.stringify(req.body))
+        console.log('type : '+typeof(reqData))
+        console.log('toObject : '+reqData)
         let images = req.files.map(file=>file.location)
-        console.log('reqData : '+ reqData)
+        //console.log('reqData : '+ reqData.pets[0])
+        const test = JSON.parse(reqData.pets)
+        console.log('reqData : '+test[0])
+        console.log('reqData2 : '+typeof(test))
         console.log('images : '+images)
         try {
             const result = await petService.registerPet(reqData, images);
@@ -22,7 +29,6 @@ module.exports = {
             res.status(err.statusCode).send(util.fail(err.statusCode, err.responseMessage))
         }
     },
-
     // registerPetImg:async(req,res)=>{
     //     const image = req.files.map(file=>file.location)
     //     const petImageInfo = req.body

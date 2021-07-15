@@ -14,7 +14,7 @@ module.exports = {
         try{
         //error handling
             const findUser = await User.findById(reqData.userId)
-
+            console.log('findUser : '+findUser)
             let pets=[];
             const startDate= new Date(reqData.pets[0].startDate)
             startDate.setDate(startDate.getDate() + 1);
