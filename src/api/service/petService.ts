@@ -14,7 +14,7 @@ module.exports = {
         // const userId = JSON.parse(reqData.userId)
         // const reqPets = JSON.parse(reqData.pets)
         //console.log('!!!!!!!!!!!!!!! : '+JSON.stringify(reqPets[0]))
-        console.log('@@@@@@@@@@@@ : '+reqData[0].name)
+        console.log('@@@@@@@@@@@@ : '+reqData.pets[0].name)
         //console.log('############# : '+reqData[1].name)
         console.log('$$$$$$$$$$$$ : '+reqData.pets.length)
         try{

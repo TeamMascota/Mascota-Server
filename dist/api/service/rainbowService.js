@@ -155,7 +155,7 @@ module.exports = {
             // for()
             let diaryCount = 0;
             user.book.tableContents.firstPartTableContents.forEach(tableContent => diaryCount += tableContent.petDiary.length);
-            return new PartingRainbowResDto_1.PartingRainbowResDto(diaryCount, findPet.name);
+            return new PartingRainbowResDto_1.PartingRainbowResDto(diaryCount, findPet);
         }
         catch (err) {
             throw err;

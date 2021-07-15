@@ -17,7 +17,8 @@ module.exports = {
         //const test = JSON.parse(reqData.pets)
         console.log('reqData : '+reqData.pets)
         console.log('userId : '+reqData.userId)
-        console.log('reqData solve:'+JSON.stringify(reqData.pets))
+        console.log('pets : '+reqData.pets[0])
+        console.log('reqData index : '+reqData.pets[0].name)
         //console.log('reqData2 : '+typeof(test))
         console.log('images : '+images)
         try {

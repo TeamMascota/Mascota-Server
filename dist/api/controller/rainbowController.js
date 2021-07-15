@@ -59,7 +59,7 @@ module.exports = {
         const petId = req.params.petId;
         try {
             const result = yield rainbowService.getReadyPartingPetComment(petId);
-            return res.status(statusCode.OK).send(util.success(statusCode.INTERNAL_SERVER_ERROR, responseMessage.SUCCESS_GET_READY_PARTING_PET_COMMENT, result));
+            return res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_GET_READY_PARTING_PET_COMMENT, result));
         }
         catch (err) {
             console.error(err);
