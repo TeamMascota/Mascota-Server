@@ -8,6 +8,8 @@ module.exports = {
     registerPet: async (req, res) => {
         let reqData=req.body
         let images = req.files.map(file=>file.location)
+        console.log('reqData : '+ reqData)
+        console.log('images : '+images)
         try {
             const result = await petService.registerPet(reqData, images);
             res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_REGISTER_PET, result))
