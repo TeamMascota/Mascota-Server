@@ -30,6 +30,7 @@ export class SecondPartDiariesOfMonth{
 }
 
 export class SecondPartDiaries{
+    private diaryId = null
     private days = null
     private dayOfWeek = null
     private feeling = null
@@ -40,7 +41,7 @@ export class SecondPartDiaries{
 
     constructor(userDiary : IUserDiary){
         const weeks = ["일","월","화","수","목","금","토"]
-
+        this.diaryId = userDiary._id
         this.days = userDiary.date.getDate()
         this.dayOfWeek = weeks[userDiary.date.getDay()]
         this.feeling = userDiary.feeling

@@ -27,6 +27,7 @@ class SecondPartDiariesOfMonth {
 exports.SecondPartDiariesOfMonth = SecondPartDiariesOfMonth;
 class SecondPartDiaries {
     constructor(userDiary) {
+        this.diaryId = null;
         this.days = null;
         this.dayOfWeek = null;
         this.feeling = null;
@@ -35,6 +36,7 @@ class SecondPartDiaries {
         this.contents = null;
         this.img = null;
         const weeks = ["일", "월", "화", "수", "목", "금", "토"];
+        this.diaryId = userDiary._id;
         this.days = userDiary.date.getDate();
         this.dayOfWeek = weeks[userDiary.date.getDay()];
         this.feeling = userDiary.feeling;
