@@ -55,6 +55,7 @@ export class DiariesResDto{
 
     constructor(diary : IPetDiary){
         const week=new Array('일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일');
+        console.log('test : '+diary._id)
         this.diaryId=diary._id
         this.title=diary.title
         this.contents=diary.contents

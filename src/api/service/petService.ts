@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 import User from '../../models/user/User'
 import Pet from '../../models/pet/Pet'
+import { PetInfoDto, PetsInfoDto } from '../../dto/rainbow/petDto/PetInfoDto'
 const responseMessage = require('../../modules/responseMessage')
 const statusCode = require('../../modules/statusCode')
 const util = require('../../modules/util')
@@ -10,9 +11,23 @@ var mongoose = require('mongoose')
 require("../../models/user/User")
 require("../../models/pet/Pet")
 module.exports = {
+    getPetInfo:async()=>{
+        try{
+            const findUser = await User.find().populate({
+                path : "pets"
+            })
+
+            const findPets = findUser[0].pets
+
+            return new PetsInfoDto(findPets.map( pet => new PetInfoDto(pet)))
+
+        }catch(error){
+            throw error
+        }
+    },
     registerPet: async (reqData, images) => {
         const {pets, userId} = reqData
-
+        
         console.log('petstype : '+typeof(pets))
         console.log('pets[0]type : '+typeof(pets[0]))
         console.log('pets[0] : '+pets[0])

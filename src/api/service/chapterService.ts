@@ -26,6 +26,7 @@ module.exports = {
 
             const findFirstTableContents = await FirstPartTableContents.findById(chapterId).populate({ path: "petDiary", populate: ({ path: "petEmotions pets" }) });
             //.populate({path:"petDiary",populate:({path:"petEmotions"})})
+            console.log('!!!! : '+findFirstTableContents)
             let newChapterDiary = new PetChapterDiaryResDto(findFirstTableContents)
 
             //월별로 자르기
