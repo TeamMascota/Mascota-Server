@@ -15,6 +15,8 @@ module.exports = {
     registerPet: (req, res) => __awaiter(this, void 0, void 0, function* () {
         let reqData = req.body;
         let images = req.files.map(file => file.location);
+        console.log('reqData : ' + reqData);
+        console.log('images : ' + images);
         try {
             const result = yield petService.registerPet(reqData, images);
             res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_REGISTER_PET, result));
