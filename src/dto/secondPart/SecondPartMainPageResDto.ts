@@ -3,34 +3,35 @@ import { IUserDiary } from "../../interfaces/diary/IUserDiary"
 import { IPet } from "../../interfaces/pet/IPet"
 import { ISecondPartTableContents } from "../../interfaces/tableContents/ISecondPartTableContents"
 import { IUser } from "../../interfaces/user/IUser"
+import SecondPartTableContent from "../../models/tableContents/SecondPartTableContent"
+require('../../models/tableContents/SecondPartTableContent')
 const dateMethod = require('../../modules/dateMethod')
 
 export class SecondPartMainPageResDto{
-    private part = null
-    private author = null
-    private bookImg = null
-    private memory : SecondPartMainPageMemory = null
-    private tableContents : SecondPartMainPageTableContents[] = null
-    private firstPartBook : SecondPartMainPageFirstPartBook = null
-
-    constructor(user : IUser, sortUserDiary : IUserDiary){
-        this.part = 2
-        this.author = user.book.author
-        this.bookImg = user.book.imgs
-        this.memory = new SecondPartMainPageMemory(sortUserDiary)
-        this.tableContents = user.book.tableContents.secondPartTableContents.map(secondPartTableContents=>
-            new SecondPartMainPageTableContents(secondPartTableContents))
-        this.firstPartBook = new SecondPartMainPageFirstPartBook(user.book)
-    }
+    public secondPartMainPage={
+    //private author = null,
+    title:null,
+    bookImg : null,
+    diary : null,
+    tableContents: [],
+    firstPartBook : null,
+    nextEpisode : null
 }
-
-export class SecondPartMainPageMemory{
-    private diary : SecondPartMainPageDiary= null
-    private nextEpisode = null
-
-    constructor(sortUserDiary : IUserDiary){
-        this.diary =  new SecondPartMainPageDiary(sortUserDiary)
-        this.nextEpisode =  sortUserDiary.episode+1
+    constructor(user : IUser, sortUserDiary : IUserDiary){
+        //this.author = user.book.author
+        this.secondPartMainPage.bookImg = user.book.imgs
+        this.secondPartMainPage.title=user.book.title
+        this.secondPartMainPage.tableContents = user.book.tableContents.secondPartTableContents.map(secondPartTableContents=>
+            new SecondPartMainPageTableContents(secondPartTableContents))
+        this.secondPartMainPage.firstPartBook = new SecondPartMainPageFirstPartBook(user.book)
+        this.setNextEpisode(sortUserDiary)
+    }
+    setDiary(diary: SecondPartMainPageDiary){
+        console.log('2222222 :',diary)
+        this.secondPartMainPage.diary=diary
+    }
+    setNextEpisode(sortUserDiary:IUserDiary){
+        this.secondPartMainPage.nextEpisode =  sortUserDiary.episode+1
     }
 }
 
@@ -39,43 +40,52 @@ export class SecondPartMainPageDiary{
     private title = null
     private contents = null
     private date = null
+    private _id=null
+    private chapter=null
 
-    constructor(sortUserDiary : IUserDiary){
-        this.init(sortUserDiary)
+    constructor(chapter:Number,sortUserDiary : IUserDiary){
+        //console.log("!!!!!",sortUserDiary)
+        this.init(chapter,sortUserDiary)
     }
 
-    async init(sortUserDiary){
+    async init(chapter:Number,sortUserDiary){  
+        this._id=sortUserDiary._id
         this.episode = sortUserDiary.episode
         this.title = sortUserDiary.title
         this.contents = sortUserDiary.contents
+        this.chapter=chapter
         this.date = await dateMethod.toStringByFormatting(sortUserDiary.date)
     }
 }
 
 export class SecondPartMainPageTableContents{
     private chapter = null
-    private title = null
+    private chapterTitle = null
     private episodePerChapterCount = null
-    private _id = null
+    private chapterId = null
 
     constructor(secondPartTableContents : ISecondPartTableContents){
         this.chapter = secondPartTableContents.chapter
-        this.title = secondPartTableContents.title
-        this._id = secondPartTableContents._id
+        this.chapterTitle = secondPartTableContents.title
+        this.chapterId = secondPartTableContents._id
         this.episodePerChapterCount = secondPartTableContents.userDiary.length
     }
 }
 
 export class SecondPartMainPageFirstPartBook{
-    private _id = null
+    private userId = null
     private bookImg = null
     private author = null
     private date = null
 
     constructor(book : IBook){
-        this._id = book._id
+        this.init(book)
+    }
+
+    async init(book:IBook){
+        this.userId = book._id
         this.bookImg = book.imgs
         this.author = book.author
-        this.date = book.date
+        this.date = await dateMethod.toStringByFormatting(book.date)
     }
 }
