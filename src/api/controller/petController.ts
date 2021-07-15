@@ -10,6 +10,8 @@ module.exports = {
     getRegisterPetInfo:async(req,res)=>{
         try{
             const result = await petService.getPetInfo()
+            console.log(typeof(statusCode.OK))
+            console.log(typeof(statusCode.INTERNAL_SERVER_ERROR))
             return res.status(statusCode.OK).send(util.success(statusCode.OK,responseMessage.SUCCESS_GET_PET_INFO,result))
         }catch(error){
             console.error(error)

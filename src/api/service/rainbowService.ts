@@ -44,12 +44,17 @@ module.exports = {
                         populate: {
                             path: "petDiary",
                             populate: {
-                                path: "petEmotions"
+                                path: "petEmotions",
+                                populate : {
+                                    path:"pet"
+                                }
                             }
                         }
                     }
                 }
             })
+            const findPet = await Pet.findById(petId)
+
             const isRainbowPet = await isRainbow(findUser.pets)
             const rainbowButtonCheck = await rainbowCheck(findUser.pets)
             const rainbowMainPageResDto = new RainbowMainPageResDto(findUser.book, isRainbowPet, rainbowButtonCheck)
@@ -68,8 +73,8 @@ module.exports = {
             let memoriesResDto = [null, null]
                 console.log('validMemoriesLength : '+validMemories.length)
             if (validMemories.length == 2) {
-                memoriesResDto[0] = new MemoriesResDto(validMemories, petId)
-                memoriesResDto[1] = new MemoriesResDto(validMemories, petId)
+                memoriesResDto[0] = new MemoriesResDto(validMemories, findPet)
+                memoriesResDto[1] = new MemoriesResDto(validMemories, findPet)
             } else if (validMemories.length > 2) {
                 let firstTableContentsIndex = await getRandomNumber(validMemories.length)
                 let secondTableContentsIndex = await getRandomNumber(validMemories.length)
@@ -86,10 +91,10 @@ module.exports = {
                 console.log('secondTableCOntetnsIndex : '+secondTableContentsIndex)
                 console.log('fisrt : '+validMemories[firstTableContentsIndex])
                 console.log('second : '+validMemories[secondTableContentsIndex])
-                memoriesResDto[0] = new MemoriesResDto2(validMemories[firstTableContentsIndex], petId)
-                memoriesResDto[1] = new MemoriesResDto2(validMemories[secondTableContentsIndex], petId)
+                memoriesResDto[0] = new MemoriesResDto2(validMemories[firstTableContentsIndex], findPet)
+                memoriesResDto[1] = new MemoriesResDto2(validMemories[secondTableContentsIndex], findPet)
             } else if (validMemories.length == 1) {
-                memoriesResDto[0] = new MemoriesResDto(validMemories[0][0], petId)
+                memoriesResDto[0] = new MemoriesResDto(validMemories[0][0], findPet)
             }
             rainbowMainPageResDto.setMemories(memoriesResDto)
 
