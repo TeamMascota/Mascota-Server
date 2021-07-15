@@ -11,20 +11,27 @@ require("../../models/user/User")
 require("../../models/pet/Pet")
 module.exports = {
     registerPet: async (reqData, images) => {
+        const userId = JSON.parse(reqData.userId)
+        const reqPets = JSON.parse(reqData.pets)
+        console.log('!!!!!!!!!!!!!!! : '+JSON.stringify(reqPets[0]))
+        console.log('@@@@@@@@@@@@ : '+reqPets[0].name)
+        console.log('############# : '+reqPets[1].name)
+        console.log('$$$$$$$$$$$$ : '+reqData.pets.length)
         try{
         //error handling
-            const findUser = await User.findById(reqData.userId)
+            const findUser = await User.findById(userId)
             console.log('findUser : '+findUser)
+            console.log('image : '+images[0])
             let pets=[];
-            const startDate= new Date(reqData.pets[0].startDate)
+            const startDate= new Date(reqPets[0].startDate)
             startDate.setDate(startDate.getDate() + 1);
-            for (let i = 0; i < reqData.pets.length; i++) {
+            for (let i = 0; i < reqPets.length; i++) {
                 let pet = new Pet({
-                    name: reqData.pets[i].name,
-                    kind: reqData.pets[i].kind,
-                    gender: reqData.pets[i].gender,
+                    name: reqPets[i].name,
+                    kind: reqPets[i].kind,
+                    gender: reqPets[i].gender,
                     imgs : images[i],
-                    user: mongoose.Types.ObjectId(reqData.userId),
+                    user: mongoose.Types.ObjectId(userId),
                     rainbow: false,
                     startDate: new Date(startDate)
     

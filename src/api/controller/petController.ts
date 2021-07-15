@@ -14,7 +14,7 @@ module.exports = {
         let images = req.files.map(file=>file.location)
         //console.log('reqData : '+ reqData.pets[0])
         const test = JSON.parse(reqData.pets)
-        console.log('reqData : '+test[0])
+        console.log('reqData : '+reqData.userId)
         console.log('reqData2 : '+typeof(test))
         console.log('images : '+images)
         try {
