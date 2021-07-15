@@ -160,7 +160,7 @@ module.exports = {
             user.book.tableContents.firstPartTableContents.forEach(tableContent =>
                 diaryCount += tableContent.petDiary.length)
 
-            return new PartingRainbowResDto(diaryCount, findPet.name)
+            return new PartingRainbowResDto(diaryCount, findPet)
         } catch (err) {
             throw err
         }
