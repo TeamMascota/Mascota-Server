@@ -55,7 +55,7 @@ class TheBestMomentDiary {
     }
     init(diaryPerFeeling) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log('!!!!!!!!!!!!!!!!!!!!!!!!! : ' + diaryPerFeeling);
+            //console.log('!!!!!!!!!!!!!!!!!!!!!!!!! : ' + diaryPerFeeling)
             if (diaryPerFeeling != undefined) {
                 this.chapter = diaryPerFeeling.tableContents.chapter;
                 this.episode = diaryPerFeeling.episode;

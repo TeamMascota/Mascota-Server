@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const User_1 = __importDefault(require("../../models/user/User"));
 const Pet_1 = __importDefault(require("../../models/pet/Pet"));
+const PetInfoDto_1 = require("../../dto/rainbow/petDto/PetInfoDto");
 const responseMessage = require('../../modules/responseMessage');
 const statusCode = require('../../modules/statusCode');
 const util = require('../../modules/util');
@@ -22,6 +23,18 @@ var mongoose = require('mongoose');
 require("../../models/user/User");
 require("../../models/pet/Pet");
 module.exports = {
+    getPetInfo: () => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const findUser = yield User_1.default.find().populate({
+                path: "pets"
+            });
+            const findPets = findUser[0].pets;
+            return new PetInfoDto_1.PetsInfoDto(findPets.map(pet => new PetInfoDto_1.PetInfoDto(pet)));
+        }
+        catch (error) {
+            throw error;
+        }
+    }),
     registerPet: (reqData, images) => __awaiter(void 0, void 0, void 0, function* () {
         const { pets, userId } = reqData;
         console.log('petstype : ' + typeof (pets));

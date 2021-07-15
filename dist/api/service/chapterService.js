@@ -33,6 +33,7 @@ module.exports = {
             //챕터 id로 1부 목차
             const findFirstTableContents = yield FirstPartTableContents_1.default.findById(chapterId).populate({ path: "petDiary", populate: ({ path: "petEmotions pets" }) });
             //.populate({path:"petDiary",populate:({path:"petEmotions"})})
+            console.log('!!!! : ' + findFirstTableContents);
             let newChapterDiary = new PetChapterDiary_1.PetChapterDiaryResDto(findFirstTableContents);
             //월별로 자르기
             for (let m = 12; m >= 1; m--) {

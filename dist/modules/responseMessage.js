@@ -18,6 +18,7 @@ module.exports = {
     NO_BOOK: "존재하지 않는 책 id입니다.",
     NO_DIARY: "존재하지 않는 다이어리 id입니다.",
     NO_CONTENTS: "존재하지 않는 정보입니다.",
+    SUCCESS_GET_PET_INFO: "반려동물 정보 리스트 불러오기 성공",
     SUCCESS_POST_PETDIARY: "반려동물 다이어리 작성 성공",
     SUCCESS_EDIT_PETDIARY: "반려동물 다이어리 수정 성공",
     SUCCESS_DELETE_PETDIARY: "반려동물 다이어리 삭제 성공",
