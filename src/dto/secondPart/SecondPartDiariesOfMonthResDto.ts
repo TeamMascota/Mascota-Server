@@ -5,7 +5,7 @@ export class SecondPartDiariesOfMonthResDto{
     private _id = null
     private chapter = null
     private chapterTitle = null
-    private diariesOfMonth = []
+    private diariesOfMonth = null
 
     constructor(tableContents : ISecondPartTableContents, secondPartyDiariesOfMonth : SecondPartDiariesOfMonth[]){
         this._id = tableContents._id
@@ -23,10 +23,11 @@ export class SecondPartDiariesOfMonth{
     constructor(month : number, userDiaries : IUserDiary[]){
         this.month = month
         this.diaryCountOfTableContents = userDiaries.length
-        this.diaries.push(userDiaries.sort((a,b)=>
-            b.date.getDate() - a.date.getDate()
-        ).map(diary=> new SecondPartDiaries(diary)))
+        this.diaries = userDiaries.sort((a,b)=>
+        b.date.getDate() - a.date.getDate()
+    ).map(diary=> new SecondPartDiaries(diary))
     }
+
 }
 
 export class SecondPartDiaries{
