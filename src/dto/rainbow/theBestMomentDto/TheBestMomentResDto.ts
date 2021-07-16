@@ -6,8 +6,15 @@ const dateMethod = require("../../../modules/dateMethod")
 export class TheBestMomentsResDto {
     private pet = {}
     private theBestMoments = []
+    private timeTogether = {}
 
-    constructor() { }
+    constructor(timeTogether : Date) { 
+        this.init(timeTogether)
+    }
+
+    async init(timeTogether : Date){
+        this.timeTogether = `${(await dateMethod.toStringByFormatting(timeTogether))} - ${await dateMethod.toStringByFormatting(new Date())}`
+    }
 
     setTheBestMoment(theBestMoment: TheBestMoment) {
         this.theBestMoments.push(theBestMoment)

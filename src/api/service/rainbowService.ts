@@ -220,6 +220,7 @@ module.exports = {
     getTheBestMoment: async (userId, petId) => {
         try {
             const pet = await Pet.findById(petId)
+            const timeTogether = (await User.findById(userId).populate('book')).book.date
             const TheBestMomentPetInfo = new TheBestMomentPetInformation(pet)
             const diaryPerFeeling = []
             for (let i = 0; i < 6; i++) {
@@ -231,7 +232,7 @@ module.exports = {
                 }
             }
 
-            const theBestMomentsResDto = new TheBestMomentsResDto()
+            const theBestMomentsResDto = new TheBestMomentsResDto(timeTogether)
             for (let j = 0; j < 6; j++) {   //긍정3개, 부정3개
                 const commentPerFeeling = await Comments.findOne({ feeling: j , classification : 2})
 

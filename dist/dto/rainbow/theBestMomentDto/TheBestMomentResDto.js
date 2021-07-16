@@ -12,9 +12,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.TheBestMomentDiary = exports.TheBestMoment = exports.TheBestMomentPetInformation = exports.TheBestMomentsResDto = void 0;
 const dateMethod = require("../../../modules/dateMethod");
 class TheBestMomentsResDto {
-    constructor() {
+    constructor(timeTogether) {
         this.pet = {};
         this.theBestMoments = [];
+        this.timeTogether = {};
+        this.init(timeTogether);
+    }
+    init(timeTogether) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.timeTogether = `${(yield dateMethod.toStringByFormatting(timeTogether))} - ${yield dateMethod.toStringByFormatting(new Date())}`;
+        });
     }
     setTheBestMoment(theBestMoment) {
         this.theBestMoments.push(theBestMoment);

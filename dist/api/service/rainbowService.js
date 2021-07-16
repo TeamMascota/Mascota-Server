@@ -212,6 +212,7 @@ module.exports = {
     getTheBestMoment: (userId, petId) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const pet = yield Pet_1.default.findById(petId);
+            const timeTogether = (yield User_1.default.findById(userId).populate('book')).book.date;
             const TheBestMomentPetInfo = new TheBestMomentResDto_1.TheBestMomentPetInformation(pet);
             const diaryPerFeeling = [];
             for (let i = 0; i < 6; i++) {
@@ -223,7 +224,7 @@ module.exports = {
                     diaryPerFeeling.push(diaries);
                 }
             }
-            const theBestMomentsResDto = new TheBestMomentResDto_1.TheBestMomentsResDto();
+            const theBestMomentsResDto = new TheBestMomentResDto_1.TheBestMomentsResDto(timeTogether);
             for (let j = 0; j < 6; j++) { //긍정3개, 부정3개
                 const commentPerFeeling = yield Comments_1.default.findOne({ feeling: j, classification: 2 });
                 // let commentPerFeeling ={
