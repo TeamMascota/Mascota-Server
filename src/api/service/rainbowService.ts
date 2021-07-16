@@ -94,7 +94,7 @@ module.exports = {
                 memoriesResDto[0] = new MemoriesResDto2(validMemories[firstTableContentsIndex], findPet)
                 memoriesResDto[1] = new MemoriesResDto2(validMemories[secondTableContentsIndex], findPet)
             } else if (validMemories.length == 1) {
-                memoriesResDto[0] = new MemoriesResDto(validMemories[0][0], findPet)
+                memoriesResDto[0] = new MemoriesResDto2(validMemories[0], findPet)
             }
             rainbowMainPageResDto.setMemories(memoriesResDto)
 

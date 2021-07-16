@@ -36,7 +36,7 @@ module.exports = {
             throw error;
         }
     }),
-    registerPet: (reqData, images) => __awaiter(void 0, void 0, void 0, function* () {
+    registerPet: (reqData) => __awaiter(void 0, void 0, void 0, function* () {
         const { pets, userId } = reqData;
         console.log('petstype : ' + typeof (pets));
         console.log('pets[0]type : ' + typeof (pets[0]));
@@ -50,7 +50,7 @@ module.exports = {
             //error handling
             const findUser = yield User_1.default.findById(reqData.userId);
             console.log('findUser : ' + findUser);
-            console.log('image : ' + images[0]);
+            //console.log('image : '+images[0])
             let pets = [];
             const startDate = new Date(reqData[0].startDate);
             startDate.setDate(startDate.getDate() + 1);
@@ -59,7 +59,7 @@ module.exports = {
                     name: reqData.pets[i].name,
                     kind: reqData.pets[i].kind,
                     gender: reqData.pets[i].gender,
-                    imgs: images[i],
+                    imgs: "asdasd",
                     user: mongoose.Types.ObjectId(reqData.userId),
                     rainbow: false,
                     startDate: new Date(startDate)

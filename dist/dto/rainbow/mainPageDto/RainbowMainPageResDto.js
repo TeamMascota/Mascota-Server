@@ -35,6 +35,8 @@ class MemoriesResDto {
         this.contents = randomDiary.contents;
         this.date = randomDiary.date;
         this.feeling = randomDiary.petEmotions.filter(petEmotion => petEmotion.pet == petId)[0].feeling;
+        this.kind = randomDiary.petEmotions.filter(PetEmotions => PetEmotions.pet == petId)[0].pet.kind;
+        console.log('kind : ' + randomDiary.petEmotions.filter(PetEmotions => PetEmotions.pet == petId)[0]);
     }
     getRandomMemoryIndex(max) {
         let min = Math.ceil(0);
@@ -44,12 +46,16 @@ class MemoriesResDto {
 }
 exports.MemoriesResDto = MemoriesResDto;
 class MemoriesResDto2 {
-    constructor(petDiary, petId) {
+    constructor(petDiary, findPet) {
+        console.log('petId : ' + findPet);
         this.diaryId = petDiary._id;
         this.title = petDiary.title;
         this.contents = petDiary.contents;
         this.date = petDiary.date;
-        this.feeling = petDiary.petEmotions.filter(petEmotions => petEmotions.pet == petId)[0].feeling;
+        console.log('petDiary : ' + petDiary);
+        console.log('pet : ' + petDiary.petEmotions.filter(petEmotions => petEmotions.pet._id == findPet._id));
+        this.feeling = petDiary.petEmotions[0].feeling;
+        this.kind = findPet.kind;
     }
 }
 exports.MemoriesResDto2 = MemoriesResDto2;

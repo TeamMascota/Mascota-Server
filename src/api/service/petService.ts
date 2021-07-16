@@ -25,7 +25,7 @@ module.exports = {
             throw error
         }
     },
-    registerPet: async (reqData, images) => {
+    registerPet: async (reqData) => {
         const {pets, userId} = reqData
         
         console.log('petstype : '+typeof(pets))
@@ -40,7 +40,7 @@ module.exports = {
         //error handling
             const findUser = await User.findById(reqData.userId)
             console.log('findUser : '+findUser)
-            console.log('image : '+images[0])
+            //console.log('image : '+images[0])
             let pets=[];
             const startDate= new Date(reqData[0].startDate)
             startDate.setDate(startDate.getDate() + 1);
@@ -49,7 +49,7 @@ module.exports = {
                     name: reqData.pets[i].name,
                     kind: reqData.pets[i].kind,
                     gender: reqData.pets[i].gender,
-                    imgs : images[i],
+                    imgs : "asdasd",
                     user: mongoose.Types.ObjectId(reqData.userId),
                     rainbow: false,
                     startDate: new Date(startDate)

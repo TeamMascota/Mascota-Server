@@ -27,7 +27,7 @@ module.exports = {
             console.log('user : ' + user)
             const setBook = user.book
             setBook.title = bookData.title,
-            setBook.imgs = bookData.imgs,
+            setBook.imgs = "임시 이미지",
             setBook.author = bookData.userName
 
             //Create tableContents object
@@ -87,7 +87,7 @@ module.exports = {
             throw { statusCode: statusCode.BAD_REQUEST, responseMessage: responseMessage.NO_USER }
         }
     },
-    postPetDiary: async (diaryData, diaryImages) => {
+    postPetDiary: async (diaryData) => {
         const writeDate = await new Date(diaryData.date)
         writeDate.setDate(writeDate.getDate() + 1);
         // console.log(FirstPartTableContents.findById(diaryData._id))
@@ -97,7 +97,7 @@ module.exports = {
             tableContents: diaryData._id,
             episode: temp.petDiary.length,
             date: writeDate,
-            imgs: diaryImages,
+            imgs: "임시 이미지",
             title: diaryData.title,
             contents: diaryData.contents
 

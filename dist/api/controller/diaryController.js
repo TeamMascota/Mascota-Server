@@ -33,9 +33,9 @@ module.exports = {
     }),
     postPetDiary: (req, res) => __awaiter(this, void 0, void 0, function* () {
         const diaryData = req.body;
-        const diaryImages = req.files.map(file => file.location);
+        //const diaryImages = req.files.map(file => file.location)
         try {
-            const result = yield diaryService.postPetDiary(diaryData, diaryImages);
+            const result = yield diaryService.postPetDiary(diaryData);
             res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_POST_PETDIARY, ""));
         }
         catch (err) {

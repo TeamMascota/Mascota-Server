@@ -24,7 +24,8 @@ module.exports = {
         // console.log('toObject : '+reqData)
         //const reqData = req.body
         let reqData = req.body
-        let images = req.files.map(file=>file.location)
+        //let images = req.files.map(file=>file.location)
+        
         //console.log('reqData : '+ reqData.pets[0])
         //const test = JSON.parse(reqData.pets)
         // console.log('11111111111111 : '+typeof(reqData.pets[0]))
@@ -37,9 +38,9 @@ module.exports = {
         // console.log('startDate : '+reqData.pets[0].startDate)
         //console.log('reqData index : '+reqData.pets[0].name) //undifned
         //console.log('reqData2 : '+typeof(test))
-        console.log('images : '+images)
+        //console.log('images : '+images)
         try {
-            const result = await petService.registerPet(reqData, images);
+            const result = await petService.registerPet(reqData);
             res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_REGISTER_PET, result))
         } catch (err) {
             if (err.statusCode == null) {

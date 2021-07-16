@@ -53,12 +53,16 @@ module.exports = {
                         populate: {
                             path: "petDiary",
                             populate: {
-                                path: "petEmotions"
+                                path: "petEmotions",
+                                populate: {
+                                    path: "pet"
+                                }
                             }
                         }
                     }
                 }
             });
+            const findPet = yield Pet_1.default.findById(petId);
             const isRainbowPet = yield isRainbow(findUser.pets);
             const rainbowButtonCheck = yield rainbowCheck(findUser.pets);
             const rainbowMainPageResDto = new RainbowMainPageResDto_1.RainbowMainPageResDto(findUser.book, isRainbowPet, rainbowButtonCheck);
@@ -71,8 +75,8 @@ module.exports = {
             let memoriesResDto = [null, null];
             console.log('validMemoriesLength : ' + validMemories.length);
             if (validMemories.length == 2) {
-                memoriesResDto[0] = new RainbowMainPageResDto_1.MemoriesResDto(validMemories, petId);
-                memoriesResDto[1] = new RainbowMainPageResDto_1.MemoriesResDto(validMemories, petId);
+                memoriesResDto[0] = new RainbowMainPageResDto_1.MemoriesResDto(validMemories, findPet);
+                memoriesResDto[1] = new RainbowMainPageResDto_1.MemoriesResDto(validMemories, findPet);
             }
             else if (validMemories.length > 2) {
                 let firstTableContentsIndex = yield getRandomNumber(validMemories.length);
@@ -91,11 +95,11 @@ module.exports = {
                 console.log('secondTableCOntetnsIndex : ' + secondTableContentsIndex);
                 console.log('fisrt : ' + validMemories[firstTableContentsIndex]);
                 console.log('second : ' + validMemories[secondTableContentsIndex]);
-                memoriesResDto[0] = new RainbowMainPageResDto_1.MemoriesResDto2(validMemories[firstTableContentsIndex], petId);
-                memoriesResDto[1] = new RainbowMainPageResDto_1.MemoriesResDto2(validMemories[secondTableContentsIndex], petId);
+                memoriesResDto[0] = new RainbowMainPageResDto_1.MemoriesResDto2(validMemories[firstTableContentsIndex], findPet);
+                memoriesResDto[1] = new RainbowMainPageResDto_1.MemoriesResDto2(validMemories[secondTableContentsIndex], findPet);
             }
             else if (validMemories.length == 1) {
-                memoriesResDto[0] = new RainbowMainPageResDto_1.MemoriesResDto(validMemories[0][0], petId);
+                memoriesResDto[0] = new RainbowMainPageResDto_1.MemoriesResDto2(validMemories[0], findPet);
             }
             rainbowMainPageResDto.setMemories(memoriesResDto);
             //helpResDto

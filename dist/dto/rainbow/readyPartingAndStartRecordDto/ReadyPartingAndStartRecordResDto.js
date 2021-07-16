@@ -17,6 +17,7 @@ class BookInfoResDto {
         this.title = null;
         this.bookImg = null;
         this.author = null;
+        console.log('!!!!! : ' + book);
         this.title = book.title;
         this.bookImg = book.imgs;
         this.author = book.author;

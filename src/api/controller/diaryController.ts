@@ -23,9 +23,9 @@ module.exports = {
     },
     postPetDiary: async (req, res) => {
         const diaryData = req.body;
-        const diaryImages = req.files.map(file => file.location)
+        //const diaryImages = req.files.map(file => file.location)
         try {
-            const result = await diaryService.postPetDiary(diaryData, diaryImages)
+            const result = await diaryService.postPetDiary(diaryData)
             res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_POST_PETDIARY, ""))
         } catch (err) {
             console.error(err)

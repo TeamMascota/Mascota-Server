@@ -190,7 +190,7 @@ module.exports = {
         let newUserDiary = new UserDiary_1.default({
             tableContents: diaryData.chapterId,
             episode: secondPartTableContents.userDiary.length,
-            imgs: diaryData.diaryImages,
+            imgs: "더미 이미지",
             title: diaryData.title,
             contents: diaryData.contents,
             feeling: diaryData.feeling
