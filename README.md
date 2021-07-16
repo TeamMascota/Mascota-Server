@@ -267,6 +267,7 @@ main
 
 ### 4. **User Flow**
 
+
 ![Mascota Work Flow 2](C:\Users\dlthf\Downloads\Mascota Work Flow 2.png)
 
 ![Mascota Work Flow 3](C:\Users\dlthf\Downloads\Mascota Work Flow 3.png)
@@ -274,7 +275,5 @@ main
 ![Mascota Work Flow 4](C:\Users\dlthf\Downloads\Mascota Work Flow 4.png)
 
 ![Mascota Work Flow 5](C:\Users\dlthf\Downloads\Mascota Work Flow 5.png)
-
-
 
 ![Mascota Work Flow 6](C:\Users\dlthf\Downloads\Mascota Work Flow 6.png)
