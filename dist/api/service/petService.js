@@ -40,27 +40,27 @@ module.exports = {
         const { pets, userId } = reqData;
         console.log('petstype : ' + typeof (pets));
         console.log('pets[0]type : ' + typeof (pets[0]));
-        console.log('pets[0] : ' + pets[0]);
+        console.log('pets[0] : ' + JSON.stringify(pets[0]));
         //console.log('############# : '+reqData[1].name)
         console.log('petsLength : ' + pets.length);
         console.log('petsName : ' + pets[0].name);
-        console.log('petsKind : ' + pets[0].kind);
+        console.log('petsKind : ' + pets[0].startDate);
         console.log('userId : ' + userId);
         try {
             //error handling
-            const findUser = yield User_1.default.findById(reqData.userId);
+            const findUser = yield User_1.default.findById(userId);
             console.log('findUser : ' + findUser);
             //console.log('image : '+images[0])
-            let pets = [];
-            const startDate = new Date(reqData[0].startDate);
+            let petsArr = [];
+            const startDate = new Date(pets[0].startDate);
             startDate.setDate(startDate.getDate() + 1);
-            for (let i = 0; i < reqData.pets.length; i++) {
+            for (let i = 0; i < pets.length; i++) {
                 let pet = new Pet_1.default({
-                    name: reqData.pets[i].name,
-                    kind: reqData.pets[i].kind,
-                    gender: reqData.pets[i].gender,
-                    imgs: "asdasd",
-                    user: mongoose.Types.ObjectId(reqData.userId),
+                    name: pets[i].name,
+                    kind: pets[i].kind,
+                    gender: pets[i].gender,
+                    imgs: "https://watcha.s3.ap-northeast-2.amazonaws.com/images/origin/%EC%B1%85+%EC%9D%B4%EB%AF%B8%EC%A7%80.jpg",
+                    user: mongoose.Types.ObjectId(userId),
                     rainbow: false,
                     startDate: new Date(startDate)
                     // findUser, UserId만 해서 되면 가능
@@ -69,12 +69,12 @@ module.exports = {
                 });
                 yield pet.save();
                 findUser.pets.push(pet);
-                pets[i] = pet;
+                petsArr[i] = pet;
             }
             yield findUser.save();
             console.log(reqData);
             //db save
-            const saveInfo = pets.map(pet => pet._id);
+            const saveInfo = petsArr.map(pet => pet._id);
             return saveInfo;
         }
         catch (err) {
