@@ -222,6 +222,7 @@ module.exports = {
         const petInfo = diaryInfo.character;
         console.log('images : ' + images);
         console.log('diaryInfo : ' + petInfo);
+        console.log('diaryInfo : ' + typeof (petInfo));
         console.log('diaryInfo length : ' + petInfo.length);
         try {
             console.log('title : ' + diaryInfo.title);
