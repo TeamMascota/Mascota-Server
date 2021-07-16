@@ -2,6 +2,7 @@
 야용...냥냥😺
 
 ----------------------------------------------------
+![MASCOTA_로고](https://user-images.githubusercontent.com/76844556/125953954-569cf975-b298-481b-bbfe-4faf4e6d767f.gif)
 
 ## :hammer: Avengers
 
@@ -171,3 +172,4 @@ main
 
 
 ----------------------------------------------------
+![mascota_orange](https://user-images.githubusercontent.com/76844556/125953999-1fa041ca-c696-4a07-8b90-9d6297b014dc.png)
