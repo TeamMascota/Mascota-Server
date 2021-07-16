@@ -232,7 +232,7 @@ module.exports = {
             const writeDate = await new Date(diaryInfo.date)
             writeDate.setDate(writeDate.getDate() + 1);
 
-            const firstTableContents = await FirstPartTableContents.findById(diaryInfo._io).populate('petDiary')
+            const firstTableContents = await FirstPartTableContents.findById(diaryInfo._id).populate('petDiary')
             const episode = firstTableContents.petDiary.length
 
             let newDiary = new PetDiary({
