@@ -225,8 +225,8 @@ module.exports = {
             console.log('title : '+diaryInfo.title)
             console.log('content : '+diaryInfo.contents)
             console.log('date : '+diaryInfo.date)
-            console.log('_id : '+diaryInfo._id)
-            pets.array.forEach(pet => {
+            console.log('tableContents_id : '+diaryInfo._id)
+            pets.forEach(pet => {
                 console.log('petInfo : '+pet)
             });
         }catch(err){
