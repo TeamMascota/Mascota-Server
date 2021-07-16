@@ -13,6 +13,7 @@
 
 
 ----------------------------------------------------
+![mascota_orange](https://user-images.githubusercontent.com/76844556/125953999-1fa041ca-c696-4a07-8b90-9d6297b014dc.png)
 
 ## :panda_face: 프로젝트 설명
 
@@ -172,4 +173,4 @@ main
 
 
 ----------------------------------------------------
-![mascota_orange](https://user-images.githubusercontent.com/76844556/125953999-1fa041ca-c696-4a07-8b90-9d6297b014dc.png)
+
