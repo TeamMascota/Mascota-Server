@@ -46,6 +46,7 @@ class DiaryResDto {
     }
     init(petDiary) {
         return __awaiter(this, void 0, void 0, function* () {
+            console.log('findPet : ' + petDiary.petEmotions[0]);
             const firstPartTableContents = petDiary.tableContents;
             this.chapter = firstPartTableContents.chapter;
             this.episode = firstPartTableContents.petDiary.length;
@@ -57,6 +58,7 @@ class DiaryResDto {
             this.title = petDiary.title;
             this.contents = petDiary.contents;
             this.date = yield dateMethod.toStringByFormatting(petDiary.date);
+            this.kind = petDiary.petEmotions[0].pet.kind;
         });
     }
 }

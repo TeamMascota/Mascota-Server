@@ -32,9 +32,12 @@ module.exports = {
                         path: "firstPartTableContents",
                         populate: ({
                             path: "petDiary",
-                            populate: {
-                                path: "petEmotions"
-                            }
+                            populate: ({
+                                path: "petEmotions",
+                                populate:{
+                                    path : "pet"
+                                }
+                            })
                         })
                     })
                 })
@@ -57,15 +60,25 @@ module.exports = {
             }
             
             const firstPartMainPageResDto = new FirstPartMainPageResDto(findUser.book)
-            let allPetDiaries = await PetDiary.find({}).populate('tableContents')
+            let allPetDiaries = await PetDiary.find({}).populate({
+                path : "tableContents"
+            }).populate({
+                path : "petEmotions",
+                populate:{
+                    path : "pet"
+                }
+            })
+            
             let petDiaryNumber=(await allPetDiaries).length
+            const test = allPetDiaries[petDiaryNumber-1]
+            console.log(`!!!!!!!!!!! : `+test)
             //가장 마지막 일기
             const lastDiary = new DiaryResDto(allPetDiaries[petDiaryNumber-1])
             firstPartMainPageResDto.setNextEpisode(lastDiary)
             
             //tableContents
             let lastTableNumber=findUser.book.tableContents.firstPartTableContents.length
-            console.log("lastTable", TableContents)
+            
             for (let i = 0; i < lastTableNumber; i++) {
                 let tableContentsResDto = new TableContentsResDto(findUser.book.tableContents.firstPartTableContents[i])
                 firstPartMainPageResDto.setTableContents(tableContentsResDto)

@@ -43,6 +43,7 @@ export class DiaryResDto {
     private title;
     private contents;
     private date;
+    private kind;
 
     //가장 마지막 화 들어감
     constructor(petDiary: IPetDiary) {
@@ -50,6 +51,7 @@ export class DiaryResDto {
     }
 
     async init(petDiary: IPetDiary) {
+        console.log('findPet : '+petDiary.petEmotions[0])
         const firstPartTableContents = petDiary.tableContents
         this.chapter = firstPartTableContents.chapter
         this.episode = firstPartTableContents.petDiary.length;
@@ -61,6 +63,7 @@ export class DiaryResDto {
         this.title = petDiary.title;
         this.contents = petDiary.contents;
         this.date = await dateMethod.toStringByFormatting(petDiary.date);
+        this.kind = petDiary.petEmotions[0].pet.kind
     }
 }
 

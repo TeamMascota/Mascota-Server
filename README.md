@@ -267,14 +267,9 @@ main
 
 ### 4. **User Flow**
 
-![Mascota Work Flow 2](C:\Users\dlthf\Downloads\Mascota Work Flow 2.png)
+![Mascota Work Flow 2](https://user-images.githubusercontent.com/76844556/125996424-80c7c794-98dd-4b8c-80b6-b04240661d5c.png)
+![Mascota Work Flow 3](https://user-images.githubusercontent.com/76844556/125996432-1bfe58d8-df3e-423d-a02e-4dd079dbbf41.png)
+![Mascota Work Flow 4](https://user-images.githubusercontent.com/76844556/125996438-84db8ff4-8ce1-4d02-845f-0a28d702613f.png)
+![Mascota Work Flow 5](https://user-images.githubusercontent.com/76844556/125996450-75407294-eeb4-4e8c-9f39-15a7d2ac9be3.png)
+![Mascota Work Flow 6](https://user-images.githubusercontent.com/76844556/125996465-b5ebf482-35ce-4da6-aebb-65c7c37dfc20.png)
 
-![Mascota Work Flow 3](C:\Users\dlthf\Downloads\Mascota Work Flow 3.png)
-
-![Mascota Work Flow 4](C:\Users\dlthf\Downloads\Mascota Work Flow 4.png)
-
-![Mascota Work Flow 5](C:\Users\dlthf\Downloads\Mascota Work Flow 5.png)
-
-
-
-![Mascota Work Flow 6](C:\Users\dlthf\Downloads\Mascota Work Flow 6.png)
