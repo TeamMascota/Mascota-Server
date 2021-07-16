@@ -300,6 +300,8 @@ module.exports = {
             if (diaries === null) return null
             const diaryLength = diaries.length
             const theBestMomentDiaries = []
+            console.log('부정 일기 길이 : '+diaryLength)
+            console.log('찾자 diary!!!! : '+diaries)
             if (diaryLength < 2) {
                 for (let i = 0; i < diaryLength; i++) {
                     theBestMomentDiaries.push(new TheBestMomentDiary(diaries[i]))
@@ -311,6 +313,7 @@ module.exports = {
                 const indexArray = []
                 while (indexArray.length < 2) {
                     let index = getRandomNumber(diaryLength)
+                    console.log('index!!!! : '+index)
                     if (!indexArray.includes(index)) {
                         indexArray.push(index)
                     }
