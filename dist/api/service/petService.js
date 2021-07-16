@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const User_1 = __importDefault(require("../../models/user/User"));
 const Pet_1 = __importDefault(require("../../models/pet/Pet"));
 const PetInfoDto_1 = require("../../dto/rainbow/petDto/PetInfoDto");
+const SavePetResDto_1 = require("../../dto/petDiary/SavePetResDto");
 const responseMessage = require('../../modules/responseMessage');
 const statusCode = require('../../modules/statusCode');
 const util = require('../../modules/util');
@@ -75,7 +76,7 @@ module.exports = {
             console.log(reqData);
             //db save
             const saveInfo = petsArr.map(pet => pet._id);
-            return saveInfo;
+            return new SavePetResDto_1.SavePetResDto(saveInfo);
         }
         catch (err) {
             console.log(err);

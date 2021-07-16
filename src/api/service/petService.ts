@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express'
 import User from '../../models/user/User'
 import Pet from '../../models/pet/Pet'
 import { PetInfoDto, PetsInfoDto } from '../../dto/rainbow/petDto/PetInfoDto'
+import { SavePetResDto } from '../../dto/petDiary/SavePetResDto'
 const responseMessage = require('../../modules/responseMessage')
 const statusCode = require('../../modules/statusCode')
 const util = require('../../modules/util')
@@ -66,7 +67,7 @@ module.exports = {
             console.log(reqData);
             //db save
             const saveInfo = petsArr.map(pet=>pet._id)
-            return saveInfo
+            return new SavePetResDto(saveInfo)
         }catch(err){
             console.log(err)
             throw { statusCode: statusCode.INTERNAL_SERVER_ERROR, responseMessage: responseMessage.INTERNAL_SERVER_ERROR };
