@@ -217,5 +217,20 @@ module.exports = {
             console.log(err)
             throw { statusCode: statusCode.BAD_REQUEST, responseMessage: responseMessage.NO_DIARY }
         }
+    },
+    postPetDiaryWithImage:async(images, diaryInfo)=>{
+        const pets = diaryInfo.character
+        console.log('images : '+images)
+        try{
+            console.log('title : '+diaryInfo.title)
+            console.log('content : '+diaryInfo.contents)
+            console.log('date : '+diaryInfo.date)
+            console.log('_id : '+diaryInfo._id)
+            pets.array.forEach(pet => {
+                console.log('petInfo : '+pet)
+            });
+        }catch(err){
+            throw err
+        }
     }
 }

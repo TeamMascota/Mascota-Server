@@ -78,5 +78,19 @@ module.exports = {
             }
             return res.status(err.statusCode).send(util.fail(err.statusCode, err.responseMessage))
         }
+    },
+    postPetDiaryWithImage: async(req,res)=>{
+        const images = req.files.map(img=>img.location)
+        const diaryInfo = req.body
+        try{
+            await diaryService.postPetDiaryWithImage(images,diaryInfo)
+        }catch(err){
+            console.error(err)
+            if (err.statusCode == null) {
+                err.statusCode = statusCode.INTERNAL_SERVER_ERROR;
+                err.responseMessage = responseMessage.INTERNAL_SERVER_ERROR;
+            }
+            return res.status(err.statusCode).send(util.fail(err.statusCode, err.responseMessage))
+        }
     }
 }

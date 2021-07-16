@@ -50,17 +50,5 @@ module.exports = {
             console.error(err)
             res.status(err.statusCode).send(util.fail(err.statusCode, err.responseMessage))
         }
-    },
-    // registerPetImg:async(req,res)=>{
-    //     const image = req.files.map(file=>file.location)
-    //     const petImageInfo = req.body
-    //     console.log('petImageInfo : '+petImageInfo)
-    //     try{
-    //         await petService.registerPetImg(image,petImageInfo)
-    //         res.status(statusCode.OK).send(util.success(statusCode.OK, responseMessage.SUCCESS_REGISTER_PET_IMG))
-    //     }catch(err){
-    //         console.error(err)
-    //         res.status(err.statusCode).send(util.fail(err.statusCode, err.responseMessage))
-    //     }
-    // }
+    }
 }

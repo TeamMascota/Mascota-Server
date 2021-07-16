@@ -92,6 +92,21 @@ module.exports = {
             }
             return res.status(err.statusCode).send(util.fail(err.statusCode, err.responseMessage));
         }
+    }),
+    postPetDiaryWithImage: (req, res) => __awaiter(this, void 0, void 0, function* () {
+        const images = req.files.map(img => img.location);
+        const diaryInfo = req.body;
+        try {
+            yield diaryService.postPetDiaryWithImage(images, diaryInfo);
+        }
+        catch (err) {
+            console.error(err);
+            if (err.statusCode == null) {
+                err.statusCode = statusCode.INTERNAL_SERVER_ERROR;
+                err.responseMessage = responseMessage.INTERNAL_SERVER_ERROR;
+            }
+            return res.status(err.statusCode).send(util.fail(err.statusCode, err.responseMessage));
+        }
     })
 };
 //# sourceMappingURL=diaryController.js.map

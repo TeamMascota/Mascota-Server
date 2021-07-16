@@ -72,16 +72,5 @@ module.exports = {
             console.log(err)
             throw { statusCode: statusCode.INTERNAL_SERVER_ERROR, responseMessage: responseMessage.INTERNAL_SERVER_ERROR };
         }
-    },
-
-    // registerPetImg:async(image,petImageInfo)=>{
-    //     try{
-    //         for(let i=0;i<petImageInfo.length;i++){
-    //             await Pet.update({_id:petImageInfo[i]},{$set : {imgs:image[i]}})
-    //         }
-    //         console.log('!!!! : '+image)
-    //     }catch(err){
-    //         throw err
-    //     }
-    // }
+    }
 }
