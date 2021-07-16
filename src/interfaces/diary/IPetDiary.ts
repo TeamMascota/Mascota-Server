@@ -18,7 +18,7 @@ export interface IPetDiary extends Document{
 
 export interface IPetDiaryDocument extends IPetDiary{
     setPet : (pet : IPet) => Promise<void>
-    setTableContents : (tableContents : ITableContents) => Promise<void>
+    setTableContents : (tableContents : IFirstPartTableContents) => Promise<void>
     setPetEmotions : (petEmotions : IPetEmotions) => Promise<void>
 }
 

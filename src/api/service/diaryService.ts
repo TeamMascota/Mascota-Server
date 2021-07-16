@@ -219,16 +219,49 @@ module.exports = {
         }
     },
     postPetDiaryWithImage:async(images, diaryInfo)=>{
-        const pets = diaryInfo.character
+        const petInfo = diaryInfo.character
         console.log('images : '+images)
+        console.log('diaryInfo : '+petInfo)
+        console.log('diaryInfo length : '+petInfo.length)
         try{
             console.log('title : '+diaryInfo.title)
             console.log('content : '+diaryInfo.contents)
             console.log('date : '+diaryInfo.date)
             console.log('tableContents_id : '+diaryInfo._id)
-            pets.forEach(pet => {
-                console.log('petInfo : '+pet)
-            });
+
+            const writeDate = await new Date(diaryInfo.date)
+            writeDate.setDate(writeDate.getDate() + 1);
+
+            const firstTableContents = (await FirstPartTableContents.findById(diaryInfo._io)).populate('petDiary')
+            const episode = firstTableContents.petDiary.length
+
+            let newDiary = new PetDiary({
+                title : diaryInfo.title,
+                contents : diaryInfo.contents,
+                imgs : images,
+                episode ,
+                date : writeDate
+            })//set petEmotions, pets, tableContents
+            firstTableContents.setPetDiary(newDiary)
+
+            //petEmotion 생성 & 
+            petInfo.forEach(async info => {
+                //const perPet = await Pet.findById(info._id)
+                let newEmotion = new PetEmotions({
+                    pet : info._id,
+                    feeling : info.feeling
+                })//set petDiary
+                newEmotion.setPetDiary(newDiary)
+                newDiary.setPet(info._id)
+                newDiary.setPetEmotions(newEmotion)
+
+                await newEmotion.save()
+            })
+            newDiary.setTableContents(firstTableContents)
+
+            await firstTableContents.save()
+            await newDiary.save()
+
         }catch(err){
             throw err
         }
