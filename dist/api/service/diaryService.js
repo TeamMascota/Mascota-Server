@@ -230,7 +230,7 @@ module.exports = {
             console.log('tableContents_id : ' + diaryInfo._id);
             const writeDate = yield new Date(diaryInfo.date);
             writeDate.setDate(writeDate.getDate() + 1);
-            const firstTableContents = (yield FirstPartTableContents_1.default.findById(diaryInfo._io)).populate('petDiary');
+            const firstTableContents = yield FirstPartTableContents_1.default.findById(diaryInfo._io).populate('petDiary');
             const episode = firstTableContents.petDiary.length;
             let newDiary = new PetDiary_1.default({
                 title: diaryInfo.title,
