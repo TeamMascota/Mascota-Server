@@ -38,7 +38,7 @@ module.exports = {
             console.log('user : ' + user);
             const setBook = user.book;
             setBook.title = bookData.title,
-                setBook.imgs = "임시 이미지",
+                setBook.imgs = "https://watcha.s3.ap-northeast-2.amazonaws.com/images/origin/%EC%B1%85+%EC%9D%B4%EB%AF%B8%EC%A7%80.jpg",
                 setBook.author = bookData.userName;
             //Create tableContents object
             const tableContents = new TableContents_1.default();
@@ -104,7 +104,7 @@ module.exports = {
             tableContents: diaryData._id,
             episode: temp.petDiary.length,
             date: writeDate,
-            imgs: "임시 이미지",
+            imgs: "https://watcha.s3.ap-northeast-2.amazonaws.com/images/origin/%EC%B1%85+%EC%9D%B4%EB%AF%B8%EC%A7%80.jpg",
             title: diaryData.title,
             contents: diaryData.contents
         });
