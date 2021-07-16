@@ -59,6 +59,7 @@ module.exports = {
             const rainbowButtonCheck = await rainbowCheck(findUser.pets)
             const rainbowMainPageResDto = new RainbowMainPageResDto(findUser.book, isRainbowPet, rainbowButtonCheck)
             const firstPartTableContents = findUser.book.tableContents.firstPartTableContents
+            console.log('firstPartTableContents : '+firstPartTableContents)
 
             const validMemories = firstPartTableContents.filter(tableContents =>
                 tableContents.petDiary.length > 0).map(tableContents =>

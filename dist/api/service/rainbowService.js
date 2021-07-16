@@ -67,6 +67,7 @@ module.exports = {
             const rainbowButtonCheck = yield rainbowCheck(findUser.pets);
             const rainbowMainPageResDto = new RainbowMainPageResDto_1.RainbowMainPageResDto(findUser.book, isRainbowPet, rainbowButtonCheck);
             const firstPartTableContents = findUser.book.tableContents.firstPartTableContents;
+            console.log('firstPartTableContents : ' + firstPartTableContents);
             const validMemories = firstPartTableContents.filter(tableContents => tableContents.petDiary.length > 0).map(tableContents => tableContents.petDiary.filter(petDiary => petDiary.pets.includes(petId)))[0];
             console.log('validMemories : ' + validMemories);
             console.log('!!!!!!!!!!!!!!!!!!!!! : ' + validMemories[0]);

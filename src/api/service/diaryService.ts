@@ -25,6 +25,10 @@ module.exports = {
             //Create user object
             const user = await User.findById(userId).populate('book')
             console.log('user : ' + user)
+            console.log('userBook : '+user.book)
+            if(user.book.title != null){
+                throw {statusCode : 404, responseMessage : "이미 책이 존재합니다, 없던일로 하겠습니다. 휴먼"}
+            }
             const setBook = user.book
             setBook.title = bookData.title,
             setBook.imgs = "https://watcha.s3.ap-northeast-2.amazonaws.com/images/origin/%EC%B1%85+%EC%9D%B4%EB%AF%B8%EC%A7%80.jpg",
@@ -84,7 +88,7 @@ module.exports = {
             //error handling
         } catch (err) {
             console.log(err)
-            throw { statusCode: statusCode.BAD_REQUEST, responseMessage: responseMessage.NO_USER }
+            throw err
         }
     },
     postPetDiary: async (diaryData) => {
