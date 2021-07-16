@@ -28,25 +28,27 @@ module.exports = {
             //.populate({path:"petDiary",populate:({path:"petEmotions"})})
             console.log('!!!! : '+findFirstTableContents)
             let newChapterDiary = new PetChapterDiaryResDto(findFirstTableContents)
-
+            console.log("newchapterDiary",newChapterDiary);
             //월별로 자르기
-            for (let m = 12; m >= 1; m--) {
+            for (let m = 12; m >0; m--) {
                 let cnt = 0;
                 //1화부터
                 let monthly = new MonthlyDiaryResDto()
-
-                for (let i = 0; i < findFirstTableContents.petDiary.length; i++) {
-
-                    if (m == findFirstTableContents.petDiary[i].date.getMonth()) {
+                
+                for (let i = findFirstTableContents.petDiary.length-1; i >=0 ; i--) {
+                    console.log(findFirstTableContents.petDiary[i].date.getMonth())
+                    if (m == findFirstTableContents.petDiary[i].date.getMonth()+1) {
                         cnt++;
+                        console.log("month",m,findFirstTableContents.petDiary[i])
                         let newDiary = new DiariesResDto(findFirstTableContents.petDiary[i])//diary                     
                         monthly.setDiaries(newDiary)
+                        console.log("출력 다이어리 : ",newDiary)
                         //console.log(findFirstTableContents.petDiary[i].petEmotions[0].feeling)
                     }
                 }
                 if (cnt == 0) continue
                 monthly.setMonthCount(cnt)
-                monthly.setMonth(m)
+                monthly.setMonth(m)                                                          
                 newChapterDiary.setMonthly(monthly)
             }
             console.log(newChapterDiary)
