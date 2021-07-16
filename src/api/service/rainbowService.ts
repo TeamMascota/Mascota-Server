@@ -234,7 +234,7 @@ module.exports = {
 
             const theBestMomentsResDto = new TheBestMomentsResDto(timeTogether)
             for (let j = 0; j < 6; j++) {   //긍정3개, 부정3개
-                const commentPerFeeling = await Comments.findOne({ feeling: j , classification : 2})
+                const commentPerFeeling = await Comments.findOne({ feeling: j , classification : 1})
 
                 // let commentPerFeeling ={
                 //     comments : "",
