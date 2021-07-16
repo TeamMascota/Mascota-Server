@@ -46,6 +46,7 @@ class TheBestMoment {
 exports.TheBestMoment = TheBestMoment;
 class TheBestMomentDiary {
     constructor(diaryPerFeeling) {
+        this.diaryId = null;
         this.chapter = null;
         this.episode = null;
         this.title = null;
@@ -57,6 +58,7 @@ class TheBestMomentDiary {
         return __awaiter(this, void 0, void 0, function* () {
             //console.log('!!!!!!!!!!!!!!!!!!!!!!!!! : ' + diaryPerFeeling)
             if (diaryPerFeeling != undefined) {
+                this.diaryId = diaryPerFeeling._id;
                 this.chapter = diaryPerFeeling.tableContents.chapter;
                 this.episode = diaryPerFeeling.episode;
                 this.title = diaryPerFeeling.title;

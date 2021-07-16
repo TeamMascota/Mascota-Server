@@ -6,7 +6,7 @@ class SecondPartDiariesOfMonthResDto {
         this._id = null;
         this.chapter = null;
         this.chapterTitle = null;
-        this.diariesOfMonth = [];
+        this.diariesOfMonth = null;
         this._id = tableContents._id;
         this.chapter = tableContents.chapter;
         this.chapterTitle = tableContents.title;
@@ -21,7 +21,7 @@ class SecondPartDiariesOfMonth {
         this.diaries = [];
         this.month = month;
         this.diaryCountOfTableContents = userDiaries.length;
-        this.diaries.push(userDiaries.sort((a, b) => b.date.getDate() - a.date.getDate()).map(diary => new SecondPartDiaries(diary)));
+        this.diaries = userDiaries.sort((a, b) => b.date.getDate() - a.date.getDate()).map(diary => new SecondPartDiaries(diary));
     }
 }
 exports.SecondPartDiariesOfMonth = SecondPartDiariesOfMonth;
