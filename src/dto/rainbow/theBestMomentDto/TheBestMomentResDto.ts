@@ -41,6 +41,7 @@ export class TheBestMoment { //[사랑],[기쁨],[보통]
 }
 
 export class TheBestMomentDiary {
+    private diaryId=null
     private chapter = null
     private episode = null
     private title = null
@@ -54,6 +55,7 @@ export class TheBestMomentDiary {
     async init(diaryPerFeeling: IPetDiary) {
         //console.log('!!!!!!!!!!!!!!!!!!!!!!!!! : ' + diaryPerFeeling)
         if (diaryPerFeeling != undefined) {
+            this.diaryId= diaryPerFeeling._id
             this.chapter = diaryPerFeeling.tableContents.chapter
             this.episode = diaryPerFeeling.episode
             this.title = diaryPerFeeling.title
