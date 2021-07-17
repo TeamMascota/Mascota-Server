@@ -219,7 +219,7 @@ module.exports = {
         }
     }),
     postPetDiaryWithImage: (images, diaryInfo) => __awaiter(void 0, void 0, void 0, function* () {
-        const petInfo = JSON.parse(JSON.stringify(diaryInfo.character.character));
+        const petInfo = JSON.parse(diaryInfo.character.character);
         console.log('images : ' + images);
         console.log('diaryInfo : ' + petInfo);
         console.log('diaryInfo : ' + typeof (petInfo));
