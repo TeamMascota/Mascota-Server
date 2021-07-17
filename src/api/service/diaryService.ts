@@ -219,7 +219,10 @@ module.exports = {
         }
     },
     postPetDiaryWithImage:async(images, diaryInfo)=>{
-        const petInfo = JSON.parse(diaryInfo.character.character)
+        const petInfo = JSON.parse(JSON.stringify(diaryInfo.character)).character
+
+        console.log('test2 : '+JSON.parse(petInfo))
+        console.log('test ! : '+JSON.parse(JSON.stringify(petInfo)))
         console.log('images : '+images)
         console.log('diaryInfo : '+petInfo)
         console.log('diaryInfo : '+typeof(petInfo))
